@@ -55,32 +55,34 @@
      ============================================================ */
   var C1_TN = [
 
-    // 1. Phủ định mệnh đề với mọi
+    // 1. Phủ định mệnh đề có "với mọi"
     function () {
       var a = ri(1, 9);
       return { muc: 1,
-        de: 'Phủ định của mệnh đề $\\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\gt 0$ là',
+        de: 'Cho mệnh đề $P$: “Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\gt 0$”. ' +
+            'Mệnh đề phủ định $\\overline{P}$ là',
         dapan: bon(
-          '$\\exists x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\le 0$',
-          ['$\\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\le 0$',
-           '$\\exists x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\gt 0$',
-           '$\\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\lt 0$']),
+          'Tồn tại số thực $x$ sao cho $x^2 + ' + a + ' \\le 0$',
+          ['Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\le 0$',
+           'Tồn tại số thực $x$ sao cho $x^2 + ' + a + ' \\gt 0$',
+           'Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\lt 0$']),
         dung: 0,
-        giai: 'Đổi $\\forall$ thành $\\exists$ rồi phủ định bất đẳng thức, $\\gt$ thành $\\le$.' };
+        giai: 'Phủ định của “với mọi” là “tồn tại”, đồng thời đổi $\\gt$ thành $\\le$.' };
     },
 
-    // 2. Phủ định mệnh đề với tồn tại
+    // 2. Phủ định mệnh đề có "tồn tại"
     function () {
       var a = ri(2, 9);
       return { muc: 1,
-        de: 'Phủ định của mệnh đề $\\exists n \\in \\mathbb{N},\\ n^2 = ' + a + '$ là',
+        de: 'Cho mệnh đề $P$: “Tồn tại số tự nhiên $n$ sao cho $n^2 = ' + a + '$”. ' +
+            'Mệnh đề phủ định $\\overline{P}$ là',
         dapan: bon(
-          '$\\forall n \\in \\mathbb{N},\\ n^2 \\ne ' + a + '$',
-          ['$\\exists n \\in \\mathbb{N},\\ n^2 \\ne ' + a + '$',
-           '$\\forall n \\in \\mathbb{N},\\ n^2 = ' + a + '$',
-           '$\\exists n \\in \\mathbb{N},\\ n^2 \\gt ' + a + '$']),
+          'Với mọi số tự nhiên $n$, ta có $n^2 \\ne ' + a + '$',
+          ['Tồn tại số tự nhiên $n$ sao cho $n^2 \\ne ' + a + '$',
+           'Với mọi số tự nhiên $n$, ta có $n^2 = ' + a + '$',
+           'Tồn tại số tự nhiên $n$ sao cho $n^2 \\gt ' + a + '$']),
         dung: 0,
-        giai: 'Đổi $\\exists$ thành $\\forall$ rồi phủ định đẳng thức.' };
+        giai: 'Phủ định của “tồn tại” là “với mọi”, đồng thời đổi dấu bằng thành dấu khác.' };
     },
 
     // 3. Hiệu hai tập hợp liệt kê
@@ -88,7 +90,8 @@
       var m = ri(5, 9), k = ri(3, m - 1), n = ri(m, m + 3);
       var A = day(1, m), B = day(k, n);
       return { muc: 2,
-        de: 'Cho $A = ' + tap(A) + '$ và $B = ' + tap(B) + '$. Tập $A \\setminus B$ bằng',
+        de: 'Cho $A = ' + tap(A) + '$ và $B = ' + tap(B) + '$. ' +
+            'Tập hợp gồm các phần tử thuộc $A$ nhưng không thuộc $B$ là',
         dapan: bon(
           '$' + tap(day(1, k - 1)) + '$',
           ['$' + tap(day(k, m)) + '$',
@@ -140,7 +143,7 @@
       var n = chon([12, 18, 20, 24, 28, 30, 36, 40, 42, 45, 48, 54, 60]);
       var u = uoc(n);
       return { muc: 2,
-        de: 'Tập hợp $X = \\{x \\in \\mathbb{N} \\mid x$ là ước của $' + n + '\\}$ có bao nhiêu phần tử?',
+        de: 'Số $' + n + '$ có bao nhiêu ước là số tự nhiên?',
         dapan: bon(String(u.length), [String(u.length - 1), String(u.length + 1), String(Math.round(n / 2))]),
         dung: 0,
         giai: 'Các ước của $' + n + '$ là $' + u.join(', ') + '$, tất cả $' + u.length + '$ số.' };
@@ -172,7 +175,7 @@
     function () {
       var p = ri(1, 6), q = ri(p + 1, p + 6);
       return { muc: 2,
-        de: 'Cho $A = \\{x \\in \\mathbb{R} \\mid x^2 - ' + (p + q) + 'x + ' + (p * q) + ' = 0\\}$. Khi đó $A$ bằng',
+        de: 'Tập nghiệm của phương trình $x^2 - ' + (p + q) + 'x + ' + (p * q) + ' = 0$ là',
         dapan: bon('$' + tap([p, q]) + '$',
                    ['$' + tap([-p, -q]) + '$', '$' + tap([p]) + '$', '$\\emptyset$']),
         dung: 0,
@@ -197,7 +200,7 @@
     function () {
       var n = ri(4, 12);
       return { muc: 1,
-        de: 'Tập hợp $\\{x \\in \\mathbb{N} \\mid x \\le ' + n + '\\}$ có bao nhiêu phần tử?',
+        de: 'Có bao nhiêu số tự nhiên nhỏ hơn hoặc bằng $' + n + '$?',
         dapan: bon(String(n + 1), [String(n), String(n - 1), String(2 * n)]),
         dung: 0,
         giai: 'Gồm các số từ $0$ đến $' + n + '$, tất cả $' + (n + 1) + '$ số vì $\\mathbb{N}$ có số $0$.' };
@@ -236,10 +239,10 @@
       var a = ri(1, 9), b = ri(2, 9), c = chon([2, 3, 5, 6, 7, 8, 10]);
       return { muc: 2,
         de: 'Khẳng định nào sau đây <strong>sai</strong>?',
-        dapan: bon('$\\sqrt{' + c + '} \\in \\mathbb{Q}$',
-                   ['$-' + a + ' \\in \\mathbb{Z}$',
-                    '$0 \\in \\mathbb{N}$',
-                    '$\\dfrac{' + a + '}{' + b + '} \\in \\mathbb{Q}$']),
+        dapan: bon('$\\sqrt{' + c + '}$ là số hữu tỉ',
+                   ['$-' + a + '$ là số nguyên',
+                    '$0$ là số tự nhiên',
+                    '$\\dfrac{' + a + '}{' + b + '}$ là số hữu tỉ']),
         dung: 0,
         giai: '$\\sqrt{' + c + '}$ là số vô tỉ nên không thuộc $\\mathbb{Q}$. Ba khẳng định kia đều đúng.' };
     },
@@ -260,12 +263,12 @@
     function () {
       return { muc: 1,
         de: 'Khẳng định nào sau đây đúng?',
-        dapan: bon('$\\mathbb{N} \\subset \\mathbb{Z} \\subset \\mathbb{Q} \\subset \\mathbb{R}$',
-                   ['$\\mathbb{R} \\subset \\mathbb{Q}$',
-                    '$\\mathbb{Z} \\subset \\mathbb{N}$',
-                    '$\\mathbb{Q} \\subset \\mathbb{Z}$']),
+        dapan: bon('Mọi số tự nhiên đều là số nguyên',
+                   ['Mọi số nguyên đều là số tự nhiên',
+                    'Mọi số thực đều là số hữu tỉ',
+                    'Mọi số hữu tỉ đều là số nguyên']),
         dung: 0,
-        giai: 'Số tự nhiên là số nguyên, số nguyên là số hữu tỉ, số hữu tỉ là số thực.' };
+        giai: 'Số tự nhiên nằm trong số nguyên. Ngược lại thì không, ví dụ $-3$ là số nguyên nhưng không phải số tự nhiên.' };
     }
 
   ];
@@ -275,10 +278,10 @@
       var a = ri(1, 9), b = ri(2, 9), c = chon([2, 3, 5, 6, 7, 8, 10]);
       return { muc: 2,
         de: 'Xét các khẳng định về tập hợp số.',
-        y: ['$-' + a + ' \\in \\mathbb{Z}$',
-            '$0 \\in \\mathbb{N}$',
-            '$\\dfrac{' + a + '}{' + b + '} \\in \\mathbb{Q}$',
-            '$\\sqrt{' + c + '} \\in \\mathbb{Q}$'],
+        y: ['$-' + a + '$ là số nguyên',
+            '$0$ là số tự nhiên',
+            '$\\dfrac{' + a + '}{' + b + '}$ là số hữu tỉ',
+            '$\\sqrt{' + c + '}$ là số hữu tỉ'],
         dung: [true, true, true, false],
         giai: '$\\sqrt{' + c + '}$ là số vô tỉ nên không thuộc $\\mathbb{Q}$.' };
     },
@@ -332,10 +335,10 @@
       var a = ri(1, 9);
       return { muc: 2,
         de: 'Xét tính đúng sai của các mệnh đề sau.',
-        y: ['$\\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\gt 0$',
-            '$\\exists x \\in \\mathbb{R},\\ x^2 = ' + (a * a) + '$',
-            '$\\forall n \\in \\mathbb{N},\\ n^2 \\ge n$',
-            '$\\forall x \\in \\mathbb{R},\\ x^2 \\gt x$'],
+        y: ['Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\gt 0$',
+            'Tồn tại số thực $x$ sao cho $x^2 = ' + (a * a) + '$',
+            'Với mọi số tự nhiên $n$, ta có $n^2 \\ge n$',
+            'Với mọi số thực $x$, ta có $x^2 \\gt x$'],
         dung: [true, true, true, false],
         giai: 'Với $x = 0{,}5$ ta có $x^2 = 0{,}25 \\lt 0{,}5$ nên ý d) sai.' };
     },
@@ -412,8 +415,8 @@
     function () {
       var p = ri(1, 7), q = ri(p + 1, p + 7);
       return { muc: 2,
-        de: 'Cho $A = \\{x \\in \\mathbb{R} \\mid x^2 - ' + (p + q) + 'x + ' + (p * q) +
-            ' = 0\\}$. Tổng các phần tử của $A$ bằng bao nhiêu?',
+        de: 'Tổng hai nghiệm của phương trình $x^2 - ' + (p + q) + 'x + ' + (p * q) +
+            ' = 0$ bằng bao nhiêu?',
         dapan: String(p + q), giai: 'Hai nghiệm là $' + p + '$ và $' + q + '$.' };
     },
     function () {

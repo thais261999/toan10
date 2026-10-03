@@ -41,27 +41,17 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge 0$ là mệnh đề nào?`,
-        dapan: [
-          L`$\exists x \in \mathbb{R},\ x^2 \lt 0$`,
-          L`$\forall x \in \mathbb{R},\ x^2 \lt 0$`,
-          L`$\exists x \in \mathbb{R},\ x^2 \ge 0$`,
-          L`$\forall x \in \mathbb{R},\ x^2 \le 0$`
-        ],
-        dung: 0,
-        giai: L`Phủ định đổi $\forall$ thành $\exists$ và đổi $\ge$ thành $\lt$.` },
-
-      { muc: 1, de: L`Cho $A = \{1;\,2;\,3;\,4\}$ và $B = \{3;\,4;\,5\}$. Tập $A \setminus B$ bằng`,
+        { muc: 1, de: L`Cho $A = \{1;\,2;\,3;\,4\}$ và $B = \{3;\,4;\,5\}$. Tập $A \setminus B$ bằng`,
         dapan: [L`$\{1;\,2\}$`, L`$\{3;\,4\}$`, L`$\{5\}$`, L`$\{1;\,2;\,5\}$`],
         dung: 0,
         giai: L`$A \setminus B$ gồm các phần tử thuộc $A$ nhưng không thuộc $B$, đó là $1$ và $2$.` },
 
-      { muc: 2, de: L`Cho $A = [1;5)$ và $B = (3;7]$. Khi đó $A \cap B$ bằng`,
+        { muc: 2, de: L`Cho $A = [1;5)$ và $B = (3;7]$. Khi đó $A \cap B$ bằng`,
         dapan: [L`$(3;5)$`, L`$[1;7]$`, L`$[1;3]$`, L`$[5;7]$`],
         dung: 0,
         giai: `Giao là phần chung của hai khoảng, lấy từ 3 không kể đến 5 không kể.` },
 
-      { muc: 3, de: L`Mệnh đề đảo của mệnh đề “Nếu $n$ chia hết cho $6$ thì $n$ chia hết cho $3$” là`,
+        { muc: 3, de: L`Mệnh đề đảo của mệnh đề “Nếu $n$ chia hết cho $6$ thì $n$ chia hết cho $3$” là`,
         dapan: [
           L`Nếu $n$ chia hết cho $3$ thì $n$ chia hết cho $6$`,
           L`Nếu $n$ không chia hết cho $6$ thì $n$ không chia hết cho $3$`,
@@ -221,26 +211,6 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Không đều thì có thể cân, vuông hay thường, nên chỉ cách viết đầu mới là phủ định.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là`,
-          dapan: [
-            L`$\exists x \in \mathbb{R},\ x^2 + 1 \le 0$`,
-            L`$\forall x \in \mathbb{R},\ x^2 + 1 \le 0$`,
-            L`$\exists x \in \mathbb{R},\ x^2 + 1 \gt 0$`,
-            L`$\forall x \in \mathbb{R},\ x^2 + 1 \lt 0$`
-          ],
-          dung: 0,
-          giai: L`Đổi $\forall$ thành $\exists$ và phủ định mệnh đề bên trong.` },
-
-        { muc: 2, de: L`Phủ định của mệnh đề $\exists n \in \mathbb{N},\ n^2 = 2$ là`,
-          dapan: [
-            L`$\forall n \in \mathbb{N},\ n^2 \ne 2$`,
-            L`$\exists n \in \mathbb{N},\ n^2 \ne 2$`,
-            L`$\forall n \in \mathbb{N},\ n^2 = 2$`,
-            L`$\exists n \in \mathbb{N},\ n^2 \gt 2$`
-          ],
-          dung: 0,
-          giai: L`Đổi $\exists$ thành $\forall$ và phủ định đẳng thức.` },
-
         { muc: 2, de: L`Phủ định của mệnh đề “Mọi học sinh trong lớp đều thích môn Toán” là`,
           dapan: [
             L`Có ít nhất một học sinh trong lớp không thích môn Toán`,
@@ -261,46 +231,6 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Phủ định của “tồn tại” là “với mọi … không”.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge x$ là`,
-          dapan: [
-            L`$\exists x \in \mathbb{R},\ x^2 \lt x$`,
-            L`$\forall x \in \mathbb{R},\ x^2 \lt x$`,
-            L`$\exists x \in \mathbb{R},\ x^2 \gt x$`,
-            L`$\forall x \in \mathbb{R},\ x^2 \le x$`
-          ],
-          dung: 0,
-          giai: L`Đổi $\forall$ thành $\exists$ và đổi $\ge$ thành $\lt$.` },
-
-        { muc: 2, de: L`Phủ định của mệnh đề $\exists x \in \mathbb{Q},\ 4x^2 - 1 = 0$ là`,
-          dapan: [
-            L`$\forall x \in \mathbb{Q},\ 4x^2 - 1 \ne 0$`,
-            L`$\exists x \in \mathbb{Q},\ 4x^2 - 1 \ne 0$`,
-            L`$\forall x \in \mathbb{Q},\ 4x^2 - 1 = 0$`,
-            L`$\forall x \in \mathbb{R},\ 4x^2 - 1 \ne 0$`
-          ],
-          dung: 0,
-          giai: L`Giữ nguyên tập $\mathbb{Q}$, đổi $\exists$ thành $\forall$ và phủ định đẳng thức.` },
-
-        { muc: 2, de: L`Cho mệnh đề $P: \forall x \in \mathbb{R},\ x^2 - x + 1 \gt 0$. Mệnh đề phủ định của $P$ là`,
-          dapan: [
-            L`$\exists x \in \mathbb{R},\ x^2 - x + 1 \le 0$`,
-            L`$\forall x \in \mathbb{R},\ x^2 - x + 1 \le 0$`,
-            L`$\exists x \in \mathbb{R},\ x^2 - x + 1 \ge 0$`,
-            L`$\forall x \in \mathbb{R},\ x^2 - x + 1 \lt 0$`
-          ],
-          dung: 0,
-          giai: L`Đổi lượng từ và phủ định bất đẳng thức.` },
-
-        { muc: 3, de: L`Xét mệnh đề $P: \forall x \in \mathbb{R},\ x^2 + 1 \gt 0$. Khẳng định nào đúng?`,
-          dapan: [
-            L`$P$ đúng và phủ định của $P$ sai`,
-            L`$P$ sai và phủ định của $P$ đúng`,
-            L`Cả $P$ và phủ định của $P$ đều đúng`,
-            L`Cả $P$ và phủ định của $P$ đều sai`
-          ],
-          dung: 0,
-          giai: L`$x^2 \ge 0$ nên $x^2 + 1 \ge 1 \gt 0$ với mọi $x$, do đó $P$ đúng và phủ định của nó sai.` },
-
         { muc: 1, de: L`Mệnh đề $P \Rightarrow Q$ sai trong trường hợp nào?`,
           dapan: [
             L`$P$ đúng và $Q$ sai`,
@@ -310,26 +240,6 @@ const CHUONG_TRINH = [
           ],
           dung: 0,
           giai: L`Mệnh đề kéo theo chỉ sai khi giả thiết đúng mà kết luận sai.` },
-
-        { muc: 1, de: L`Mệnh đề đảo của mệnh đề $P \Rightarrow Q$ là`,
-          dapan: [
-            L`$Q \Rightarrow P$`,
-            L`$\neg P \Rightarrow \neg Q$`,
-            L`$\neg Q \Rightarrow \neg P$`,
-            L`$P \Leftrightarrow Q$`
-          ],
-          dung: 0,
-          giai: L`Mệnh đề đảo đổi chỗ giả thiết và kết luận.` },
-
-        { muc: 1, de: L`Mệnh đề phản đảo của mệnh đề $P \Rightarrow Q$ là`,
-          dapan: [
-            L`$\neg Q \Rightarrow \neg P$`,
-            L`$Q \Rightarrow P$`,
-            L`$\neg P \Rightarrow \neg Q$`,
-            L`$P \Rightarrow \neg Q$`
-          ],
-          dung: 0,
-          giai: L`Mệnh đề phản đảo luôn tương đương với mệnh đề ban đầu.` },
 
         { muc: 2, de: L`Mệnh đề đảo của “Nếu tứ giác $ABCD$ là hình vuông thì nó là hình chữ nhật” là`,
           dapan: [
@@ -449,14 +359,6 @@ const CHUONG_TRINH = [
           dung: [true, true, true, false],
           giai: L`Ý d) sai vì $6 \in B$ nhưng $6 \notin A$.` },
 
-        { muc: 2, de: `Xét tính đúng sai của các khẳng định sau.`,
-          y: [L`Mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là mệnh đề đúng`,
-              L`Mệnh đề $\exists x \in \mathbb{R},\ x^2 = -1$ là mệnh đề đúng`,
-              L`Phủ định của $\exists x \in \mathbb{R},\ x \gt 2$ là $\forall x \in \mathbb{R},\ x \le 2$`,
-              L`Mệnh đề $P \Rightarrow Q$ sai khi $P$ sai và $Q$ đúng`],
-          dung: [true, false, true, false],
-          giai: L`Ý b) sai vì $x^2 \ge 0$ với mọi $x$. Ý d) sai vì $P \Rightarrow Q$ chỉ sai khi $P$ đúng mà $Q$ sai.` },
-
         { muc: 1, de: L`Cho $A = \{1;2;3;4;5;6\}$ và $B = \{2;4;6;8\}$.`,
           y: [
             L`$A \cap B = \{2;4;6\}$`,
@@ -469,10 +371,10 @@ const CHUONG_TRINH = [
 
         { muc: 1, de: L`Xét quan hệ giữa các tập hợp số.`,
           y: [
-            L`$\mathbb{N} \subset \mathbb{Z}$`,
-            L`$\mathbb{Z} \subset \mathbb{Q}$`,
-            L`$\mathbb{Q} \subset \mathbb{R}$`,
-            L`$\mathbb{R} \subset \mathbb{Q}$`
+            L`Mọi số tự nhiên đều là số nguyên`,
+            L`Mọi số nguyên đều là số hữu tỉ`,
+            L`Mọi số hữu tỉ đều là số thực`,
+            L`Mọi số thực đều là số hữu tỉ`
           ],
           dung: [true, true, true, false],
           giai: L`$\sqrt{2} \in \mathbb{R}$ nhưng không thuộc $\mathbb{Q}$ nên ý d) sai.` },
@@ -486,16 +388,6 @@ const CHUONG_TRINH = [
           ],
           dung: [true, true, true, false],
           giai: L`$B \setminus A$ gồm các số thuộc $B$ mà không thuộc $A$, tức $4 \le x \le 6$, vậy bằng $[4;6]$.` },
-
-        { muc: 2, de: L`Cho hai mệnh đề $P: \forall x \in \mathbb{R},\ x^2 \ge 0$ và $Q: \exists x \in \mathbb{R},\ x^2 = -1$.`,
-          y: [
-            L`$P$ là mệnh đề đúng`,
-            L`$Q$ là mệnh đề sai`,
-            L`Phủ định của $P$ là $\exists x \in \mathbb{R},\ x^2 \lt 0$`,
-            L`Phủ định của $Q$ là $\exists x \in \mathbb{R},\ x^2 \ne -1$`
-          ],
-          dung: [true, true, true, false],
-          giai: L`Phủ định của $\exists$ phải là $\forall$, tức $\forall x \in \mathbb{R},\ x^2 \ne -1$.` },
 
         { muc: 1, de: L`Cho $X = \{x \in \mathbb{N} \mid x$ là ước của $18\}$.`,
           y: [
@@ -516,16 +408,6 @@ const CHUONG_TRINH = [
           ],
           dung: [true, true, true, false],
           giai: L`Có $7$ tập con khác rỗng, bỏ thêm chính $A$ thì còn $6$.` },
-
-        { muc: 2, de: L`Xét các khẳng định về mệnh đề kéo theo.`,
-          y: [
-            L`$P \Rightarrow Q$ chỉ sai khi $P$ đúng và $Q$ sai`,
-            L`Mệnh đề đảo của $P \Rightarrow Q$ là $Q \Rightarrow P$`,
-            L`$P \Rightarrow Q$ luôn tương đương với $\neg Q \Rightarrow \neg P$`,
-            L`Nếu $P$ sai thì $P \Rightarrow Q$ sai`
-          ],
-          dung: [true, true, true, false],
-          giai: L`Khi $P$ sai thì $P \Rightarrow Q$ luôn đúng, bất kể $Q$ thế nào.` },
 
         { muc: 3, de: L`Lớp 10A có 45 học sinh, trong đó 24 em giỏi Toán, 20 em giỏi Lí và 9 em giỏi cả hai môn.`,
           y: [
@@ -566,16 +448,6 @@ const CHUONG_TRINH = [
           ],
           dung: [true, true, false, true],
           giai: L`$A \setminus B$ gồm các số nhỏ hơn $1$, tức $(-\infty;1)$, không lấy điểm $1$.` },
-
-        { muc: 3, de: L`Xét tính đúng sai của các mệnh đề có lượng từ.`,
-          y: [
-            L`$\forall n \in \mathbb{N},\ n^2 \ge n$`,
-            L`$\exists n \in \mathbb{N},\ n^2 = n$`,
-            L`$\forall x \in \mathbb{R},\ x^2 \gt x$`,
-            L`$\exists x \in \mathbb{R},\ x^2 \lt x$`
-          ],
-          dung: [true, true, false, true],
-          giai: L`Với $x = 0{,}5$ ta có $x^2 = 0{,}25 \lt 0{,}5$ nên ý c) sai còn ý d) đúng.` },
 
         { muc: 1, de: L`Cho $A = \{1;2;3\}$ và $B = \{1;2;3;4;5\}$.`,
           y: [
@@ -732,17 +604,17 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: L`Điểm $O(0;0)$ có thuộc miền nghiệm của bất phương trình $2x + y \le 3$ không?`,
+        { muc: 1, de: L`Điểm $O(0;0)$ có thuộc miền nghiệm của bất phương trình $2x + y \le 3$ không?`,
         dapan: [L`Có, vì $0 \le 3$`, L`Không, vì $0 \gt 3$`, `Không xác định được`, `Chỉ thuộc đường biên`],
         dung: 0,
         giai: L`Thay $x = 0$ và $y = 0$ được $0 \le 3$, mệnh đề đúng nên điểm $O$ thuộc miền nghiệm.` },
 
-      { muc: 2, de: L`Điểm nào sau đây <strong>không</strong> thuộc miền nghiệm của $x - 2y \lt 4$?`,
+        { muc: 2, de: L`Điểm nào sau đây <strong>không</strong> thuộc miền nghiệm của $x - 2y \lt 4$?`,
         dapan: [L`$(4;0)$`, L`$(0;0)$`, L`$(1;2)$`, L`$(-1;1)$`],
         dung: 0,
         giai: L`Với $(4;0)$ ta có $4 - 0 = 4$, không nhỏ hơn $4$ nên điểm này bị loại.` },
 
-      { muc: 3, de: `Miền nghiệm của một hệ bất phương trình bậc nhất hai ẩn luôn là`,
+        { muc: 3, de: `Miền nghiệm của một hệ bất phương trình bậc nhất hai ẩn luôn là`,
         dapan: [`Giao của các nửa mặt phẳng`, `Hợp của các nửa mặt phẳng`, `Một đường thẳng`, `Một điểm duy nhất`],
         dung: 0,
         giai: `Nghiệm của hệ phải thoả mãn mọi bất phương trình trong hệ, nên ta lấy phần chung.` }
@@ -784,22 +656,22 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: L`Giá trị của $\cos 120^\circ$ bằng`,
+        { muc: 1, de: L`Giá trị của $\cos 120^\circ$ bằng`,
         dapan: [L`$-\dfrac{1}{2}$`, L`$\dfrac{1}{2}$`, L`$-\dfrac{\sqrt{3}}{2}$`, L`$\dfrac{\sqrt{3}}{2}$`],
         dung: 0,
         giai: L`$\cos 120^\circ = \cos(180^\circ - 60^\circ) = -\cos 60^\circ = -\dfrac{1}{2}$.` },
 
-      { muc: 1, de: L`Tam giác $ABC$ có $b = 5$, $c = 8$ và $\widehat{A} = 60^\circ$. Cạnh $a$ bằng`,
+        { muc: 1, de: L`Tam giác $ABC$ có $b = 5$, $c = 8$ và $\widehat{A} = 60^\circ$. Cạnh $a$ bằng`,
         dapan: [L`$7$`, L`$9$`, L`$\sqrt{89}$`, L`$13$`],
         dung: 0,
         giai: L`$a^2 = 25 + 64 - 2 \cdot 5 \cdot 8 \cdot \dfrac{1}{2} = 89 - 40 = 49$, suy ra $a = 7$.` },
 
-      { muc: 2, de: L`Tam giác có hai cạnh bằng $4$ và $6$, góc xen giữa bằng $30^\circ$. Diện tích tam giác bằng`,
+        { muc: 2, de: L`Tam giác có hai cạnh bằng $4$ và $6$, góc xen giữa bằng $30^\circ$. Diện tích tam giác bằng`,
         dapan: [L`$6$`, L`$12$`, L`$3$`, L`$24$`],
         dung: 0,
         giai: L`$S = \dfrac{1}{2} \cdot 4 \cdot 6 \cdot \sin 30^\circ = 12 \cdot \dfrac{1}{2} = 6$.` },
 
-      { muc: 3, de: L`Trong tam giác $ABC$, tỉ số $\dfrac{a}{\sin A}$ bằng`,
+        { muc: 3, de: L`Trong tam giác $ABC$, tỉ số $\dfrac{a}{\sin A}$ bằng`,
         dapan: [L`$2R$`, L`$R$`, L`$\dfrac{R}{2}$`, L`$4R$`],
         dung: 0,
         giai: `Đây chính là nội dung của định lí sin.` }
@@ -845,12 +717,12 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: L`Cho $A(1;2)$ và $B(4;6)$. Độ dài $\left|\overrightarrow{AB}\right|$ bằng`,
+        { muc: 1, de: L`Cho $A(1;2)$ và $B(4;6)$. Độ dài $\left|\overrightarrow{AB}\right|$ bằng`,
         dapan: [L`$5$`, L`$7$`, L`$\sqrt{7}$`, L`$25$`],
         dung: 0,
         giai: L`$\overrightarrow{AB} = (3;4)$ nên độ dài bằng $\sqrt{9 + 16} = 5$.` },
 
-      { muc: 1, de: L`Cho $\vec{u} = (2;-1)$ và $\vec{v} = (3;6)$. Kết luận nào đúng?`,
+        { muc: 1, de: L`Cho $\vec{u} = (2;-1)$ và $\vec{v} = (3;6)$. Kết luận nào đúng?`,
         dapan: [
           L`$\vec{u} \perp \vec{v}$`,
           L`$\vec{u}$ cùng phương với $\vec{v}$`,
@@ -860,12 +732,12 @@ const CHUONG_TRINH = [
         dung: 0,
         giai: L`$\vec{u} \cdot \vec{v} = 2 \cdot 3 + (-1) \cdot 6 = 0$ nên hai vectơ vuông góc.` },
 
-      { muc: 2, de: L`Tổng $\overrightarrow{MN} + \overrightarrow{NP}$ bằng`,
+        { muc: 2, de: L`Tổng $\overrightarrow{MN} + \overrightarrow{NP}$ bằng`,
         dapan: [L`$\overrightarrow{MP}$`, L`$\overrightarrow{PM}$`, L`$\overrightarrow{NM}$`, L`$\vec{0}$`],
         dung: 0,
         giai: L`Áp dụng quy tắc ba điểm với ba điểm $M$, $N$, $P$.` },
 
-      { muc: 3, de: L`Tam giác $ABC$ có $A(0;0)$, $B(6;0)$, $C(0;3)$. Trọng tâm $G$ có toạ độ`,
+        { muc: 3, de: L`Tam giác $ABC$ có $A(0;0)$, $B(6;0)$, $C(0;3)$. Trọng tâm $G$ có toạ độ`,
         dapan: [L`$(2;1)$`, L`$(3;1{,}5)$`, L`$(6;3)$`, L`$(1;2)$`],
         dung: 0,
         giai: L`$x_G = \dfrac{0 + 6 + 0}{3} = 2$ và $y_G = \dfrac{0 + 0 + 3}{3} = 1$.` }
@@ -908,22 +780,22 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: L`Số trung bình của mẫu số liệu $2;\ 4;\ 4;\ 5;\ 9$ bằng`,
+        { muc: 1, de: L`Số trung bình của mẫu số liệu $2;\ 4;\ 4;\ 5;\ 9$ bằng`,
         dapan: [L`$4{,}8$`, L`$4$`, L`$5$`, L`$4{,}5$`],
         dung: 0,
         giai: L`Tổng bằng $24$, chia cho $5$ được $4{,}8$.` },
 
-      { muc: 1, de: L`Trung vị của mẫu số liệu $1;\ 3;\ 5;\ 7;\ 9;\ 11$ bằng`,
+        { muc: 1, de: L`Trung vị của mẫu số liệu $1;\ 3;\ 5;\ 7;\ 9;\ 11$ bằng`,
         dapan: [L`$6$`, L`$5$`, L`$7$`, L`$5{,}5$`],
         dung: 0,
         giai: L`Mẫu có $6$ giá trị nên trung vị là trung bình hai số giữa, bằng $\dfrac{5 + 7}{2} = 6$.` },
 
-      { muc: 2, de: L`Mốt của mẫu số liệu $2;\ 3;\ 3;\ 5;\ 7$ bằng`,
+        { muc: 2, de: L`Mốt của mẫu số liệu $2;\ 3;\ 3;\ 5;\ 7$ bằng`,
         dapan: [L`$3$`, L`$2$`, L`$4$`, L`$5$`],
         dung: 0,
         giai: L`Mốt là giá trị xuất hiện nhiều lần nhất, ở đây số $3$ xuất hiện hai lần.` },
 
-      { muc: 3, de: `Số đặc trưng nào đo độ phân tán và ít bị ảnh hưởng bởi giá trị bất thường nhất?`,
+        { muc: 3, de: `Số đặc trưng nào đo độ phân tán và ít bị ảnh hưởng bởi giá trị bất thường nhất?`,
         dapan: [`Khoảng tứ phân vị`, `Khoảng biến thiên`, `Số trung bình`, `Tổng các giá trị`],
         dung: 0,
         giai: `Khoảng tứ phân vị chỉ dùng phần giữa của mẫu nên bỏ qua hai đầu bất thường.` }
@@ -967,22 +839,22 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: L`Đồ thị hàm số $y = x^2 - 4x + 3$ có đỉnh là`,
+        { muc: 1, de: L`Đồ thị hàm số $y = x^2 - 4x + 3$ có đỉnh là`,
         dapan: [L`$I(2;-1)$`, L`$I(-2;15)$`, L`$I(2;1)$`, L`$I(4;3)$`],
         dung: 0,
         giai: L`$x = -\dfrac{b}{2a} = 2$, thay vào được $y = 4 - 8 + 3 = -1$.` },
 
-      { muc: 1, de: L`Tập xác định của hàm số $y = \sqrt{x - 2}$ là`,
+        { muc: 1, de: L`Tập xác định của hàm số $y = \sqrt{x - 2}$ là`,
         dapan: [L`$[2; +\infty)$`, L`$(2; +\infty)$`, L`$(-\infty; 2]$`, L`$\mathbb{R}$`],
         dung: 0,
         giai: L`Cần $x - 2 \ge 0$, tức là $x \ge 2$.` },
 
-      { muc: 2, de: L`Tập nghiệm của bất phương trình $x^2 - 5x + 6 \gt 0$ là`,
+        { muc: 2, de: L`Tập nghiệm của bất phương trình $x^2 - 5x + 6 \gt 0$ là`,
         dapan: [L`$(-\infty;2) \cup (3;+\infty)$`, L`$(2;3)$`, L`$[2;3]$`, L`$\mathbb{R}$`],
         dung: 0,
         giai: L`Tam thức có hai nghiệm $2$ và $3$, hệ số $a = 1 \gt 0$ nên nhận giá trị dương ở ngoài khoảng hai nghiệm.` },
 
-      { muc: 3, de: L`Tam thức $f(x) = ax^2 + bx + c$ có $a \gt 0$ và $\Delta \lt 0$. Khi đó`,
+        { muc: 3, de: L`Tam thức $f(x) = ax^2 + bx + c$ có $a \gt 0$ và $\Delta \lt 0$. Khi đó`,
         dapan: [
           L`$f(x) \gt 0$ với mọi $x$`,
           L`$f(x) \lt 0$ với mọi $x$`,
@@ -1031,22 +903,22 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: L`Đường tròn $(x - 1)^2 + (y + 2)^2 = 9$ có tâm và bán kính là`,
+        { muc: 1, de: L`Đường tròn $(x - 1)^2 + (y + 2)^2 = 9$ có tâm và bán kính là`,
         dapan: [L`$I(1;-2)$, $R = 3$`, L`$I(-1;2)$, $R = 3$`, L`$I(1;-2)$, $R = 9$`, L`$I(-1;2)$, $R = 9$`],
         dung: 0,
         giai: L`So với dạng chuẩn ta được tâm $I(1;-2)$ và $R = \sqrt{9} = 3$.` },
 
-      { muc: 1, de: L`Khoảng cách từ $O(0;0)$ đến đường thẳng $3x + 4y - 10 = 0$ bằng`,
+        { muc: 1, de: L`Khoảng cách từ $O(0;0)$ đến đường thẳng $3x + 4y - 10 = 0$ bằng`,
         dapan: [L`$2$`, L`$10$`, L`$5$`, L`$\dfrac{1}{2}$`],
         dung: 0,
         giai: L`$d = \dfrac{\left|-10\right|}{\sqrt{9 + 16}} = \dfrac{10}{5} = 2$.` },
 
-      { muc: 2, de: L`Đường thẳng $2x - 3y + 1 = 0$ có một vectơ pháp tuyến là`,
+        { muc: 2, de: L`Đường thẳng $2x - 3y + 1 = 0$ có một vectơ pháp tuyến là`,
         dapan: [L`$(2;-3)$`, L`$(3;2)$`, L`$(-3;2)$`, L`$(2;3)$`],
         dung: 0,
         giai: L`Vectơ pháp tuyến lấy trực tiếp từ hệ số của $x$ và $y$.` },
 
-      { muc: 3, de: L`Đường thẳng đi qua $A(1;0)$ và nhận $\vec{n} = (1;2)$ làm vectơ pháp tuyến có phương trình`,
+        { muc: 3, de: L`Đường thẳng đi qua $A(1;0)$ và nhận $\vec{n} = (1;2)$ làm vectơ pháp tuyến có phương trình`,
         dapan: [L`$x + 2y - 1 = 0$`, L`$x + 2y + 1 = 0$`, L`$2x + y - 2 = 0$`, L`$x - 2y - 1 = 0$`],
         dung: 0,
         giai: L`$1(x - 1) + 2(y - 0) = 0$, rút gọn được $x + 2y - 1 = 0$.` }
@@ -1089,22 +961,22 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: `Số cách chọn 3 học sinh từ một nhóm 10 học sinh để đi trực nhật là`,
+        { muc: 1, de: `Số cách chọn 3 học sinh từ một nhóm 10 học sinh để đi trực nhật là`,
         dapan: [L`$120$`, L`$720$`, L`$30$`, L`$1000$`],
         dung: 0,
         giai: L`Không phân biệt thứ tự nên dùng tổ hợp, $C_{10}^{3} = 120$.` },
 
-      { muc: 1, de: `Có bao nhiêu cách xếp 5 bạn ngồi thành một hàng ngang?`,
+        { muc: 1, de: `Có bao nhiêu cách xếp 5 bạn ngồi thành một hàng ngang?`,
         dapan: [L`$120$`, L`$25$`, L`$60$`, L`$720$`],
         dung: 0,
         giai: L`Đây là hoán vị của $5$ phần tử, bằng $5! = 120$.` },
 
-      { muc: 2, de: L`Giá trị của $A_5^2$ bằng`,
+        { muc: 2, de: L`Giá trị của $A_5^2$ bằng`,
         dapan: [L`$20$`, L`$10$`, L`$120$`, L`$25$`],
         dung: 0,
         giai: L`$A_5^2 = 5 \times 4 = 20$.` },
 
-      { muc: 3, de: L`Hệ số của $x^2$ trong khai triển $(1 + x)^5$ là`,
+        { muc: 3, de: L`Hệ số của $x^2$ trong khai triển $(1 + x)^5$ là`,
         dapan: [L`$10$`, L`$5$`, L`$20$`, L`$15$`],
         dung: 0,
         giai: L`Hệ số đó bằng $C_5^2 = 10$.` }
@@ -1145,22 +1017,22 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-      { muc: 1, de: `Gieo một con xúc xắc cân đối. Xác suất xuất hiện mặt có số chấm chẵn là`,
+        { muc: 1, de: `Gieo một con xúc xắc cân đối. Xác suất xuất hiện mặt có số chấm chẵn là`,
         dapan: [L`$\dfrac{1}{2}$`, L`$\dfrac{1}{3}$`, L`$\dfrac{1}{4}$`, L`$\dfrac{2}{3}$`],
         dung: 0,
         giai: L`Có $3$ kết quả thuận lợi là $2, 4, 6$ trên tổng số $6$ kết quả.` },
 
-      { muc: 1, de: `Gieo đồng thời hai đồng xu cân đối. Xác suất cả hai đều ra mặt sấp là`,
+        { muc: 1, de: `Gieo đồng thời hai đồng xu cân đối. Xác suất cả hai đều ra mặt sấp là`,
         dapan: [L`$\dfrac{1}{4}$`, L`$\dfrac{1}{2}$`, L`$\dfrac{1}{3}$`, L`$\dfrac{2}{3}$`],
         dung: 0,
         giai: L`Không gian mẫu có $4$ kết quả, chỉ $1$ kết quả là cả hai cùng sấp.` },
 
-      { muc: 2, de: `Rút ngẫu nhiên một lá từ bộ bài 52 lá. Xác suất rút được lá chất cơ là`,
+        { muc: 2, de: `Rút ngẫu nhiên một lá từ bộ bài 52 lá. Xác suất rút được lá chất cơ là`,
         dapan: [L`$\dfrac{1}{4}$`, L`$\dfrac{1}{3}$`, L`$\dfrac{1}{13}$`, L`$\dfrac{1}{52}$`],
         dung: 0,
         giai: L`Bộ bài có $13$ lá chất cơ nên xác suất bằng $\dfrac{13}{52} = \dfrac{1}{4}$.` },
 
-      { muc: 3, de: L`Nếu $P(A) = 0{,}3$ thì xác suất của biến cố đối bằng`,
+        { muc: 3, de: L`Nếu $P(A) = 0{,}3$ thì xác suất của biến cố đối bằng`,
         dapan: [L`$0{,}7$`, L`$0{,}3$`, L`$1{,}3$`, L`$0$`],
         dung: 0,
         giai: L`Áp dụng $P\left(\overline{A}\right) = 1 - 0{,}3 = 0{,}7$.` }
