@@ -10,11 +10,23 @@
   'use strict';
 
 
+  /* Số câu đúng tối thiểu để được tính là Hoàn thành.
+     Riêng đúng sai, một câu chỉ được tính khi làm đúng cả bốn ý. */
+  var DAT = { tracnghiem: 7, dungsai: 3, traloingan: 2 };
+
   /* Số câu rút ra mỗi lần làm bài, riêng cho từng dạng.
      Viết một số thì lần nào cũng bấy nhiêu câu.
      Viết một khoảng [ít nhất, nhiều nhất] thì mỗi lần một số khác nhau,
      ví dụ tracnghiem: [18, 25] sẽ ra từ 18 đến 25 câu tuỳ lượt. */
   var SO_CAU = { tracnghiem: 10, dungsai: 5, traloingan: 3 };
+
+  /* Khi ngân hàng chưa đủ câu, đề ngắn lại thì ngưỡng cũng co theo cho công bằng. */
+  function canDat(ma, soCau) {
+    var v = SO_CAU[ma];
+    var chuan = (Object.prototype.toString.call(v) === '[object Array]') ? v[1] : v;
+    var ti = (DAT[ma] || chuan) / chuan;
+    return Math.max(1, Math.min(soCau, Math.ceil(soCau * ti)));
+  }
 
   function soCauRut(ma) {
     var v = SO_CAU[ma];
@@ -126,9 +138,7 @@
       .then(function () { return MathJax.typesetPromise([root]); })
       .catch(function () {});
   }
-  function toiDa(ma, cau) {
-    return ma === 'dungsai' ? cau.length * 4 : cau.length;
-  }
+  function toiDa(ma, cau) { return cau.length; }
   function rung(node) {
     node.classList.remove('rung'); void node.offsetWidth; node.classList.add('rung');
   }
@@ -510,8 +520,8 @@
           });
           if (p.chon[j] === dap) soY++;
         });
-        p.diem += soY;
         dung = soY === 4;
+        if (dung) p.diem++;
 
       } else {
         var o2 = document.getElementById('oNhap');
@@ -522,7 +532,11 @@
       }
 
       var tieu, giai;
-      if (p.ma === 'dungsai') { tieu = soY + '/4 ý đúng'; giai = c.giai; }
+      if (p.ma === 'dungsai') {
+        tieu = (soY === 4) ? 'Đúng cả 4 ý!'
+                           : 'Mới đúng ' + soY + '/4 ý, câu này chưa được tính.';
+        giai = c.giai;
+      }
       else                    { tieu = dung ? 'Chính xác!' : 'Chưa đúng.'; giai = c.giai; }
       if (p.ma === 'traloingan' && !dung) giai = 'Đáp án: <b>' + c.dapan + '</b>. ' + giai;
 
@@ -548,7 +562,8 @@
   function ketThuc() {
     var p = phien, ch = p.ch, ma = p.ma;
     var max = toiDa(ma, p.ds);
-    var dat = (max > 0 && p.diem / max >= MOC);
+    var can = canDat(ma, max);
+    var dat = (p.diem >= can);
 
     var hs = hoSo(ch.id, ma);
     if (dat) hs.xong = true;
@@ -561,13 +576,12 @@
     var ic = CHUONG_TRINH.indexOf(ch);
     var tenDang = DANG.filter(function (d) { return d.ma === ma; })[0].ten;
 
-    el.mungTieu.textContent = dat ? 'Hoàn thành!' : 'Gần được rồi';
+    el.mungTieu.textContent = dat ? 'Hoàn thành!' : 'Chưa hoàn thành';
     el.mungTen.textContent = 'Chương ' + CHU_SO[ic] + ' · ' + tenDang;
 
     el.mungPhu.textContent = dat
-      ? 'Được ' + p.diem + '/' + max + '. Làm lại sẽ ra một đề khác, em thử lấy điểm cao hơn nhé.'
-      : 'Được ' + p.diem + '/' + max + '. Cần đúng ít nhất ' + Math.ceil(max * MOC) +
-        '/' + max + ' để qua, em làm lại nhé. Đề sau sẽ khác đề này.';
+      ? 'Đúng ' + p.diem + '/' + max + '.'
+      : 'Đúng ' + p.diem + '/' + max + '. Cần ' + can + '/' + max + ' để hoàn thành, em làm lại nhé.';
 
     cuPhanUng(el.cuMung, dat);
     el.mung.hidden = false;
