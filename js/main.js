@@ -2,9 +2,9 @@
    main.js — phần điều khiển
    Nội dung học nằm ở js/data.js, file này lo lộ trình và cách làm bài.
 
-   Mỗi chương có 5 chặng, lần lượt là:
-   Kiến thức → Trắc nghiệm → Đúng sai → Trả lời ngắn → Tự luận
-   Mỗi chặng chạy từng câu một, trả lời xong biết đúng sai ngay rồi mới sang câu sau.
+   Mỗi chương có ba dạng bài: Trắc nghiệm, Đúng sai, Trả lời ngắn.
+   Bấm vào một dạng là rút ngẫu nhiên một đề từ ngân hàng câu hỏi của chương đó.
+   Đề chạy từng câu một, trả lời xong biết đúng sai ngay rồi mới sang câu sau.
    ============================================================ */
 (function () {
   'use strict';
@@ -94,7 +94,7 @@
     var td;
     try { td = JSON.parse(localStorage.getItem(KEY)) || {}; }
     catch (e) { td = {}; }
-    // Gộp dữ liệu của các bản trước, khi tiến độ còn chia theo từng chặng
+    // Gộp dữ liệu của các bản trước
     Object.keys(td).forEach(function (id) {
       var o = td[id] || {};
       delete o.kienthuc; delete o.tuluan;
@@ -139,9 +139,6 @@
       .catch(function () {});
   }
   function toiDa(ma, cau) { return cau.length; }
-  function rung(node) {
-    node.classList.remove('rung'); void node.offsetWidth; node.classList.add('rung');
-  }
 
   /* ---------- Vẽ một hàng trên lộ trình: biểu tượng tròn, chữ nằm bên cạnh ---------- */
   var SONG = [0, 11, 16, 11, 0, -11, -16, -11];   // sóng uốn lượn, tính theo % bề ngang
@@ -158,10 +155,7 @@
       '<button class="vien" aria-label="' + o.ten + '"><span>' + ruot + '</span></button>' +
       '<div class="muc__chu"><h3>' + o.ten + '</h3></div>';
 
-    d.addEventListener('click', function () {
-      if (o.trangThai === 'khoa') { rung(d); return; }
-      o.bam();
-    });
+    d.addEventListener('click', o.bam);
     return d;
   }
 
@@ -209,6 +203,13 @@
   window.addEventListener('resize', function () {
     clearTimeout(hen); hen = setTimeout(veLaiDay, 160);
   });
+
+  /* Phông chữ tải xong thì chiều cao các hàng đổi, phải vẽ lại đường nối
+     nếu không nó sẽ lệch khỏi tâm các nút. */
+  window.addEventListener('load', veLaiDay);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(veLaiDay).catch(function () {});
+  }
 
 
 
@@ -404,7 +405,7 @@
     veDuong();
   }
   el.hocDong.addEventListener('click', function () {
-    if (phien && phien.i > 0 && !confirm('Thoát chặng này? Phần đang làm sẽ không được lưu.')) return;
+    if (phien && phien.i > 0 && !confirm('Thoát bài này? Phần đang làm sẽ không được lưu.')) return;
     thoat();
   });
 
@@ -543,6 +544,7 @@
       el.phanhoi.className = 'phanhoi is-' + (dung ? 'dung' : 'sai');
       el.phanhoiTieu.textContent = tieu;
       el.phanhoiGiai.innerHTML = giai;
+      el.thanhDay.style.width = ((p.i + 1) / p.ds.length * 100) + '%';
       el.phanhoi.hidden = false;
       el.hoc.classList.add('co-phanhoi');
       cuPhanUng(el.cuPhanHoi, dung);
@@ -558,7 +560,7 @@
     if (p.i < p.ds.length) veCau(); else ketThuc();
   });
 
-  /* ---------- Kết thúc một chặng ---------- */
+  /* ---------- Kết thúc một lượt làm bài ---------- */
   function ketThuc() {
     var p = phien, ch = p.ch, ma = p.ma;
     var max = toiDa(ma, p.ds);
