@@ -34,6 +34,10 @@
     </a>
     <div class="top__nut">
       <div class="cuhop" id="cuTop" title="Bạn đồng hành"></div>
+      <button class="xu" id="btnXu" title="Mở cửa hàng">
+        <span class="xu__hinh">🪙</span><b id="soXu">0</b>
+      </button>
+      <button class="tron" id="btnRa" title="Đăng xuất" hidden>⎋</button>
     </div>
   </div>
 </header>
@@ -88,6 +92,77 @@
   </div>
 </div>
 
+<!-- Cửa hàng -->
+<div class="mung" id="cho" hidden>
+  <div class="mung__hop cho">
+    <button class="cho__dong" id="choDong" aria-label="Đóng">✕</button>
+    <div class="cho__dau">
+      <div class="cuhop cuhop--to" id="cuCho"></div>
+      <div class="cho__vi">
+        <span class="xu__hinh">🪙</span><b id="choXu">0</b>
+        <small>xu đang có</small>
+      </div>
+    </div>
+
+    <h2>Cửa hàng</h2>
+
+    <div class="cho__muc">
+      <h3>Đổi điểm cộng</h3>
+      <div class="hang hang--diem" id="hangDiem"></div>
+    </div>
+
+    <div class="cho__muc">
+      <h3>Thời trang cho cú mèo</h3>
+      <div id="hangDo"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Màn đăng nhập -->
+<div class="vao" id="vao" hidden>
+  <div class="vao__hop">
+    <div class="cuhop cuhop--to" id="cuVao"></div>
+
+    <!-- chưa đăng nhập -->
+    <div class="vao__buoc" id="buocChua" hidden>
+      <h2>Chào em!</h2>
+      <p class="vao__nho">Đăng nhập để máy nhớ bài em đã học và số xu em kiếm được.
+         Đổi điện thoại hay máy tính vẫn còn nguyên.</p>
+      <button class="ggl" id="nutGoogle">
+        <span class="ggl__g">G</span> Đăng nhập bằng Google
+      </button>
+    </div>
+
+    <!-- đã đăng nhập, chưa khai -->
+    <div class="vao__buoc" id="buocKhai" hidden>
+      <h2>Em tên gì?</h2>
+      <p class="vao__nho">Khai đúng họ tên và lớp để thầy cô biết em là ai khi duyệt.</p>
+      <label for="khaiTen">Họ và tên</label>
+      <input type="text" id="khaiTen" placeholder="Nguyễn Văn An" autocomplete="name">
+      <label for="khaiLop">Lớp</label>
+      <input type="text" id="khaiLop" placeholder="10A1" autocomplete="off">
+      <button class="solid btn--lg btn--block" id="nutKhai">Gửi cho thầy cô duyệt</button>
+      <p class="vao__bao" id="khaiBao"></p>
+    </div>
+
+    <!-- chờ duyệt -->
+    <div class="vao__buoc" id="buocCho" hidden>
+      <h2>Đang chờ duyệt</h2>
+      <p class="vao__nho" id="choChu"></p>
+      <button class="ghost btn--block" id="nutKiemTra">Kiểm tra lại</button>
+    </div>
+
+    <!-- lỗi kết nối -->
+    <div class="vao__buoc" id="buocLoi" hidden>
+      <h2>Không kết nối được</h2>
+      <p class="vao__nho" id="loiChu">Em kiểm tra lại mạng rồi thử tải lại trang nhé.</p>
+      <button class="ghost btn--block" id="nutTaiLai">Tải lại trang</button>
+    </div>
+
+    <button class="vao__ra" id="nutRaPhu" hidden>Đăng nhập tài khoản khác</button>
+  </div>
+</div>
+
 <div class="phao" id="phaoHoc" aria-hidden="true"></div>
 
 <!-- MathJax: dịch LaTeX trong js/data.js thành công thức toán -->
@@ -101,6 +176,12 @@
   };
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+
+<!-- Firebase: đăng nhập Google và lưu xu, tiến độ trên máy chủ -->
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
+<script src="js/fb.js"></script>
 
 <script src="js/data.js"></script>
 <script src="js/main.js"></script>

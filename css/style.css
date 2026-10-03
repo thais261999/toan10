@@ -765,3 +765,82 @@ body{
 .hoc__than{padding-top:32px}
 .hoc__de{margin-bottom:24px}
 @media (max-width:680px){ .hoc__than{padding-top:24px} }
+
+/* ============================================================
+   TÚI XU VÀ CỬA HÀNG
+   ============================================================ */
+.muc.is-xong .vien{background:var(--tim)!important;
+     box-shadow:0 5px 0 var(--tim-dam),0 10px 22px rgba(90,79,224,.28)!important}
+.dai.is-xong{background:rgba(255,255,255,.72);color:inherit}
+
+.xu{display:flex;align-items:center;gap:6px;padding:8px 14px 8px 11px;border-radius:999px;
+    border:1.5px solid var(--line);background:var(--card);transition:.16s;flex:none}
+.xu:hover{border-color:var(--vang);background:rgba(245,197,66,.12)}
+.xu__hinh{font-size:17px;line-height:1}
+.xu b{font-family:Lexend,sans-serif;font-weight:700;font-size:16px;color:var(--ink)}
+
+.cho{max-width:440px;text-align:left;padding:26px 24px 24px}
+.cho__dong{position:absolute;top:12px;right:14px;width:34px;height:34px;border-radius:50%;
+           font-size:17px;color:var(--muted);z-index:2}
+.cho__dong:hover{background:var(--line)}
+.cho__dau{display:flex;align-items:center;gap:18px;margin-bottom:4px}
+.cho__dau .cuhop--to{width:84px;height:99px;margin:0}
+.cho__vi{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.cho__vi b{font-family:Lexend,sans-serif;font-size:30px;font-weight:700}
+.cho__vi small{width:100%;font-size:12.5px;color:var(--muted)}
+.cho h2{text-align:left;font-size:22px;margin-top:10px}
+.cho__muc{margin-top:22px}
+.cho__muc h3{font-size:12.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+             color:var(--muted);margin-bottom:11px}
+
+.mon{display:flex;align-items:center;gap:13px;padding:11px 13px;margin-bottom:9px;
+     border:1.5px solid var(--line);border-radius:13px;background:var(--card)}
+.mon.is-co{border-color:var(--tim-nhat);background:var(--tim-nhat)}
+.mon--diem{border-color:rgba(245,197,66,.5);background:rgba(245,197,66,.1)}
+.mon__hinh{font-size:26px;line-height:1;flex:none;width:34px;text-align:center}
+.mon__chu{flex:1;min-width:0}
+.mon__chu b{display:block;font-size:15.5px;font-weight:600}
+.mon__chu small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.mon__nut{flex:none;padding:8px 15px;border-radius:9px;font-size:14px;font-weight:600;
+          background:var(--tim);color:#fff;transition:.16s;white-space:nowrap}
+.mon__nut:hover{filter:brightness(1.08)}
+.mon__nut.is-thieu{background:var(--line);color:var(--muted)}
+.mon__nut--mac{background:var(--luc)}
+.mon__nut--bo{background:transparent;border:1.5px solid var(--line);color:var(--muted)}
+
+.lac{animation:lacnut .4s}
+@keyframes lacnut{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+@media (max-width:680px){
+  .xu{padding:7px 12px 7px 9px}
+  .xu b{font-size:15px}
+  .cho__dau .cuhop--to{width:68px;height:80px}
+  .cho__vi b{font-size:26px}
+}
+
+/* ============================================================
+   MÀN ĐĂNG NHẬP
+   ============================================================ */
+.vao{position:fixed;inset:0;z-index:500;padding:18px;overflow-y:auto;
+     display:flex;align-items:center;justify-content:center;background:var(--paper)}
+.vao__hop{width:100%;max-width:400px;margin:auto;text-align:center}
+.vao__hop .cuhop--to{margin:0 auto 6px}
+.vao__hop h2{font-size:26px;font-weight:700}
+.vao__nho{margin-top:10px;font-size:14.5px;color:var(--muted);line-height:1.65}
+.vao label{display:block;margin:18px 0 7px;text-align:left;font-size:12.5px;
+           font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.vao input{width:100%;padding:14px 16px;border:1.5px solid var(--line);border-radius:12px;
+           background:var(--card);color:var(--ink);font-size:16px}
+.vao input:focus{outline:none;border-color:var(--tim);box-shadow:0 0 0 4px var(--tim-nhat)}
+.vao .solid,.vao .ghost{margin-top:22px}
+.vao__bao{margin-top:12px;font-size:14px;color:var(--do);min-height:20px}
+.vao__ra{margin-top:24px;font-size:13.5px;color:var(--muted);text-decoration:underline}
+.vao__ra:hover{color:var(--tim)}
+
+.ggl{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;
+     margin-top:26px;padding:15px;border-radius:12px;border:1.5px solid var(--line);
+     background:var(--card);font-size:16px;font-weight:600;transition:.16s}
+.ggl:hover{border-color:var(--tim);box-shadow:0 6px 18px rgba(90,79,224,.14)}
+.ggl__g{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;
+        font-family:Lexend,sans-serif;font-weight:700;font-size:15px;color:#fff;
+        background:conic-gradient(#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0)}

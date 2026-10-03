@@ -12,8 +12,15 @@ const KHO = 'toan10';
 
 const KHUNG = [
   './', './index.html', './manifest.json',
-  './css/style.css', './js/data.js', './js/main.js',
+  './css/style.css', './js/data.js', './js/main.js', './js/fb.js',
   './icon-180.png', './icon-192.png', './icon-512.png'
+];
+
+/* Chỉ những nơi này mới được lưu đệm. Phần còn lại, nhất là máy chủ
+   Firebase, phải đi thẳng ra mạng, lưu đệm là hỏng đăng nhập ngay. */
+const CHO_DEM = [
+  'fonts.googleapis.com', 'fonts.gstatic.com',
+  'cdnjs.cloudflare.com', 'cdn.jsdelivr.net'
 ];
 
 self.addEventListener('install', function (e) {
@@ -57,7 +64,11 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // Phông chữ, MathJax: ưu tiên bản đã lưu
+  // Firebase và mọi nơi khác: đi thẳng ra mạng, không đụng tới bộ nhớ đệm
+  var duocDem = CHO_DEM.some(function (n) { return e.request.url.indexOf(n) !== -1; });
+  if (!duocDem) return;
+
+  // Phông chữ, MathJax, thư viện: ưu tiên bản đã lưu cho nhanh
   e.respondWith(
     caches.match(e.request).then(function (co) {
       if (co) return co;

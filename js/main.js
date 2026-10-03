@@ -109,7 +109,10 @@
     return td;
   }
   var tienDo = docTienDo();
-  function ghi() { try { localStorage.setItem(KEY, JSON.stringify(tienDo)); } catch (e) {} }
+  function ghi() {
+    try { localStorage.setItem(KEY, JSON.stringify(tienDo)); } catch (e) {}
+    if (window.FB && FB.du && FB.du.duyet) FB.luu(tienDo, vi);
+  }
 
   function hoSo(id, ma) {
     if (!tienDo[id]) tienDo[id] = {};
@@ -128,7 +131,11 @@
    'hoc','hocDong','hocThan','hocDem','hocNut','thanhDay',
    'phanhoi','phanhoiTieu','phanhoiGiai',
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
-   'cuTop','cuPhanHoi','cuMung','phaoHoc',
+   'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
+   'cho','choDong','choXu','cuCho','hangDiem','hangDo','btnRa',
+   'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
+   'nutGoogle','nutKhai','khaiTen','khaiLop','khaiBao','choChu',
+   'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
    'brandHome'
   ].forEach(function (id) { el[id] = document.getElementById(id); });
 
@@ -241,20 +248,61 @@
   }
 
   /* ============================================================
-     CÚ MÈO — bạn đồng hành, vẽ hoàn toàn bằng SVG
-     Mỗi chương học xong mở thêm một món đồ.
+     VÍ XU, CỬA HÀNG VÀ CÚ MÈO
+     Mỗi bài hoàn thành được 1 xu. Xu dùng để mua đồ cho cú mèo,
+     hoặc đổi lấy điểm cộng trên lớp.
      ============================================================ */
-  var DO = ['mu', 'kinh', 'khan', 'but', 'huy', 'sach', 'sao', 'ao', 'vuong'];
-  var TEN_DO = {
-    mu: 'Mũ tốt nghiệp', kinh: 'Kính cận', khan: 'Khăn quàng', but: 'Bút chì',
-    huy: 'Huy chương', sach: 'Quyển sách', sao: 'Ngôi sao', ao: 'Áo choàng',
-    vuong: 'Vương miện'
-  };
+  var VI_KEY = 'toan10-vi';
+  var GIA_DIEM_CONG = 10;        // bao nhiêu xu đổi được một điểm cộng
 
-  function soChuongXong() {
-    return CHUONG_TRINH.filter(function (ch) {
-      return DANG.every(function (d) { return xongDang(ch, d.ma); });
-    }).length;
+  var HANG = [
+    { ma: 'mu',    ten: 'Mũ tốt nghiệp', gia: 5 },
+    { ma: 'kinh',  ten: 'Kính cận',      gia: 8 },
+    { ma: 'khan',  ten: 'Khăn quàng',    gia: 10 },
+    { ma: 'but',   ten: 'Bút chì',       gia: 12 },
+    { ma: 'huy',   ten: 'Huy chương',    gia: 15 },
+    { ma: 'sach',  ten: 'Quyển sách',    gia: 18 },
+    { ma: 'sao',   ten: 'Ngôi sao',      gia: 20 },
+    { ma: 'ao',    ten: 'Áo choàng',     gia: 25 },
+    { ma: 'vuong', ten: 'Vương miện',    gia: 30 }
+  ];
+
+  function docVi() {
+    var v;
+    try { v = JSON.parse(localStorage.getItem(VI_KEY)); } catch (e) {}
+    v = v || {};
+    return { xu: v.xu || 0, co: v.co || [], mac: v.mac || [], phieu: v.phieu || 0 };
+  }
+  var vi = docVi();
+  function ghiVi() {
+    try { localStorage.setItem(VI_KEY, JSON.stringify(vi)); } catch (e) {}
+    if (window.FB && FB.du && FB.du.duyet) FB.luu(tienDo, vi);
+  }
+
+  /* ────────────────────────────────────────────────────────────
+     CỔNG NẠP XU ĐỂ THỬ CỬA HÀNG
+     Mở trang kèm  ?xu=1000  là có ngay 1000 xu.
+     ⚠️ GỠ CẢ KHỐI NÀY TRƯỚC KHI CHO HỌC SINH DÙNG,
+        nếu không em nào biết mẹo cũng tự nạp xu được.
+     ──────────────────────────────────────────────────────────── */
+  try {
+    var napXu = /[?&]xu=(\d{1,6})/.exec(location.search);
+    if (napXu) {
+      vi.xu = parseInt(napXu[1], 10);
+      ghiVi();
+      console.warn('Đã nạp ' + vi.xu + ' xu. Nhớ gỡ cổng nạp xu trong js/main.js trước khi phát cho học sinh.');
+    }
+  } catch (e) {}
+
+  function themXu(n) {
+    vi.xu += n;
+    try { localStorage.setItem(VI_KEY, JSON.stringify(vi)); } catch (e) {}
+    veSoXu();
+    if (window.FB && FB.du && FB.du.duyet) FB.thuongXu();
+  }
+  function veSoXu() {
+    el.soXu.textContent = vi.xu;
+    if (el.choXu) el.choXu.textContent = vi.xu;
   }
 
   function svgCu() {
@@ -323,13 +371,16 @@
     if (!hop) return;
     hop.innerHTML = svgCu();
     var svg = hop.querySelector('.cu');
-    var n = soChuongXong();
-    DO.forEach(function (d, i) { if (i < n) svg.classList.add('co-' + d); });
-    if (n >= 9) svg.classList.remove('co-mu');     // vương miện thay mũ
-    hop.title = n === 0
-      ? 'Học xong một chương để mở món đồ đầu tiên cho cú mèo'
-      : 'Đã mở ' + n + '/9 món: ' + DO.slice(0, n).map(function (d) { return TEN_DO[d]; }).join(', ');
+    vi.mac.forEach(function (d) { svg.classList.add('co-' + d); });
+    if (vi.mac.indexOf('vuong') !== -1) svg.classList.remove('co-mu');  // vương miện thay mũ
+    hop.title = vi.mac.length
+      ? 'Đang mặc: ' + vi.mac.map(function (d) { return tenDo(d); }).join(', ')
+      : 'Vào cửa hàng mua đồ cho cú mèo nhé';
     return svg;
+  }
+  function tenDo(ma) {
+    var h = HANG.filter(function (x) { return x.ma === ma; })[0];
+    return h ? h.ten : ma;
   }
 
   function cuPhanUng(hop, vui) {
@@ -351,10 +402,8 @@
     el.duong.innerHTML = '';
 
     CHUONG_TRINH.forEach(function (ch, ic) {
-      var xongCa = DANG.every(function (d) { return xongDang(ch, d.ma); });
-
       var dai = document.createElement('div');
-      dai.className = 'dai' + (xongCa ? ' is-xong' : '');
+      dai.className = 'dai';
       dai.innerHTML =
         '<span class="dai__so">Chương ' + CHU_SO[ic] + '</span>' +
         '<h2>' + ch.ten + '</h2>';
@@ -364,12 +413,11 @@
       nhom.className = 'nhom';
 
       DANG.forEach(function (d, ix) {
-        var xong = xongDang(ch, d.ma);
         var co = (ch.cauhoi[d.ma] || []).length;
 
         nhom.appendChild(veMuc({
           i: ix,
-          trangThai: xong && co ? 'xong' : 'mo',
+          trangThai: 'mo',
           hieu: d.hieu, ten: d.ten,
           bam: function () {
             if (!co) { alert('Dạng này chưa có câu hỏi. Thầy cô thêm vào js/data.js nhé.'); return; }
@@ -579,8 +627,9 @@
     el.mungTieu.textContent = dat ? 'Hoàn thành!' : 'Chưa hoàn thành';
     el.mungTen.textContent = 'Chương ' + CHU_SO[ic] + ' · ' + tenDang;
 
+    if (dat) themXu(1);
     el.mungPhu.textContent = dat
-      ? 'Đúng ' + p.diem + '/' + max + '.'
+      ? 'Đúng ' + p.diem + '/' + max + '. Em nhận được 1 xu 🪙'
       : 'Đúng ' + p.diem + '/' + max + '. Cần ' + can + '/' + max + ' để hoàn thành, em làm lại nhé.';
 
     cuPhanUng(el.cuMung, dat);
@@ -601,6 +650,176 @@
   });
 
 
+
+  /* ---------- Cửa hàng ---------- */
+  function veCho() {
+    veSoXu();
+    veCu(el.cuCho);
+
+    el.hangDiem.innerHTML =
+      '<div class="mon mon--diem">' +
+        '<span class="mon__hinh">🎟️</span>' +
+        '<div class="mon__chu"><b>Một điểm cộng</b>' +
+          '<small>Đổi lấy 1 điểm cộng khi kiểm tra. Em đã đổi được ' +
+          vi.phieu + ' điểm.</small></div>' +
+        '<button class="mon__nut' + (vi.xu >= GIA_DIEM_CONG ? '' : ' is-thieu') +
+          '" data-diem="1">🪙 ' + GIA_DIEM_CONG + '</button>' +
+      '</div>';
+
+    el.hangDo.innerHTML = HANG.map(function (h) {
+      var co = vi.co.indexOf(h.ma) !== -1;
+      var mac = vi.mac.indexOf(h.ma) !== -1;
+      var nut = co
+        ? '<button class="mon__nut mon__nut--' + (mac ? 'bo' : 'mac') + '" data-mac="' + h.ma + '">' +
+          (mac ? 'Bỏ ra' : 'Mặc vào') + '</button>'
+        : '<button class="mon__nut' + (vi.xu >= h.gia ? '' : ' is-thieu') +
+          '" data-mua="' + h.ma + '">🪙 ' + h.gia + '</button>';
+      return '<div class="mon' + (co ? ' is-co' : '') + '">' +
+               '<span class="mon__hinh">' + HINH_DO[h.ma] + '</span>' +
+               '<div class="mon__chu"><b>' + h.ten + '</b>' +
+                 '<small>' + (mac ? 'Cú mèo đang mặc' : co ? 'Đã có' : 'Chưa mua') + '</small></div>' +
+               nut +
+             '</div>';
+    }).join('');
+  }
+
+  var HINH_DO = {
+    mu: '🎓', kinh: '👓', khan: '🧣', but: '✏️', huy: '🏅',
+    sach: '📗', sao: '⭐', ao: '🦸', vuong: '👑'
+  };
+
+  function moCho() { veCho(); el.cho.hidden = false; }
+  el.btnXu.addEventListener('click', moCho);
+  el.choDong.addEventListener('click', function () { el.cho.hidden = true; });
+  el.cho.addEventListener('click', function (ev) { if (ev.target === el.cho) el.cho.hidden = true; });
+
+  el.cho.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.mon__nut');
+    if (!b) return;
+
+    if (b.dataset.diem) {
+      if (vi.xu < GIA_DIEM_CONG) { nhacThieu(b); return; }
+      vi.xu -= GIA_DIEM_CONG;
+      vi.phieu += 1;
+      ghiVi(); veCho();
+      alert('Em đã đổi được 1 điểm cộng. Nhớ cho thầy cô xem màn hình này nhé.\n'
+            + 'Tổng điểm cộng đã đổi: ' + vi.phieu);
+      return;
+    }
+
+    if (b.dataset.mua) {
+      var h = HANG.filter(function (x) { return x.ma === b.dataset.mua; })[0];
+      if (!h || vi.xu < h.gia) { nhacThieu(b); return; }
+      vi.xu -= h.gia;
+      vi.co.push(h.ma);
+      vi.mac.push(h.ma);
+      ghiVi(); veCho(); veCu(el.cuTop);
+      phaoGiay(el.phaoHoc, 24);
+      return;
+    }
+
+    if (b.dataset.mac) {
+      var ma = b.dataset.mac;
+      var k = vi.mac.indexOf(ma);
+      if (k === -1) vi.mac.push(ma); else vi.mac.splice(k, 1);
+      ghiVi(); veCho(); veCu(el.cuTop);
+    }
+  });
+
+  function nhacThieu(b) {
+    b.classList.remove('lac'); void b.offsetWidth; b.classList.add('lac');
+  }
+
+  /* ============================================================
+     ĐĂNG NHẬP VÀ ĐỒNG BỘ VỚI MÁY CHỦ
+     ============================================================ */
+  function hienBuoc(ten) {
+    ['buocChua', 'buocKhai', 'buocCho', 'buocLoi'].forEach(function (b) {
+      el[b].hidden = (b !== ten);
+    });
+    el.nutRaPhu.hidden = (ten === 'buocChua');
+    el.vao.hidden = false;
+    document.body.classList.add('khoa-cuon');
+    veCu(el.cuVao);
+  }
+
+  function vaoHoc(du) {
+    // Lấy dữ liệu trên máy chủ về, đè lên bản lưu trong máy
+    tienDo = du.tienDo || {};
+    vi = { xu: du.xu || 0, co: du.co || [], mac: du.mac || [], phieu: du.phieu || 0 };
+    try {
+      localStorage.setItem(KEY, JSON.stringify(tienDo));
+      localStorage.setItem(VI_KEY, JSON.stringify(vi));
+    } catch (e) {}
+
+    el.vao.hidden = true;
+    document.body.classList.remove('khoa-cuon');
+    el.btnRa.hidden = false;
+    el.btnRa.title = du.ten + ' · ' + du.lop + ' — bấm để đăng xuất';
+
+    veSoXu();
+    veCu(el.cuTop);
+    veDuong();
+  }
+
+  function theoDoi() {
+    FB.batDau(function (t) {
+      if (t.loai === 'loi') {
+        el.loiChu.textContent = t.e
+          ? 'Lỗi: ' + (t.e.message || t.e) + '. Em kiểm tra mạng rồi tải lại trang nhé.'
+          : 'Em kiểm tra lại mạng rồi tải lại trang nhé.';
+        hienBuoc('buocLoi');
+        return;
+      }
+      if (t.loai === 'chua') { el.btnRa.hidden = true; hienBuoc('buocChua'); return; }
+      if (t.loai === 'khai') {
+        el.khaiTen.value = t.u.displayName || '';
+        el.khaiBao.textContent = '';
+        hienBuoc('buocKhai');
+        return;
+      }
+      if (t.loai === 'cho') {
+        el.choChu.textContent = 'Thầy cô đã nhận hồ sơ của ' + t.du.ten + ' lớp ' + t.du.lop +
+          '. Khi nào được duyệt em vào học được ngay. Thử bấm Kiểm tra lại sau một lúc nhé.';
+        hienBuoc('buocCho');
+        return;
+      }
+      vaoHoc(t.du);
+    });
+  }
+
+  el.nutGoogle.addEventListener('click', function () {
+    FB.vaoGoogle().catch(function (e) {
+      el.loiChu.textContent = 'Không đăng nhập được: ' + (e.message || e);
+      hienBuoc('buocLoi');
+    });
+  });
+
+  el.nutKhai.addEventListener('click', function () {
+    var ten = el.khaiTen.value.replace(/\s+/g, ' ').trim();
+    var lop = el.khaiLop.value.replace(/\s+/g, '').trim().toUpperCase();
+    if (ten.length < 2) { el.khaiBao.textContent = 'Em nhập họ tên đầy đủ nhé.'; return; }
+    if (!lop)           { el.khaiBao.textContent = 'Em nhập lớp nhé, ví dụ 10A1.'; return; }
+    el.nutKhai.disabled = true;
+    el.khaiBao.textContent = 'Đang gửi...';
+    FB.taoHoSo(ten, lop).then(function (d) {
+      el.nutKhai.disabled = false;
+      el.choChu.textContent = 'Thầy cô đã nhận hồ sơ của ' + d.ten + ' lớp ' + d.lop +
+        '. Khi nào được duyệt em vào học được ngay.';
+      hienBuoc('buocCho');
+    }).catch(function (e) {
+      el.nutKhai.disabled = false;
+      el.khaiBao.textContent = 'Gửi không được: ' + (e.message || e);
+    });
+  });
+
+  el.nutKiemTra.addEventListener('click', function () { location.reload(); });
+  el.nutTaiLai.addEventListener('click', function () { location.reload(); });
+  el.nutRaPhu.addEventListener('click', function () { FB.ra().then(function(){ location.reload(); }); });
+  el.btnRa.addEventListener('click', function () {
+    if (confirm('Đăng xuất khỏi tài khoản này?')) FB.ra().then(function(){ location.reload(); });
+  });
+
   /* ============================================================
      CÁC NÚT CHUNG
      ============================================================ */
@@ -609,6 +828,10 @@
   });
 
   /* ---------- Khởi động ---------- */
+  veSoXu();
   veCu(el.cuTop);
   veDuong();
+
+  if (window.FB) theoDoi();
+  else { el.loiChu.textContent = 'Không nạp được thư viện Firebase. Em kiểm tra mạng nhé.'; hienBuoc('buocLoi'); }
 })();
