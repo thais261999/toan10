@@ -59,8 +59,15 @@
   function theoMuc(a, b) { return (a.muc || 1) - (b.muc || 1); }
 
   function rutDe(ch, ma) {
-    var kho = (ch.cauhoi[ma] || []).slice();
     var n = soCauRut(ma);
+
+    // Có bộ sinh đề cho chương này thì lấy từ đó, số liệu mỗi lần một khác
+    var kho;
+    if (window.SINH && SINH.co(ch.id, ma)) {
+      kho = SINH.ra(ch.id, ma, n * 3).concat((ch.cauhoi[ma] || []).slice());
+    } else {
+      kho = (ch.cauhoi[ma] || []).slice();
+    }
     if (kho.length <= n) return kho.sort(theoMuc);
 
     var theo = { 1: [], 2: [], 3: [] };

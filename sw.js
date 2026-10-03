@@ -12,7 +12,7 @@ const KHO = 'toan10';
 
 const KHUNG = [
   './', './index.html', './manifest.json',
-  './css/style.css', './js/data.js', './js/main.js', './js/fb.js',
+  './css/style.css', './js/data.js', './js/sinh.js', './js/main.js', './js/fb.js',
   './icon-180.png', './icon-192.png', './icon-512.png'
 ];
 
