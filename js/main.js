@@ -9,8 +9,7 @@
 (function () {
   'use strict';
 
-  var KEY = 'toan10-tiendo';
-  var MOC = 0.6;      // đúng từ 60% trở lên là qua chặng
+
   /* Số câu rút ra mỗi lần làm bài, riêng cho từng dạng.
      Viết một số thì lần nào cũng bấy nhiêu câu.
      Viết một khoảng [ít nhất, nhiều nhất] thì mỗi lần một số khác nhau,
@@ -77,6 +76,8 @@
      TIẾN ĐỘ
      tienDo[idChuong][dang][soChang] = { xong:true, diem:7 }
      ============================================================ */
+  var KEY = 'toan10-tiendo';
+
   function docTienDo() {
     var td;
     try { td = JSON.parse(localStorage.getItem(KEY)) || {}; }
@@ -109,19 +110,6 @@
     return !!(o && o.xong);
   }
 
-  var moKhoaHet = false;
-  try { moKhoaHet = localStorage.getItem('toan10-mokhoa') === '1'; } catch (e) {}
-
-  /* ---------- Thứ tự mở khoá: 9 chương × 4 dạng ---------- */
-  var MOI_DANG = [];
-  CHUONG_TRINH.forEach(function (ch) {
-    DANG.forEach(function (d) { MOI_DANG.push({ ch: ch, ma: d.ma, ten: d.ten, hieu: d.hieu }); });
-  });
-  function moDang(i) {
-    if (moKhoaHet || i === 0) return true;
-    var t = MOI_DANG[i - 1];
-    return xongDang(t.ch, t.ma);
-  }
   /* ---------- Gom các thẻ hay dùng ---------- */
   var el = {};
   ['viewList','duong',
@@ -129,7 +117,7 @@
    'phanhoi','phanhoiTieu','phanhoiGiai',
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
    'cuTop','cuPhanHoi','cuMung','phaoHoc',
-   'btnMoKhoa','btnReset','brandHome'
+   'btnReset','brandHome'
   ].forEach(function (id) { el[id] = document.getElementById(id); });
 
   function toan(root) {
@@ -354,14 +342,12 @@
      ============================================================ */
   function veDuong() {
     el.duong.innerHTML = '';
-    var i = 0;
 
     CHUONG_TRINH.forEach(function (ch, ic) {
       var xongCa = DANG.every(function (d) { return xongDang(ch, d.ma); });
-      var moCh = moDang(i);
 
       var dai = document.createElement('div');
-      dai.className = 'dai' + (xongCa ? ' is-xong' : (moCh ? '' : ' is-khoa'));
+      dai.className = 'dai' + (xongCa ? ' is-xong' : '');
       dai.innerHTML =
         '<span class="dai__so">Chương ' + CHU_SO[ic] + '</span>' +
         '<h2>' + ch.ten + '</h2>';
@@ -371,19 +357,18 @@
       nhom.className = 'nhom';
 
       DANG.forEach(function (d, ix) {
-        var mo = moDang(i), xong = xongDang(ch, d.ma);
+        var xong = xongDang(ch, d.ma);
         var co = (ch.cauhoi[d.ma] || []).length;
 
         nhom.appendChild(veMuc({
           i: ix,
-          trangThai: xong && co ? 'xong' : (mo ? 'mo' : 'khoa'),
+          trangThai: xong && co ? 'xong' : 'mo',
           hieu: d.hieu, ten: d.ten,
           bam: function () {
             if (!co) { alert('Dạng này chưa có câu hỏi. Thầy cô thêm vào js/data.js nhé.'); return; }
             batDau(ch, d.ma);
           }
         }));
-        i++;
       });
       el.duong.appendChild(nhom);
       veDay(nhom);
@@ -581,17 +566,10 @@
     el.mungTieu.textContent = dat ? 'Hoàn thành!' : 'Gần được rồi';
     el.mungTen.textContent = 'Chương ' + CHU_SO[ic] + ' · ' + tenDang;
 
-    if (!dat) {
-      el.mungPhu.textContent = 'Được ' + p.diem + '/' + max + '. Cần đúng ít nhất ' +
-        Math.ceil(max * MOC) + '/' + max + ' để qua, em làm lại nhé. Đề sau sẽ khác đề này.';
-    } else {
-      var j2 = MOI_DANG.findIndex(function (t) { return t.ch === ch && t.ma === ma; });
-      var sau = MOI_DANG[j2 + 1];
-      el.mungPhu.textContent = 'Được ' + p.diem + '/' + max + '. ' + (sau
-        ? 'Đã mở ' + sau.ten + (sau.ch !== ch
-            ? ' của chương ' + CHU_SO[CHUONG_TRINH.indexOf(sau.ch)] : '') + '.'
-        : 'Em đã đi hết lộ trình!');
-    }
+    el.mungPhu.textContent = dat
+      ? 'Được ' + p.diem + '/' + max + '. Làm lại sẽ ra một đề khác, em thử lấy điểm cao hơn nhé.'
+      : 'Được ' + p.diem + '/' + max + '. Cần đúng ít nhất ' + Math.ceil(max * MOC) +
+        '/' + max + ' để qua, em làm lại nhé. Đề sau sẽ khác đề này.';
 
     cuPhanUng(el.cuMung, dat);
     el.mung.hidden = false;
@@ -610,22 +588,12 @@
     if (ev.key === 'Escape' && !el.mung.hidden) dongMung();
   });
 
+
   /* ============================================================
      CÁC NÚT CHUNG
      ============================================================ */
-  function veNutMoKhoa() {
-    el.btnMoKhoa.classList.toggle('is-on', moKhoaHet);
-    el.btnMoKhoa.title = moKhoaHet ? 'Đang mở hết, bấm để khoá lại' : 'Mở khoá mọi chặng, dành cho giáo viên';
-  }
-  el.btnMoKhoa.addEventListener('click', function () {
-    moKhoaHet = !moKhoaHet;
-    try { localStorage.setItem('toan10-mokhoa', moKhoaHet ? '1' : '0'); } catch (e) {}
-    veNutMoKhoa();
-    veDuong();
-  });
-
   el.btnReset.addEventListener('click', function () {
-    if (!confirm('Xoá toàn bộ tiến độ và điểm đã lưu trên máy này?')) return;
+    if (!confirm('Xoá toàn bộ tiến độ đã lưu trên máy này?')) return;
     tienDo = {}; ghi();
     veCu(el.cuTop);
     veDuong();
@@ -636,7 +604,6 @@
   });
 
   /* ---------- Khởi động ---------- */
-  veNutMoKhoa();
   veCu(el.cuTop);
   veDuong();
 })();
