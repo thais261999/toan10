@@ -140,6 +140,7 @@
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
    'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
    'cho','choDong','choXu','cuCho','hangDiem','hangDo','btnRa',
+   'btnCai','mach','machDong',
    'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
    'nutKhai','khaiTen','khaiLop','khaiBao','choChu',
    'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
