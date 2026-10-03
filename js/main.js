@@ -35,8 +35,9 @@
     return v || 10;
   }
 
-  /* Tỉ lệ ba mức độ trong một đề: nhận biết, thông hiểu, vận dụng. */
-  var TI_LE = { 1: 0.40, 2: 0.35, 3: 0.25 };
+  /* Tỉ lệ ba mức độ trong một đề: nhận biết, thông hiểu, vận dụng.
+     Đang để nhẹ cho học sinh, muốn khó hơn thì tăng số của mức 3. */
+  var TI_LE = { 1: 0.55, 2: 0.35, 3: 0.10 };
 
   var DANG = [
     { ma: 'tracnghiem', ten: 'Trắc nghiệm',  hieu: '✏️' },

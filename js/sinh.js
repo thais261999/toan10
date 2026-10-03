@@ -370,6 +370,52 @@
                    ['$x = ' + a + '$', '$x = -' + a + '$', '$x = ' + (a * a) + '$']),
         dung: 0,
         giai: '$x^2 = ' + (a * a) + '$ cho hai nghiệm đối nhau là $' + a + '$ và $-' + a + '$.' };
+    },
+
+    // Đếm phần tử của tập liệt kê
+    function () {
+      var n = ri(4, 8), A = [], seen = {};
+      while (A.length < n) { var v = ri(1, 20); if (!seen[v]) { seen[v] = 1; A.push(v); } }
+      A.sort(function (x, y) { return x - y; });
+      return { muc: 1,
+        de: 'Tập hợp $A = ' + tap(A) + '$ có bao nhiêu phần tử?',
+        dapan: bon(String(n), [String(n + 1), String(n - 1), String(2 * n)]),
+        dung: 0,
+        giai: 'Đếm các phần tử trong ngoặc, có $' + n + '$ số.' };
+    },
+
+    // Giao hai tập nhỏ
+    function () {
+      var A = [ri(1,4), ri(5,7), ri(8,10)], B = [A[1], A[2], ri(11,14)];
+      return { muc: 1,
+        de: 'Cho $A = ' + tap(A) + '$ và $B = ' + tap(B) + '$. Tập $A \\cap B$ bằng',
+        dapan: bon('$' + tap([A[1], A[2]]) + '$',
+                   ['$' + tap(A) + '$', '$' + tap(B) + '$', '$' + tap([A[0]]) + '$']),
+        dung: 0,
+        giai: 'Giao gồm các phần tử có mặt ở cả hai tập, đó là $' + A[1] + '$ và $' + A[2] + '$.' };
+    },
+
+    // Khoảng gồm những số nào
+    function () {
+      var a = ri(-5, 3), b = ri(a + 2, a + 7);
+      return { muc: 1,
+        de: 'Khoảng $(' + a + ';' + b + ')$ gồm các số thực $x$ thoả mãn',
+        dapan: bon('$' + a + ' \\lt x \\lt ' + b + '$',
+                   ['$' + a + ' \\le x \\le ' + b + '$',
+                    '$' + a + ' \\le x \\lt ' + b + '$',
+                    '$x \\gt ' + b + '$']),
+        dung: 0,
+        giai: 'Dấu ngoặc tròn ở cả hai đầu nghĩa là không lấy hai mút.' };
+    },
+
+    // Số nguyên âm
+    function () {
+      var a = ri(1, 9), b = ri(1, 15), c = ri(2, 9);
+      return { muc: 1,
+        de: 'Số nào sau đây là số nguyên âm?',
+        dapan: bon('$-' + a + '$', ['$' + b + '$', '$0$', '$\\dfrac{1}{' + c + '}$']),
+        dung: 0,
+        giai: 'Số nguyên âm là các số $-1, -2, -3, \\ldots$' };
     }
 
   ];
@@ -685,7 +731,42 @@
         dung: 0,
         giai: 'Đó là tam giác với ba đỉnh $O(0;0)$, $\\left(\\dfrac{' + c + '}{' + a +
               '};0\\right)$ và $\\left(0;\\dfrac{' + c + '}{' + b + '}\\right)$.' };
+    },
+
+    // Gốc toạ độ có thuộc miền nghiệm không
+    function () {
+      var a = ri(1, 5), b = ri(1, 5), c = ri(3, 12);
+      return { muc: 1,
+        de: 'Điểm $O(0;0)$ có thuộc miền nghiệm của bất phương trình $' + a + 'x + ' + b +
+            'y \\le ' + c + '$ không?',
+        dapan: bon('Có, vì $0 \\le ' + c + '$',
+                   ['Không, vì $0 \\gt ' + c + '$', 'Không xác định được', 'Chỉ thuộc đường bờ']),
+        dung: 0,
+        giai: 'Thay $x = 0$, $y = 0$ vào vế trái được $0$, mà $0 \\le ' + c + '$ nên đúng.' };
+    },
+
+    // Đường thẳng cắt trục tung
+    function () {
+      var a = ri(2, 6), b = ri(2, 6);
+      return { muc: 1,
+        de: 'Đường thẳng $' + a + 'x + ' + b + 'y = ' + (a * b) + '$ cắt trục tung tại điểm có tung độ bằng',
+        dapan: bon(String(a), [String(b), String(a * b), '0']),
+        dung: 0,
+        giai: 'Cho $x = 0$ được $' + b + 'y = ' + (a * b) + '$ nên $y = ' + a + '$.' };
+    },
+
+    // Thay toạ độ vào vế trái
+    function () {
+      var a = ri(1, 5), b = ri(1, 5), p = ri(1, 5), q = ri(1, 5);
+      var v = a * p + b * q;
+      return { muc: 1,
+        de: 'Thay điểm $(' + p + ';\\,' + q + ')$ vào biểu thức $' + a + 'x + ' + b +
+            'y$, ta được giá trị bằng',
+        dapan: bon(String(v), [String(v + 2), String(v - 2), String(a + b)]),
+        dung: 0,
+        giai: '$' + a + '\\cdot' + p + ' + ' + b + '\\cdot' + q + ' = ' + v + '$.' };
     }
+
   ];
 
   var C2_DS = [
@@ -908,18 +989,6 @@
               g + '^\\circ$.' };
     },
 
-    // 10. Diện tích qua bán kính ngoại tiếp
-    function () {
-      var t = chon(HERON), a = t[0], b = t[1], c = t[2], S = t[3];
-      var R = a * b * c / (4 * S);
-      return { muc: 3,
-        de: 'Tam giác có ba cạnh $' + a + '$, $' + b + '$, $' + c + '$ và diện tích $' + S +
-            '$. Bán kính đường tròn ngoại tiếp bằng',
-        dapan: bon(String(Math.round(R * 1000) / 1000),
-                   [String(Math.round(R * 2000) / 1000), String(S / 2), String((a + b + c) / 2)]),
-        dung: 0,
-        giai: '$R = \\dfrac{abc}{4S} = \\dfrac{' + (a * b * c) + '}{' + (4 * S) + '}$.' };
-    },
 
     // Côsin của góc trong tam giác
     function () {
@@ -967,6 +1036,47 @@
                    [String((t[0] + t[1] + t[2]) / 2), String(t[3]), String(t[0] * t[1])]),
         dung: 0,
         giai: 'Chu vi là tổng ba cạnh, bằng $' + (t[0] + t[1] + t[2]) + '$.' };
+    },
+
+    // Giá trị lượng giác góc đặc biệt
+    function () {
+      var g = chon([0, 90, 180]);
+      var cos = { 0: '1', 90: '0', 180: '-1' };
+      return { muc: 1,
+        de: 'Giá trị của $\\cos ' + g + '^\\circ$ bằng',
+        dapan: bon('$' + cos[g] + '$', ['$0$', '$1$', '$-1$'].filter(function (x) {
+                     return x !== '$' + cos[g] + '$'; })),
+        dung: 0,
+        giai: '$\\cos 0^\\circ = 1$, $\\cos 90^\\circ = 0$, $\\cos 180^\\circ = -1$.' };
+    },
+
+    // Công thức diện tích
+    function () {
+      return { muc: 1,
+        de: 'Công thức tính diện tích tam giác theo hai cạnh và góc xen giữa là',
+        dapan: bon('$S = \\dfrac{1}{2}ab\\sin C$',
+                   ['$S = \\dfrac{1}{2}ab\\cos C$', '$S = ab\\sin C$', '$S = \\dfrac{1}{2}(a+b)\\sin C$']),
+        dung: 0,
+        giai: 'Diện tích bằng nửa tích hai cạnh nhân sin góc xen giữa.' };
+    },
+
+    // Nửa chu vi
+    function () {
+      var t = chon(HERON), p = (t[0] + t[1] + t[2]) / 2;
+      return { muc: 1,
+        de: 'Tam giác có ba cạnh $' + t[0] + '$, $' + t[1] + '$, $' + t[2] + '$. Nửa chu vi $p$ bằng',
+        dapan: bon(String(p), [String(2 * p), String(p + 2), String(p - 2)]),
+        dung: 0,
+        giai: '$p = \\dfrac{' + t[0] + ' + ' + t[1] + ' + ' + t[2] + '}{2} = ' + p + '$.' };
+    },
+
+    // Sin 90 độ
+    function () {
+      return { muc: 1,
+        de: 'Trong tam giác vuông, cạnh đối diện góc vuông được gọi là',
+        dapan: bon('cạnh huyền', ['cạnh góc vuông', 'đường cao', 'trung tuyến']),
+        dung: 0,
+        giai: 'Cạnh đối diện góc vuông là cạnh dài nhất, gọi là cạnh huyền.' };
     }
 
   ];
