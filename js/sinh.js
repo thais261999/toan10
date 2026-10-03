@@ -42,6 +42,9 @@
     while (r.length < 4) r.push('Không xác định được' + (r.length > 3 ? ' ' : ''));
     return r;
   }
+  /* Tung đồng xu chọn cách diễn đạt: khi thì ký hiệu, khi thì lời văn */
+  function kyHieu() { return Math.random() < 0.5; }
+
   function soTapCon(n) { return Math.pow(2, n); }
   function toHop(n, k) {
     var r = 1;
@@ -58,6 +61,18 @@
     // 1. Phủ định mệnh đề có "với mọi"
     function () {
       var a = ri(1, 9);
+      if (kyHieu()) {
+        return { muc: 1,
+          de: 'Cho mệnh đề $P: \\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\gt 0$. ' +
+              'Mệnh đề phủ định $\\overline{P}$ là',
+          dapan: bon(
+            '$\\exists x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\le 0$',
+            ['$\\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\le 0$',
+             '$\\exists x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\gt 0$',
+             '$\\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\lt 0$']),
+          dung: 0,
+          giai: 'Đổi $\\forall$ thành $\\exists$, đồng thời đổi $\\gt$ thành $\\le$.' };
+      }
       return { muc: 1,
         de: 'Cho mệnh đề $P$: “Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\gt 0$”. ' +
             'Mệnh đề phủ định $\\overline{P}$ là',
@@ -73,6 +88,18 @@
     // 2. Phủ định mệnh đề có "tồn tại"
     function () {
       var a = ri(2, 9);
+      if (kyHieu()) {
+        return { muc: 1,
+          de: 'Cho mệnh đề $P: \\exists n \\in \\mathbb{N},\\ n^2 = ' + a + '$. ' +
+              'Mệnh đề phủ định $\\overline{P}$ là',
+          dapan: bon(
+            '$\\forall n \\in \\mathbb{N},\\ n^2 \\ne ' + a + '$',
+            ['$\\exists n \\in \\mathbb{N},\\ n^2 \\ne ' + a + '$',
+             '$\\forall n \\in \\mathbb{N},\\ n^2 = ' + a + '$',
+             '$\\exists n \\in \\mathbb{N},\\ n^2 \\gt ' + a + '$']),
+          dung: 0,
+          giai: 'Đổi $\\exists$ thành $\\forall$, đồng thời đổi dấu bằng thành dấu khác.' };
+      }
       return { muc: 1,
         de: 'Cho mệnh đề $P$: “Tồn tại số tự nhiên $n$ sao cho $n^2 = ' + a + '$”. ' +
             'Mệnh đề phủ định $\\overline{P}$ là',
@@ -239,10 +266,13 @@
       var a = ri(1, 9), b = ri(2, 9), c = chon([2, 3, 5, 6, 7, 8, 10]);
       return { muc: 2,
         de: 'Khẳng định nào sau đây <strong>sai</strong>?',
-        dapan: bon('$\\sqrt{' + c + '}$ là số hữu tỉ',
-                   ['$-' + a + '$ là số nguyên',
-                    '$0$ là số tự nhiên',
-                    '$\\dfrac{' + a + '}{' + b + '}$ là số hữu tỉ']),
+        dapan: kyHieu()
+          ? bon('$\\sqrt{' + c + '} \\in \\mathbb{Q}$',
+                ['$-' + a + ' \\in \\mathbb{Z}$', '$0 \\in \\mathbb{N}$',
+                 '$\\dfrac{' + a + '}{' + b + '} \\in \\mathbb{Q}$'])
+          : bon('$\\sqrt{' + c + '}$ là số hữu tỉ',
+                ['$-' + a + '$ là số nguyên', '$0$ là số tự nhiên',
+                 '$\\dfrac{' + a + '}{' + b + '}$ là số hữu tỉ']),
         dung: 0,
         giai: '$\\sqrt{' + c + '}$ là số vô tỉ nên không thuộc $\\mathbb{Q}$. Ba khẳng định kia đều đúng.' };
     },
@@ -269,6 +299,77 @@
                     'Mọi số hữu tỉ đều là số nguyên']),
         dung: 0,
         giai: 'Số tự nhiên nằm trong số nguyên. Ngược lại thì không, ví dụ $-3$ là số nguyên nhưng không phải số tự nhiên.' };
+    },
+
+    // Mệnh đề chứa biến, thay giá trị cụ thể
+    function () {
+      var p = ri(1, 6), q = ri(p + 1, p + 6), x = chon([p, q]);
+      return { muc: 1,
+        de: 'Với $x = ' + x + '$, mệnh đề chứa biến “$x^2 - ' + (p + q) + 'x + ' + (p * q) +
+            ' = 0$” trở thành',
+        dapan: bon('mệnh đề đúng', ['mệnh đề sai', 'không phải mệnh đề', 'vẫn là mệnh đề chứa biến']),
+        dung: 0,
+        giai: 'Thay $x = ' + x + '$ vào được $0 = 0$, đẳng thức đúng.' };
+    },
+
+    // Điều kiện cần, điều kiện đủ
+    function () {
+      var b = chon([2, 3, 5]), h = chon([2, 3, 4]), a = b * h;
+      return { muc: 2,
+        de: '“Số tự nhiên $n$ chia hết cho $' + a + '$” là điều kiện gì của “$n$ chia hết cho $' + b + '$”?',
+        dapan: bon('Điều kiện đủ', ['Điều kiện cần', 'Điều kiện cần và đủ', 'Không phải điều kiện nào']),
+        dung: 0,
+        giai: 'Chia hết cho $' + a + '$ thì chắc chắn chia hết cho $' + b +
+              '$, nhưng ngược lại không đúng, ví dụ $n = ' + b + '$.' };
+    },
+
+    // Số phần tử của hợp khi biết giao
+    function () {
+      var c = ri(2, 8), a = ri(c + 2, c + 10), b = ri(c + 2, c + 10);
+      return { muc: 2,
+        de: 'Hai tập hợp $A$ và $B$ có $' + a + '$ và $' + b +
+            '$ phần tử, phần chung có $' + c + '$ phần tử. Tập $A \\cup B$ có bao nhiêu phần tử?',
+        dapan: bon(String(a + b - c), [String(a + b), String(a + b + c), String(Math.abs(a - b))]),
+        dung: 0,
+        giai: '$' + a + ' + ' + b + ' - ' + c + ' = ' + (a + b - c) + '$.' };
+    },
+
+    // Phần bù trong tập số thực
+    function () {
+      var a = ri(-5, 3), b = ri(a + 2, a + 7);
+      return { muc: 3,
+        de: 'Phần bù của nửa khoảng $[' + a + ';' + b + ')$ trong tập số thực là',
+        dapan: bon('$(-\\infty;' + a + ') \\cup [' + b + ';+\\infty)$',
+                   ['$(-\\infty;' + a + '] \\cup (' + b + ';+\\infty)$',
+                    '$(' + a + ';' + b + ')$',
+                    '$(-\\infty;' + b + ')$']),
+        dung: 0,
+        giai: 'Lấy mọi số không thuộc nửa khoảng. Vì $' + a + '$ thuộc nên bỏ ra, còn $' + b +
+              '$ không thuộc nên lấy vào.' };
+    },
+
+    // Liệt kê tập cho bằng tính chất
+    function () {
+      var n = ri(4, 9);
+      return { muc: 1,
+        de: 'Viết tập hợp các số tự nhiên nhỏ hơn $' + n + '$ bằng cách liệt kê, ta được',
+        dapan: bon('$' + tap(day(0, n - 1)) + '$',
+                   ['$' + tap(day(1, n - 1)) + '$',
+                    '$' + tap(day(0, n)) + '$',
+                    '$' + tap(day(1, n)) + '$']),
+        dung: 0,
+        giai: 'Số tự nhiên bắt đầu từ $0$, nhỏ hơn $' + n + '$ nên dừng ở $' + (n - 1) + '$.' };
+    },
+
+    // Mệnh đề tương đương
+    function () {
+      var a = ri(2, 9);
+      return { muc: 2,
+        de: 'Mệnh đề nào sau đây tương đương với “$x^2 = ' + (a * a) + '$”?',
+        dapan: bon('$x = ' + a + '$ hoặc $x = -' + a + '$',
+                   ['$x = ' + a + '$', '$x = -' + a + '$', '$x = ' + (a * a) + '$']),
+        dung: 0,
+        giai: '$x^2 = ' + (a * a) + '$ cho hai nghiệm đối nhau là $' + a + '$ và $-' + a + '$.' };
     }
 
   ];
@@ -335,10 +436,15 @@
       var a = ri(1, 9);
       return { muc: 2,
         de: 'Xét tính đúng sai của các mệnh đề sau.',
-        y: ['Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\gt 0$',
-            'Tồn tại số thực $x$ sao cho $x^2 = ' + (a * a) + '$',
-            'Với mọi số tự nhiên $n$, ta có $n^2 \\ge n$',
-            'Với mọi số thực $x$, ta có $x^2 \\gt x$'],
+        y: kyHieu()
+          ? ['$\\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\gt 0$',
+             '$\\exists x \\in \\mathbb{R},\\ x^2 = ' + (a * a) + '$',
+             '$\\forall n \\in \\mathbb{N},\\ n^2 \\ge n$',
+             '$\\forall x \\in \\mathbb{R},\\ x^2 \\gt x$']
+          : ['Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\gt 0$',
+             'Tồn tại số thực $x$ sao cho $x^2 = ' + (a * a) + '$',
+             'Với mọi số tự nhiên $n$, ta có $n^2 \\ge n$',
+             'Với mọi số thực $x$, ta có $x^2 \\gt x$'],
         dung: [true, true, true, false],
         giai: 'Với $x = 0{,}5$ ta có $x^2 = 0{,}25 \\lt 0{,}5$ nên ý d) sai.' };
     },
@@ -813,7 +919,56 @@
                    [String(Math.round(R * 2000) / 1000), String(S / 2), String((a + b + c) / 2)]),
         dung: 0,
         giai: '$R = \\dfrac{abc}{4S} = \\dfrac{' + (a * b * c) + '}{' + (4 * S) + '}$.' };
+    },
+
+    // Côsin của góc trong tam giác
+    function () {
+      var g = chon([60, 120]);
+      var t = chon(g === 60 ? BO60 : BO120);
+      return { muc: 2,
+        de: 'Tam giác $ABC$ có $a = ' + t[2] + '$, $b = ' + t[0] + '$, $c = ' + t[1] +
+            '$. Giá trị của $\\cos A$ bằng',
+        dapan: bon(g === 60 ? '$\\dfrac{1}{2}$' : '$-\\dfrac{1}{2}$',
+                   [g === 60 ? '$-\\dfrac{1}{2}$' : '$\\dfrac{1}{2}$',
+                    '$\\dfrac{\\sqrt{3}}{2}$', '$0$']),
+        dung: 0,
+        giai: '$\\cos A = \\dfrac{b^2+c^2-a^2}{2bc}$, thay số được kết quả trên.' };
+    },
+
+    // Diện tích khi biết cạnh đáy và đường cao
+    function () {
+      var a = 2 * ri(2, 9), h = ri(3, 12);
+      return { muc: 1,
+        de: 'Tam giác có cạnh đáy bằng $' + a + '$ và đường cao tương ứng bằng $' + h +
+            '$. Diện tích tam giác bằng',
+        dapan: bon(String(a * h / 2), [String(a * h), String(a + h), String(a * h / 4)]),
+        dung: 0,
+        giai: '$S = \\dfrac{1}{2} \\cdot ' + a + ' \\cdot ' + h + ' = ' + (a * h / 2) + '$.' };
+    },
+
+    // Sin của góc bù
+    function () {
+      var g = chon([30, 45, 60]), bu = 180 - g;
+      var ten = { 30: '\\dfrac{1}{2}', 45: '\\dfrac{\\sqrt{2}}{2}', 60: '\\dfrac{\\sqrt{3}}{2}' };
+      return { muc: 1,
+        de: 'Giá trị của $\\sin ' + bu + '^\\circ$ bằng',
+        dapan: bon('$' + ten[g] + '$', ['$-' + ten[g] + '$', '$0$', '$1$']),
+        dung: 0,
+        giai: 'Hai góc bù nhau có sin bằng nhau nên $\\sin ' + bu + '^\\circ = \\sin ' + g +
+              '^\\circ = ' + ten[g] + '$.' };
+    },
+
+    // Chu vi tam giác
+    function () {
+      var t = chon(HERON);
+      return { muc: 1,
+        de: 'Tam giác có ba cạnh $' + t[0] + '$, $' + t[1] + '$, $' + t[2] + '$. Chu vi bằng',
+        dapan: bon(String(t[0] + t[1] + t[2]),
+                   [String((t[0] + t[1] + t[2]) / 2), String(t[3]), String(t[0] * t[1])]),
+        dung: 0,
+        giai: 'Chu vi là tổng ba cạnh, bằng $' + (t[0] + t[1] + t[2]) + '$.' };
     }
+
   ];
 
   var C3_DS = [

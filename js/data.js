@@ -41,6 +41,16 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
+        { muc: 1, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge 0$ là mệnh đề nào?`,
+        dapan: [
+          L`$\exists x \in \mathbb{R},\ x^2 \lt 0$`,
+          L`$\forall x \in \mathbb{R},\ x^2 \lt 0$`,
+          L`$\exists x \in \mathbb{R},\ x^2 \ge 0$`,
+          L`$\forall x \in \mathbb{R},\ x^2 \le 0$`
+        ],
+        dung: 0,
+        giai: L`Phủ định đổi $\forall$ thành $\exists$ và đổi $\ge$ thành $\lt$.` },
+
         { muc: 1, de: L`Cho $A = \{1;\,2;\,3;\,4\}$ và $B = \{3;\,4;\,5\}$. Tập $A \setminus B$ bằng`,
         dapan: [L`$\{1;\,2\}$`, L`$\{3;\,4\}$`, L`$\{5\}$`, L`$\{1;\,2;\,5\}$`],
         dung: 0,
@@ -211,6 +221,26 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Không đều thì có thể cân, vuông hay thường, nên chỉ cách viết đầu mới là phủ định.` },
 
+        { muc: 2, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là`,
+          dapan: [
+            L`$\exists x \in \mathbb{R},\ x^2 + 1 \le 0$`,
+            L`$\forall x \in \mathbb{R},\ x^2 + 1 \le 0$`,
+            L`$\exists x \in \mathbb{R},\ x^2 + 1 \gt 0$`,
+            L`$\forall x \in \mathbb{R},\ x^2 + 1 \lt 0$`
+          ],
+          dung: 0,
+          giai: L`Đổi $\forall$ thành $\exists$ và phủ định mệnh đề bên trong.` },
+
+        { muc: 2, de: L`Phủ định của mệnh đề $\exists n \in \mathbb{N},\ n^2 = 2$ là`,
+          dapan: [
+            L`$\forall n \in \mathbb{N},\ n^2 \ne 2$`,
+            L`$\exists n \in \mathbb{N},\ n^2 \ne 2$`,
+            L`$\forall n \in \mathbb{N},\ n^2 = 2$`,
+            L`$\exists n \in \mathbb{N},\ n^2 \gt 2$`
+          ],
+          dung: 0,
+          giai: L`Đổi $\exists$ thành $\forall$ và phủ định đẳng thức.` },
+
         { muc: 2, de: L`Phủ định của mệnh đề “Mọi học sinh trong lớp đều thích môn Toán” là`,
           dapan: [
             L`Có ít nhất một học sinh trong lớp không thích môn Toán`,
@@ -230,6 +260,46 @@ const CHUONG_TRINH = [
           ],
           dung: 0,
           giai: L`Phủ định của “tồn tại” là “với mọi … không”.` },
+
+        { muc: 2, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge x$ là`,
+          dapan: [
+            L`$\exists x \in \mathbb{R},\ x^2 \lt x$`,
+            L`$\forall x \in \mathbb{R},\ x^2 \lt x$`,
+            L`$\exists x \in \mathbb{R},\ x^2 \gt x$`,
+            L`$\forall x \in \mathbb{R},\ x^2 \le x$`
+          ],
+          dung: 0,
+          giai: L`Đổi $\forall$ thành $\exists$ và đổi $\ge$ thành $\lt$.` },
+
+        { muc: 2, de: L`Phủ định của mệnh đề $\exists x \in \mathbb{Q},\ 4x^2 - 1 = 0$ là`,
+          dapan: [
+            L`$\forall x \in \mathbb{Q},\ 4x^2 - 1 \ne 0$`,
+            L`$\exists x \in \mathbb{Q},\ 4x^2 - 1 \ne 0$`,
+            L`$\forall x \in \mathbb{Q},\ 4x^2 - 1 = 0$`,
+            L`$\forall x \in \mathbb{R},\ 4x^2 - 1 \ne 0$`
+          ],
+          dung: 0,
+          giai: L`Giữ nguyên tập $\mathbb{Q}$, đổi $\exists$ thành $\forall$ và phủ định đẳng thức.` },
+
+        { muc: 2, de: L`Cho mệnh đề $P: \forall x \in \mathbb{R},\ x^2 - x + 1 \gt 0$. Mệnh đề phủ định của $P$ là`,
+          dapan: [
+            L`$\exists x \in \mathbb{R},\ x^2 - x + 1 \le 0$`,
+            L`$\forall x \in \mathbb{R},\ x^2 - x + 1 \le 0$`,
+            L`$\exists x \in \mathbb{R},\ x^2 - x + 1 \ge 0$`,
+            L`$\forall x \in \mathbb{R},\ x^2 - x + 1 \lt 0$`
+          ],
+          dung: 0,
+          giai: L`Đổi lượng từ và phủ định bất đẳng thức.` },
+
+        { muc: 3, de: L`Xét mệnh đề $P: \forall x \in \mathbb{R},\ x^2 + 1 \gt 0$. Khẳng định nào đúng?`,
+          dapan: [
+            L`$P$ đúng và phủ định của $P$ sai`,
+            L`$P$ sai và phủ định của $P$ đúng`,
+            L`Cả $P$ và phủ định của $P$ đều đúng`,
+            L`Cả $P$ và phủ định của $P$ đều sai`
+          ],
+          dung: 0,
+          giai: L`$x^2 \ge 0$ nên $x^2 + 1 \ge 1 \gt 0$ với mọi $x$, do đó $P$ đúng và phủ định của nó sai.` },
 
         { muc: 1, de: L`Mệnh đề $P \Rightarrow Q$ sai trong trường hợp nào?`,
           dapan: [
@@ -359,6 +429,14 @@ const CHUONG_TRINH = [
           dung: [true, true, true, false],
           giai: L`Ý d) sai vì $6 \in B$ nhưng $6 \notin A$.` },
 
+        { muc: 2, de: `Xét tính đúng sai của các khẳng định sau.`,
+          y: [L`Mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là mệnh đề đúng`,
+              L`Mệnh đề $\exists x \in \mathbb{R},\ x^2 = -1$ là mệnh đề đúng`,
+              L`Phủ định của $\exists x \in \mathbb{R},\ x \gt 2$ là $\forall x \in \mathbb{R},\ x \le 2$`,
+              L`Mệnh đề $P \Rightarrow Q$ sai khi $P$ sai và $Q$ đúng`],
+          dung: [true, false, true, false],
+          giai: L`Ý b) sai vì $x^2 \ge 0$ với mọi $x$. Ý d) sai vì $P \Rightarrow Q$ chỉ sai khi $P$ đúng mà $Q$ sai.` },
+
         { muc: 1, de: L`Cho $A = \{1;2;3;4;5;6\}$ và $B = \{2;4;6;8\}$.`,
           y: [
             L`$A \cap B = \{2;4;6\}$`,
@@ -371,10 +449,10 @@ const CHUONG_TRINH = [
 
         { muc: 1, de: L`Xét quan hệ giữa các tập hợp số.`,
           y: [
-            L`Mọi số tự nhiên đều là số nguyên`,
-            L`Mọi số nguyên đều là số hữu tỉ`,
-            L`Mọi số hữu tỉ đều là số thực`,
-            L`Mọi số thực đều là số hữu tỉ`
+            L`$\mathbb{N} \subset \mathbb{Z}$`,
+            L`$\mathbb{Z} \subset \mathbb{Q}$`,
+            L`$\mathbb{Q} \subset \mathbb{R}$`,
+            L`$\mathbb{R} \subset \mathbb{Q}$`
           ],
           dung: [true, true, true, false],
           giai: L`$\sqrt{2} \in \mathbb{R}$ nhưng không thuộc $\mathbb{Q}$ nên ý d) sai.` },
@@ -388,6 +466,16 @@ const CHUONG_TRINH = [
           ],
           dung: [true, true, true, false],
           giai: L`$B \setminus A$ gồm các số thuộc $B$ mà không thuộc $A$, tức $4 \le x \le 6$, vậy bằng $[4;6]$.` },
+
+        { muc: 2, de: L`Cho hai mệnh đề $P: \forall x \in \mathbb{R},\ x^2 \ge 0$ và $Q: \exists x \in \mathbb{R},\ x^2 = -1$.`,
+          y: [
+            L`$P$ là mệnh đề đúng`,
+            L`$Q$ là mệnh đề sai`,
+            L`Phủ định của $P$ là $\exists x \in \mathbb{R},\ x^2 \lt 0$`,
+            L`Phủ định của $Q$ là $\exists x \in \mathbb{R},\ x^2 \ne -1$`
+          ],
+          dung: [true, true, true, false],
+          giai: L`Phủ định của $\exists$ phải là $\forall$, tức $\forall x \in \mathbb{R},\ x^2 \ne -1$.` },
 
         { muc: 1, de: L`Cho $X = \{x \in \mathbb{N} \mid x$ là ước của $18\}$.`,
           y: [
@@ -448,6 +536,16 @@ const CHUONG_TRINH = [
           ],
           dung: [true, true, false, true],
           giai: L`$A \setminus B$ gồm các số nhỏ hơn $1$, tức $(-\infty;1)$, không lấy điểm $1$.` },
+
+        { muc: 3, de: L`Xét tính đúng sai của các mệnh đề có lượng từ.`,
+          y: [
+            L`$\forall n \in \mathbb{N},\ n^2 \ge n$`,
+            L`$\exists n \in \mathbb{N},\ n^2 = n$`,
+            L`$\forall x \in \mathbb{R},\ x^2 \gt x$`,
+            L`$\exists x \in \mathbb{R},\ x^2 \lt x$`
+          ],
+          dung: [true, true, false, true],
+          giai: L`Với $x = 0{,}5$ ta có $x^2 = 0{,}25 \lt 0{,}5$ nên ý c) sai còn ý d) đúng.` },
 
         { muc: 1, de: L`Cho $A = \{1;2;3\}$ và $B = \{1;2;3;4;5\}$.`,
           y: [
