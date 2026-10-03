@@ -146,7 +146,7 @@ const CHUONG_TRINH = [
             L`Tổng ba góc trong một tam giác bằng $180^\circ$`,
             L`Mọi số tự nhiên đều là số nguyên tố`,
             L`Số $0$ là số nguyên dương`,
-            L`$\pi$ là số hữu tỉ`
+            L`$\sqrt{2}$ là số hữu tỉ`
           ],
           dung: 0,
           giai: L`Ba khẳng định còn lại đều sai, chẳng hạn $4$ không phải số nguyên tố.` },
