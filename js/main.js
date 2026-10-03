@@ -129,7 +129,7 @@
    'phanhoi','phanhoiTieu','phanhoiGiai',
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
    'cuTop','cuPhanHoi','cuMung','phaoHoc',
-   'btnReset','brandHome'
+   'brandHome'
   ].forEach(function (id) { el[id] = document.getElementById(id); });
 
   function toan(root) {
@@ -149,10 +149,8 @@
     d.className = 'muc is-' + o.trangThai + (lech >= 0 ? ' is-trai' : ' is-phai');
     d.style.setProperty('--x', lech + '%');
 
-    var ruot = o.trangThai === 'xong' ? '✓' : o.hieu;
-
     d.innerHTML =
-      '<button class="vien" aria-label="' + o.ten + '"><span>' + ruot + '</span></button>' +
+      '<button class="vien" aria-label="' + o.ten + '"><span>' + o.hieu + '</span></button>' +
       '<div class="muc__chu"><h3>' + o.ten + '</h3></div>';
 
     d.addEventListener('click', o.bam);
@@ -606,13 +604,6 @@
   /* ============================================================
      CÁC NÚT CHUNG
      ============================================================ */
-  el.btnReset.addEventListener('click', function () {
-    if (!confirm('Xoá toàn bộ tiến độ đã lưu trên máy này?')) return;
-    tienDo = {}; ghi();
-    veCu(el.cuTop);
-    veDuong();
-  });
-
   el.brandHome.addEventListener('click', function (ev) {
     ev.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
   });

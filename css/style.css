@@ -525,7 +525,6 @@ mjx-container svg{max-width:100%}
 .muc.is-khoa{cursor:default}
 .muc:not(.is-khoa):hover .vien{transform:translateY(-3px)}
 .muc:not(.is-khoa):active .vien{transform:translateY(2px)}
-.muc.is-xong .vien span{font-size:27px}
 .muc.is-khoa .vien span{font-size:19px;filter:grayscale(1);opacity:.6}
 
 .muc.is-mo .vien::after{content:"";position:absolute;inset:-6px;border-radius:50%;
