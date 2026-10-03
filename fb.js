@@ -1,13 +1,10 @@
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Tự động kiểm tra kết quả đăng nhập lại từ Redirect (Dành cho điện thoại)
 auth.getRedirectResult().then((result) => {
-  if (result.user) {
-    console.log("Đăng nhập thành công qua Redirect");
-  }
+  if (result.user) console.log("Login redirect successful");
 }).catch((error) => {
-  console.error("Lỗi Redirect:", error);
+  console.error("Redirect error:", error);
 });
 
 auth.onAuthStateChanged(async (user) => {
@@ -56,15 +53,13 @@ auth.onAuthStateChanged(async (user) => {
       if (mainApp) mainApp.classList.add('d-none');
     }
   } catch (err) {
-    console.error("Lỗi kết nối Firestore:", err);
+    console.error("Lỗi kết nối:", err);
   }
 });
 
 function dangNhapGoogle() {
   const provider = new firebase.auth.GoogleAuthProvider();
-  // Kiểm tra nếu là thiết bị di động thì dùng Redirect, máy tính dùng Popup
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
   if (isMobile) {
     auth.signInWithRedirect(provider);
   } else {
