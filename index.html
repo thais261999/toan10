@@ -2,197 +2,54 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-  <!-- ===== Khai báo để cài được vào màn hình chính điện thoại ===== -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#5a4fe0">
-  <link rel="apple-touch-icon" href="icon-180.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Toán 10">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-
-  <title>Toán 10 – Chương trình GDPT 2018</title>
-  <meta name="description" content="Lộ trình tự học Toán lớp 10 theo Chương trình GDPT 2018. Ngân hàng câu hỏi ba dạng, mỗi lần làm một đề khác nhau, biết đúng sai ngay.">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lớp Toán 10 - Thầy Thái</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tải Firebase SDK an toàn -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="cauhoi.js"></script>
 </head>
-<body>
+<body class="bg-light">
 
-<header class="top">
-  <div class="wrap top__inner">
-    <a href="#" class="brand" id="brandHome">
-      <span class="brand__mark">10</span>
-      <span class="brand__text">
-        <strong>Toán lớp 10</strong>
-        <small>Mỗi ngày một chút - mỗi lúc một giỏi.</small>
-      </span>
-    </a>
-    <div class="top__nut">
-      <div class="cuhop" id="cuTop" title="Bạn đồng hành"></div>
-      <button class="xu" id="btnXu" title="Mở cửa hàng">
-        <span class="xu__hinh">🪙</span><b id="soXu">0</b>
-      </button>
-      <button class="tron" id="btnRa" title="Đăng xuất" hidden>⎋</button>
-    </div>
-  </div>
-</header>
-
-<!-- ============================================================
-     LỘ TRÌNH: 9 chương, mỗi chương ba dạng bài
-     ============================================================ -->
-<main class="wrap" id="viewList">
-
-  <div class="duong" id="duong"><!-- JS sinh lộ trình ở đây --></div>
-</main>
-
-<!-- ============================================================
-     MÀN LÀM BÀI: toàn màn hình, mỗi lần một câu
-     ============================================================ -->
-<section class="hoc" id="hoc" hidden>
-  <header class="hoc__top">
-    <button class="hoc__dong" id="hocDong" aria-label="Thoát">✕</button>
-    <div class="thanh"><i id="thanhDay"></i></div>
-    <span class="hoc__dem" id="hocDem"></span>
-  </header>
-
-  <div class="hoc__than">
-    <div class="hoc__trong">
-      <div id="hocThan"></div>
-    </div>
-  </div>
-
-  <footer class="hoc__chan" id="hocChan">
-    <div class="hoc__trong">
-      <div class="phanhoi" id="phanhoi" hidden>
-        <div class="cuhop cuhop--vua" id="cuPhanHoi"></div>
-        <div class="phanhoi__chu">
-          <b id="phanhoiTieu"></b>
-          <p id="phanhoiGiai"></p>
-        </div>
-      </div>
-      <button class="solid btn--lg btn--block" id="hocNut">Kiểm tra</button>
-    </div>
-  </footer>
-</section>
-
-<!-- Màn tổng kết sau mỗi lượt làm bài -->
-<div class="mung" id="mung" hidden>
-  <div class="mung__hop">
-    <div class="mung__phao" id="mungPhao"></div>
-    <div class="cuhop cuhop--to" id="cuMung"></div>
-    <h2 id="mungTieu">Hoàn thành!</h2>
-    <p id="mungTen"></p>
-    <p class="mung__phu" id="mungPhu"></p>
-    <button class="solid" id="mungOk">Tiếp tục</button>
-  </div>
-</div>
-
-<!-- Cửa hàng -->
-<div class="mung" id="cho" hidden>
-  <div class="mung__hop cho">
-    <button class="cho__dong" id="choDong" aria-label="Đóng">✕</button>
-    <div class="cho__dau">
-      <div class="cuhop cuhop--to" id="cuCho"></div>
-      <div class="cho__vi">
-        <span class="xu__hinh">🪙</span><b id="choXu">0</b>
-        <small>xu đang có</small>
-      </div>
-    </div>
-
-    <h2>Cửa hàng</h2>
-
-    <div class="cho__muc">
-      <h3>Đổi điểm cộng</h3>
-      <div class="hang hang--diem" id="hangDiem"></div>
-    </div>
-
-    <div class="cho__muc">
-      <h3>Thời trang cho cú mèo</h3>
-      <div id="hangDo"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Màn đăng nhập -->
-<div class="vao" id="vao" hidden>
-  <div class="vao__hop">
-    <div class="cuhop cuhop--to" id="cuVao"></div>
-
-    <!-- chưa đăng nhập -->
-    <div class="vao__buoc" id="buocChua" hidden>
-      <h2>Chào em!</h2>
-      <p class="vao__nho">Đăng nhập để máy nhớ bài em đã học và số xu em kiếm được.
-         </p>
-      <button class="ggl" id="nutGoogle">
-        <span class="ggl__g">G</span> Đăng nhập bằng Google
+  <!-- Màn hình 1: Đăng nhập Google -->
+  <div id="login-screen" class="container text-center py-5">
+    <div class="card mx-auto p-4 shadow-sm" style="max-width: 400px; border-radius: 12px;">
+      <h3 class="mb-3 fw-bold text-primary">Lớp Toán 10 - Thầy Thái</h3>
+      <p class="text-muted mb-4">Vui lòng đăng nhập Google để vào học.</p>
+      <button onclick="dangNhapGoogle()" class="btn btn-danger btn-lg w-100 fw-bold">
+        Đăng nhập bằng Google
       </button>
     </div>
-
-    <!-- đã đăng nhập, chưa khai -->
-    <div class="vao__buoc" id="buocKhai" hidden>
-      <h2>Em tên gì?</h2>
-      <p class="vao__nho">Khai đúng họ tên và lớp để thầy cô biết em là ai khi duyệt.</p>
-      <label for="khaiTen">Họ và tên</label>
-      <input type="text" id="khaiTen" placeholder="Nguyễn Văn An" autocomplete="name">
-      <label for="khaiLop">Lớp</label>
-      <input type="text" id="khaiLop" placeholder="10A1" autocomplete="off">
-      <button class="solid btn--lg btn--block" id="nutKhai">Gửi cho thầy cô duyệt</button>
-      <p class="vao__bao" id="khaiBao"></p>
-    </div>
-
-    <!-- chờ duyệt -->
-    <div class="vao__buoc" id="buocCho" hidden>
-      <h2>Đang chờ duyệt</h2>
-      <p class="vao__nho" id="choChu"></p>
-      <button class="ghost btn--block" id="nutKiemTra">Kiểm tra lại</button>
-    </div>
-
-    <!-- lỗi kết nối -->
-    <div class="vao__buoc" id="buocLoi" hidden>
-      <h2>Không kết nối được</h2>
-      <p class="vao__nho" id="loiChu">Em kiểm tra lại mạng rồi thử tải lại trang nhé.</p>
-      <button class="ghost btn--block" id="nutTaiLai">Tải lại trang</button>
-    </div>
-
-    <button class="vao__ra" id="nutRaPhu" hidden>Đăng nhập tài khoản khác</button>
   </div>
-</div>
 
-<div class="phao" id="phaoHoc" aria-hidden="true"></div>
+  <!-- Màn hình 2: Đang chờ duyệt -->
+  <div id="pending-screen" class="container text-center py-5 d-none">
+    <div class="card mx-auto p-4 shadow-sm" style="max-width: 450px; border-radius: 12px;">
+      <div class="fs-1 mb-2">🦉</div>
+      <h4 class="fw-bold mb-2">Đang chờ duyệt</h4>
+      <p class="text-muted">Tài khoản của bạn đang chờ thầy Thái duyệt.</p>
+      <button onclick="location.reload()" class="btn btn-primary mb-2">Kiểm tra lại</button>
+      <div><a href="#" onclick="dangXuat()" class="text-decoration-none text-muted small">Đăng nhập tài khoản khác</a></div>
+    </div>
+  </div>
 
-<!-- MathJax: dịch LaTeX trong js/data.js thành công thức toán -->
-<script>
-  window.MathJax = {
-    tex: {
-      inlineMath:  [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    },
-    svg: { fontCache: 'global' }
-  };
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+  <!-- Màn hình 3: Nội dung chính -->
+  <div id="main-app" class="d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="#">Toán 10 - Thầy Thái</a>
+        <div id="user-info" class="text-white d-flex align-items-center"></div>
+      </div>
+    </nav>
+    <div class="container">
+      <h3 class="mb-3">Ngân Hàng Câu Hỏi & Luyện Tập</h3>
+      <div id="quiz-container"></div>
+    </div>
+  </div>
 
-<!-- Firebase: đăng nhập Google và lưu xu, tiến độ trên máy chủ -->
-<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
-<script src="js/fb.js"></script>
-
-<script src="js/data.js"></script>
-<script src="js/main.js"></script>
-
-<!-- Bật chế độ chạy ngoại tuyến. Chỉ hoạt động khi trang đã đưa lên mạng (https), không chạy khi mở file trực tiếp. -->
-<script>
-  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js').catch(function () {});
-    });
-  }
-</script>
+  <!-- Script xử lý Auth an toàn -->
+  <script src="fb.js"></script>
 </body>
 </html>
