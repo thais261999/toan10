@@ -41,7 +41,8 @@
        'cho'   đã khai, đang chờ thầy cô duyệt
        'ok'    đã được duyệt
   */
-  FB.batDau = function (goi) {
+  FB.batDau = function (goi, anDanh) {
+    FB.anDanh = !!anDanh;
     if (typeof firebase === 'undefined') { goi({ loai: 'loi' }); return; }
     try {
       app  = firebase.initializeApp(CAU_HINH);
@@ -52,7 +53,16 @@
 
     auth.onAuthStateChanged(function (u) {
       FB.u = u;
-      if (!u) { FB.du = null; goi({ loai: 'chua' }); return; }
+      if (!u) {
+        FB.du = null;
+        // Trang học sinh tự tạo tài khoản ẩn danh, các em không phải làm gì
+        if (FB.anDanh) {
+          auth.signInAnonymously().catch(function (e) { goi({ loai: 'loi', e: e }); });
+        } else {
+          goi({ loai: 'chua' });
+        }
+        return;
+      }
 
       kho.collection('hocsinh').doc(u.uid).get().then(function (b) {
         if (!b.exists) { FB.du = null; goi({ loai: 'khai', u: u }); return; }

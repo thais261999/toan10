@@ -134,7 +134,7 @@
    'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
    'cho','choDong','choXu','cuCho','hangDiem','hangDo','btnRa',
    'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
-   'nutGoogle','nutKhai','khaiTen','khaiLop','khaiBao','choChu',
+   'nutKhai','khaiTen','khaiLop','khaiBao','choChu',
    'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
    'brandHome'
   ].forEach(function (id) { el[id] = document.getElementById(id); });
@@ -771,7 +771,7 @@
         hienBuoc('buocLoi');
         return;
       }
-      if (t.loai === 'chua') { el.btnRa.hidden = true; hienBuoc('buocChua'); return; }
+      if (t.loai === 'chua') { hienBuoc('buocChua'); return; }
       if (t.loai === 'khai') {
         el.khaiTen.value = t.u.displayName || '';
         el.khaiBao.textContent = '';
@@ -785,15 +785,8 @@
         return;
       }
       vaoHoc(t.du);
-    });
+    }, true);
   }
-
-  el.nutGoogle.addEventListener('click', function () {
-    FB.vaoGoogle().catch(function (e) {
-      el.loiChu.textContent = 'Không đăng nhập được: ' + (e.message || e);
-      hienBuoc('buocLoi');
-    });
-  });
 
   el.nutKhai.addEventListener('click', function () {
     var ten = el.khaiTen.value.replace(/\s+/g, ' ').trim();

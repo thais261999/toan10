@@ -5,7 +5,7 @@ service cloud.firestore {
     // ⚠️ ĐIỀN GMAIL CỦA THẦY CÔ VÀO DÒNG DƯỚI, y hệt trong js/fb.js
     function laGiaoVien() {
       return request.auth != null
-        && request.auth.token.email.lower() in ['dien-gmail-cua-thay-vao-day@gmail.com'];
+        && request.auth.token.email.lower() in ['thais261999@gmail.com'];
     }
 
     match /hocsinh/{uid} {
