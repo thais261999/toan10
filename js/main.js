@@ -14,7 +14,7 @@
      Viết một số thì lần nào cũng bấy nhiêu câu.
      Viết một khoảng [ít nhất, nhiều nhất] thì mỗi lần một số khác nhau,
      ví dụ tracnghiem: [18, 25] sẽ ra từ 18 đến 25 câu tuỳ lượt. */
-  var SO_CAU = { tracnghiem: 20, dungsai: 5, traloingan: 5 };
+  var SO_CAU = { tracnghiem: 10, dungsai: 5, traloingan: 3 };
 
   function soCauRut(ma) {
     var v = SO_CAU[ma];
@@ -142,9 +142,7 @@
     d.className = 'muc is-' + o.trangThai + (lech >= 0 ? ' is-trai' : ' is-phai');
     d.style.setProperty('--x', lech + '%');
 
-    var ruot = o.trangThai === 'xong' ? '✓'
-             : o.trangThai === 'khoa' ? '🔒'
-                                      : o.hieu;
+    var ruot = o.trangThai === 'xong' ? '✓' : o.hieu;
 
     d.innerHTML =
       '<button class="vien" aria-label="' + o.ten + '"><span>' + ruot + '</span></button>' +
