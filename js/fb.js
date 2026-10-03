@@ -102,13 +102,14 @@
 
   /* ---------- Thưởng 1 xu khi hoàn thành một bài ----------
      Tách riêng vì luật trên máy chủ chỉ cho xu tăng tối đa 1 mỗi lần ghi. */
-  FB.thuongXu = function () {
+  FB.thuongXu = function (n) {
     if (!FB.u || !FB.du || !FB.du.duyet) return Promise.resolve();
-    var tang = firebase.firestore.FieldValue.increment(1);
-    FB.du.xu = (FB.du.xu || 0) + 1;
+    n = Math.max(0, Math.min(n || 0, 50));
+    FB.du.xu = (FB.du.xu || 0) + n;
     FB.du.soBai = (FB.du.soBai || 0) + 1;
     return kho.collection('hocsinh').doc(FB.u.uid)
-             .update({ xu: tang, soBai: tang })
+             .update({ xu: firebase.firestore.FieldValue.increment(n),
+                       soBai: firebase.firestore.FieldValue.increment(1) })
              .catch(function (e) { console.warn('Không ghi được xu:', e); });
   };
 

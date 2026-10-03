@@ -253,18 +253,24 @@
      hoặc đổi lấy điểm cộng trên lớp.
      ============================================================ */
   var VI_KEY = 'toan10-vi';
-  var GIA_DIEM_CONG = 10;        // bao nhiêu xu đổi được một điểm cộng
+  /* Xu thưởng cho mỗi câu đúng, riêng từng dạng.
+     Đúng sai phải đúng trọn cả bốn ý mới được tính. */
+  var XU_CAU = { tracnghiem: 1, dungsai: 5, traloingan: 5 };
+
+  /* Điểm cộng đắt dần: lần đầu 100 xu, mỗi lần sau thêm 50. */
+  var DIEM_DAU = 100, DIEM_TANG = 50;
+  function giaDiemCong() { return DIEM_DAU + DIEM_TANG * (vi.phieu || 0); }
 
   var HANG = [
-    { ma: 'mu',    ten: 'Mũ tốt nghiệp', gia: 5 },
-    { ma: 'kinh',  ten: 'Kính cận',      gia: 8 },
-    { ma: 'khan',  ten: 'Khăn quàng',    gia: 10 },
-    { ma: 'but',   ten: 'Bút chì',       gia: 12 },
-    { ma: 'huy',   ten: 'Huy chương',    gia: 15 },
-    { ma: 'sach',  ten: 'Quyển sách',    gia: 18 },
-    { ma: 'sao',   ten: 'Ngôi sao',      gia: 20 },
-    { ma: 'ao',    ten: 'Áo choàng',     gia: 25 },
-    { ma: 'vuong', ten: 'Vương miện',    gia: 30 }
+    { ma: 'mu',    ten: 'Mũ tốt nghiệp', gia: 30 },
+    { ma: 'kinh',  ten: 'Kính cận',      gia: 50 },
+    { ma: 'khan',  ten: 'Khăn quàng',    gia: 80 },
+    { ma: 'but',   ten: 'Bút chì',       gia: 120 },
+    { ma: 'huy',   ten: 'Huy chương',    gia: 170 },
+    { ma: 'sach',  ten: 'Quyển sách',    gia: 230 },
+    { ma: 'sao',   ten: 'Ngôi sao',      gia: 300 },
+    { ma: 'ao',    ten: 'Áo choàng',     gia: 400 },
+    { ma: 'vuong', ten: 'Vương miện',    gia: 600 }
   ];
 
   function docVi() {
@@ -298,7 +304,7 @@
     vi.xu += n;
     try { localStorage.setItem(VI_KEY, JSON.stringify(vi)); } catch (e) {}
     veSoXu();
-    if (window.FB && FB.du && FB.du.duyet) FB.thuongXu();
+    if (window.FB && FB.du && FB.du.duyet) FB.thuongXu(n);
   }
   function veSoXu() {
     el.soXu.textContent = vi.xu;
@@ -437,7 +443,7 @@
 
   function batDau(ch, ma) {
     var ds = rutDe(ch, ma);
-    phien = { ch: ch, ma: ma, ds: ds, i: 0, diem: 0, chon: null, daCham: false };
+    phien = { ch: ch, ma: ma, ds: ds, i: 0, diem: 0, xu: 0, chon: null, daCham: false };
     el.hoc.hidden = false;
     document.body.classList.add('khoa-cuon');
     veCau();
@@ -555,7 +561,7 @@
           else if (g === p.chon) o.classList.add('is-wrong');
         });
         dung = p.chon === c.dung;
-        if (dung) p.diem++;
+        if (dung) { p.diem++; p.xu += XU_CAU.tracnghiem; }
 
       } else if (p.ma === 'dungsai') {
         el.hocThan.querySelectorAll('.y').forEach(function (hang, j) {
@@ -568,14 +574,14 @@
           if (p.chon[j] === dap) soY++;
         });
         dung = soY === 4;
-        if (dung) p.diem++;
+        if (dung) { p.diem++; p.xu += XU_CAU.dungsai; }
 
       } else {
         var o2 = document.getElementById('oNhap');
         o2.disabled = true;
         dung = chuanHoa(p.chon) === chuanHoa(c.dapan);
         o2.classList.add(dung ? 'is-right' : 'is-wrong');
-        if (dung) p.diem++;
+        if (dung) { p.diem++; p.xu += XU_CAU.traloingan; }
       }
 
       var tieu, giai;
@@ -627,10 +633,10 @@
     el.mungTieu.textContent = dat ? 'Hoàn thành!' : 'Chưa hoàn thành';
     el.mungTen.textContent = 'Chương ' + CHU_SO[ic] + ' · ' + tenDang;
 
-    if (dat) themXu(1);
-    el.mungPhu.textContent = dat
-      ? 'Đúng ' + p.diem + '/' + max + '. Em nhận được 1 xu 🪙'
-      : 'Đúng ' + p.diem + '/' + max + '. Cần ' + can + '/' + max + ' để hoàn thành, em làm lại nhé.';
+    if (p.xu > 0) themXu(p.xu);
+    el.mungPhu.textContent = 'Đúng ' + p.diem + '/' + max +
+      (p.xu > 0 ? ', nhận được ' + p.xu + ' xu 🪙' : '') +
+      (dat ? '.' : '. Cần ' + can + '/' + max + ' để hoàn thành, em làm lại nhé.');
 
     cuPhanUng(el.cuMung, dat);
     el.mung.hidden = false;
@@ -659,11 +665,11 @@
     el.hangDiem.innerHTML =
       '<div class="mon mon--diem">' +
         '<span class="mon__hinh">🎟️</span>' +
-        '<div class="mon__chu"><b>Một điểm cộng</b>' +
-          '<small>Đổi lấy 1 điểm cộng khi kiểm tra. Em đã đổi được ' +
-          vi.phieu + ' điểm.</small></div>' +
-        '<button class="mon__nut' + (vi.xu >= GIA_DIEM_CONG ? '' : ' is-thieu') +
-          '" data-diem="1">🪙 ' + GIA_DIEM_CONG + '</button>' +
+        '<div class="mon__chu"><b>Điểm cộng</b>' +
+          '<small>Em đã đổi được ' + vi.phieu + ' điểm cộng. ' +
+          'Lần sau giá ' + (giaDiemCong() + DIEM_TANG) + ' xu.</small></div>' +
+        '<button class="mon__nut' + (vi.xu >= giaDiemCong() ? '' : ' is-thieu') +
+          '" data-diem="1">🪙 ' + giaDiemCong() + '</button>' +
       '</div>';
 
     el.hangDo.innerHTML = HANG.map(function (h) {
@@ -698,12 +704,12 @@
     if (!b) return;
 
     if (b.dataset.diem) {
-      if (vi.xu < GIA_DIEM_CONG) { nhacThieu(b); return; }
-      vi.xu -= GIA_DIEM_CONG;
+      if (vi.xu < giaDiemCong()) { nhacThieu(b); return; }
+      vi.xu -= giaDiemCong();
       vi.phieu += 1;
       ghiVi(); veCho();
-      alert('Em đã đổi được 1 điểm cộng. Nhớ cho thầy cô xem màn hình này nhé.\n'
-            + 'Tổng điểm cộng đã đổi: ' + vi.phieu);
+      phaoGiay(el.phaoHoc, 40);
+      alert('Em đã đổi được 1 điểm cộng. Tổng cộng: ' + vi.phieu + ' điểm cộng.');
       return;
     }
 

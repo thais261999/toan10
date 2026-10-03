@@ -23,12 +23,12 @@ service cloud.firestore {
 
       // Học sinh tự ghi tiến độ, nhưng:
       //  - không được tự duyệt cho mình
-      //  - xu mỗi lần ghi chỉ được tăng tối đa 1
+      //  - xu mỗi lần ghi chỉ được tăng tối đa 50
       allow update: if request.auth != null
         && request.auth.uid == uid
         && resource.data.duyet == true
         && request.resource.data.duyet == resource.data.duyet
-        && request.resource.data.xu <= resource.data.xu + 1
+        && request.resource.data.xu <= resource.data.xu + 50
         && request.resource.data.soBai <= resource.data.soBai + 1;
 
       // Thầy cô duyệt, loại
