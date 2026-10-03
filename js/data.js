@@ -171,16 +171,6 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Chỉ câu đầu là câu khẳng định xác định được đúng sai.` },
 
-        { muc: 1, de: L`Mệnh đề nào sau đây sai?`,
-          dapan: [
-            L`$\pi \gt 3{,}15$`,
-            L`$\pi \gt 3$`,
-            L`$\pi \lt 4$`,
-            L`$\pi$ là số vô tỉ`
-          ],
-          dung: 0,
-          giai: L`$\pi \approx 3{,}14159$ nên $\pi \lt 3{,}15$.` },
-
         { muc: 1, de: L`Trong các mệnh đề sau, mệnh đề nào đúng?`,
           dapan: [
             L`$6$ chia hết cho $3$`,
