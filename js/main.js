@@ -140,7 +140,6 @@
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
    'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
    'cho','choDong','choXu','cuCho','hangDiem','hangDo','btnRa',
-   'btnCai','mach','machDong',
    'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
    'nutKhai','khaiTen','khaiLop','khaiBao','choChu',
    'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
@@ -824,48 +823,6 @@
   el.nutRaPhu.addEventListener('click', function () { FB.ra().then(function(){ location.reload(); }); });
   el.btnRa.addEventListener('click', function () {
     if (confirm('Đăng xuất khỏi tài khoản này?')) FB.ra().then(function(){ location.reload(); });
-  });
-
-  /* ============================================================
-     CÀI APP VÀO MÀN HÌNH CHÍNH
-     ============================================================ */
-  var loiMoiCai = null;
-
-  window.addEventListener('beforeinstallprompt', function (e) {
-    e.preventDefault();
-    loiMoiCai = e;
-    el.btnCai.hidden = false;
-  });
-
-  el.btnCai.addEventListener('click', function () {
-    if (!loiMoiCai) return;
-    loiMoiCai.prompt();
-    loiMoiCai.userChoice.then(function () {
-      loiMoiCai = null;
-      el.btnCai.hidden = true;
-    });
-  });
-
-  window.addEventListener('appinstalled', function () {
-    el.btnCai.hidden = true;
-    try { localStorage.setItem('toan10-dacai', '1'); } catch (e) {}
-  });
-
-  /* iPhone không cho cài bằng nút, phải chỉ các em cách làm thủ công */
-  (function () {
-    var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    var daMo = window.navigator.standalone === true ||
-               (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
-    var daAn = false;
-    try { daAn = localStorage.getItem('toan10-anmach') === '1'; } catch (e) {}
-    if (iOS && !daMo && !daAn) {
-      setTimeout(function () { el.mach.hidden = false; }, 2500);
-    }
-  })();
-
-  el.machDong.addEventListener('click', function () {
-    el.mach.hidden = true;
-    try { localStorage.setItem('toan10-anmach', '1'); } catch (e) {}
   });
 
   /* ============================================================
