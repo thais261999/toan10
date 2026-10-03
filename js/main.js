@@ -264,8 +264,8 @@
      Đúng sai phải đúng trọn cả bốn ý mới được tính. */
   var XU_CAU = { tracnghiem: 1, dungsai: 5, traloingan: 5 };
 
-  /* Điểm cộng đắt dần: lần đầu 200 xu, mỗi lần sau thêm 50. */
-  var DIEM_DAU = 200, DIEM_TANG = 50;
+  /* Điểm cộng đắt dần: lần đầu 200 xu, mỗi lần sau thêm 100. */
+  var DIEM_DAU = 200, DIEM_TANG = 100;
   function giaDiemCong() { return DIEM_DAU + DIEM_TANG * (vi.phieu || 0); }
 
   var HANG = [
