@@ -71,16 +71,6 @@ const CHUONG_TRINH = [
         dung: 0,
         giai: L`Mệnh đề đảo của $P \Rightarrow Q$ là $Q \Rightarrow P$. Lưu ý mệnh đề đảo này sai, chẳng hạn với $n = 9$.` },
 
-        { muc: 1, de: L`Câu nào sau đây là một mệnh đề?`,
-          dapan: [
-            L`Số $7$ là số nguyên tố.`,
-            L`Bạn có khoẻ không?`,
-            L`Hãy làm bài tập đi!`,
-            L`Ôi, đẹp quá!`
-          ],
-          dung: 0,
-          giai: L`Mệnh đề là câu khẳng định có tính đúng hoặc sai, không phải câu hỏi hay câu cảm thán.` },
-
         { muc: 1, de: L`Câu nào sau đây <strong>không</strong> phải là mệnh đề?`,
           dapan: [
             L`Hôm nay trời đẹp quá!`,
@@ -90,16 +80,6 @@ const CHUONG_TRINH = [
           ],
           dung: 0,
           giai: L`Câu cảm thán không khẳng định điều gì nên không phải mệnh đề.` },
-
-        { muc: 1, de: L`Mệnh đề nào sau đây đúng?`,
-          dapan: [
-            L`$2^3 = 8$`,
-            L`$3^2 = 8$`,
-            L`$\sqrt{9} = -3$`,
-            L`$0$ là số nguyên tố`
-          ],
-          dung: 0,
-          giai: L`$2^3 = 8$. Còn $3^2 = 9$, $\sqrt{9} = 3$ và $0$ không phải số nguyên tố.` },
 
         { muc: 1, de: L`Mệnh đề nào sau đây sai?`,
           dapan: [
@@ -130,26 +110,6 @@ const CHUONG_TRINH = [
           ],
           dung: 0,
           giai: L`Thay $x = 2$ được $4 - 6 + 2 = 0$, đẳng thức đúng.` },
-
-        { muc: 1, de: L`Mệnh đề nào sau đây đúng?`,
-          dapan: [
-            L`$5$ là số nguyên tố`,
-            L`$1$ là số nguyên tố`,
-            L`$9$ là số nguyên tố`,
-            L`$15$ là số nguyên tố`
-          ],
-          dung: 0,
-          giai: L`Số nguyên tố là số tự nhiên lớn hơn $1$ và chỉ có hai ước. $9 = 3^2$, $15 = 3 \cdot 5$.` },
-
-        { muc: 1, de: L`Trong các câu sau, câu nào là mệnh đề đúng?`,
-          dapan: [
-            L`Tổng ba góc trong một tam giác bằng $180^\circ$`,
-            L`Mọi số tự nhiên đều là số nguyên tố`,
-            L`Số $0$ là số nguyên dương`,
-            L`$\sqrt{2}$ là số hữu tỉ`
-          ],
-          dung: 0,
-          giai: L`Ba khẳng định còn lại đều sai, chẳng hạn $4$ không phải số nguyên tố.` },
 
         { muc: 1, de: L`Mệnh đề “$17$ là số chẵn” có tính đúng sai là`,
           dapan: [
@@ -381,16 +341,6 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Chia hết cho $6$ kéo theo chia hết cho $3$, nhưng chiều ngược lại không đúng.` },
 
-        { muc: 3, de: L`Mệnh đề “Nếu $n$ là số nguyên tố lớn hơn $2$ thì $n$ là số lẻ” là mệnh đề`,
-          dapan: [
-            L`đúng`,
-            L`sai`,
-            L`không xác định`,
-            L`chỉ đúng với $n \lt 10$`
-          ],
-          dung: 0,
-          giai: L`Số nguyên tố chẵn duy nhất là $2$, nên mọi số nguyên tố lớn hơn $2$ đều lẻ.` },
-
         { muc: 3, de: L`Mệnh đề đảo của “Hai tam giác bằng nhau thì có diện tích bằng nhau” là mệnh đề`,
           dapan: [
             L`sai`,
@@ -577,16 +527,6 @@ const CHUONG_TRINH = [
           dung: [true, false, true, true],
           giai: L`Với $m = 3$ thì $A = [3;6]$, mà $6 \notin B$ nên ý b) sai.` },
 
-        { muc: 1, de: L`Xét các câu sau.`,
-          y: [
-            L`“Số $2$ là số nguyên tố chẵn duy nhất” là mệnh đề đúng`,
-            L`“$x + 2 = 5$” là mệnh đề chứa biến`,
-            L`“Hãy giải phương trình này!” là một mệnh đề`,
-            L`“$\sqrt{4} = 2$” là mệnh đề đúng`
-          ],
-          dung: [true, true, false, true],
-          giai: L`Câu cầu khiến không khẳng định điều gì nên không phải mệnh đề.` },
-
         { muc: 1, de: L`Cho $A = \{0;1;2;3;4\}$ và $B = \{x \in \mathbb{N} \mid x \le 2\}$.`,
           y: [
             L`$B = \{0;1;2\}$`,
@@ -676,10 +616,6 @@ const CHUONG_TRINH = [
         { muc: 2, de: L`Một tập hợp có $5$ phần tử thì có bao nhiêu tập con gồm đúng ba phần tử?`,
           dapan: '10',
           giai: L`Chọn $3$ trong $5$ phần tử, có $10$ cách.` },
-
-        { muc: 1, de: L`Trong bốn câu sau có bao nhiêu mệnh đề đúng: “$2$ là số nguyên tố”, “$4$ là số nguyên tố”, “$6$ chia hết cho $3$”, “$9$ là số chính phương”?`,
-          dapan: '3',
-          giai: L`Chỉ câu “$4$ là số nguyên tố” sai vì $4 = 2 \times 2$.` },
 
         { muc: 3, de: L`Cho $n(A) = 10$, $n(B) = 7$ và $n(A \cap B) = 4$. Khi đó $n(A \cup B)$ bằng bao nhiêu?`,
           dapan: '13',
