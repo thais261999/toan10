@@ -264,20 +264,20 @@
      Đúng sai phải đúng trọn cả bốn ý mới được tính. */
   var XU_CAU = { tracnghiem: 1, dungsai: 5, traloingan: 5 };
 
-  /* Điểm cộng đắt dần: lần đầu 100 xu, mỗi lần sau thêm 50. */
-  var DIEM_DAU = 100, DIEM_TANG = 50;
+  /* Điểm cộng đắt dần: lần đầu 200 xu, mỗi lần sau thêm 50. */
+  var DIEM_DAU = 200, DIEM_TANG = 50;
   function giaDiemCong() { return DIEM_DAU + DIEM_TANG * (vi.phieu || 0); }
 
   var HANG = [
-    { ma: 'mu',    ten: 'Mũ tốt nghiệp', gia: 30 },
-    { ma: 'kinh',  ten: 'Kính cận',      gia: 50 },
-    { ma: 'khan',  ten: 'Khăn quàng',    gia: 80 },
-    { ma: 'but',   ten: 'Bút chì',       gia: 120 },
-    { ma: 'huy',   ten: 'Huy chương',    gia: 170 },
-    { ma: 'sach',  ten: 'Quyển sách',    gia: 230 },
-    { ma: 'sao',   ten: 'Ngôi sao',      gia: 300 },
-    { ma: 'ao',    ten: 'Áo choàng',     gia: 400 },
-    { ma: 'vuong', ten: 'Vương miện',    gia: 600 }
+    { ma: 'mu',    ten: 'Mũ tốt nghiệp', gia: 200 },
+    { ma: 'kinh',  ten: 'Kính cận',      gia: 300 },
+    { ma: 'khan',  ten: 'Khăn quàng',    gia: 450 },
+    { ma: 'but',   ten: 'Bút chì',       gia: 600 },
+    { ma: 'huy',   ten: 'Huy chương',    gia: 800 },
+    { ma: 'sach',  ten: 'Quyển sách',    gia: 1000 },
+    { ma: 'sao',   ten: 'Ngôi sao',      gia: 1300 },
+    { ma: 'ao',    ten: 'Áo choàng',     gia: 1700 },
+    { ma: 'vuong', ten: 'Vương miện',    gia: 2500 }
   ];
 
   function docVi() {
@@ -673,8 +673,7 @@
       '<div class="mon mon--diem">' +
         '<span class="mon__hinh">🎟️</span>' +
         '<div class="mon__chu"><b>Điểm cộng</b>' +
-          '<small>Em đã đổi được ' + vi.phieu + ' điểm cộng. ' +
-          'Lần sau giá ' + (giaDiemCong() + DIEM_TANG) + ' xu.</small></div>' +
+          '<small>Em đã đổi được ' + vi.phieu + ' điểm cộng.</small></div>' +
         '<button class="mon__nut' + (vi.xu >= giaDiemCong() ? '' : ' is-thieu') +
           '" data-diem="1">🪙 ' + giaDiemCong() + '</button>' +
       '</div>';
