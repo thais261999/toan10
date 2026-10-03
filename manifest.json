@@ -1,17 +1,15 @@
 {
-  "name": "Tự học Toán 10",
   "short_name": "Toán 10",
-  "description": "Lộ trình tự học Toán lớp 10 theo Chương trình GDPT 2018, bốn dạng bài theo định dạng thi mới.",
-  "lang": "vi",
-  "start_url": "./index.html",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#f7f8fc",
-  "theme_color": "#5a4fe0",
+  "name": "Lớp Toán 10 - Thầy Thái",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
-  ]
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3429/3429149.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#0d6efd",
+  "theme_color": "#0d6efd",
+  "display": "standalone"
 }
