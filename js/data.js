@@ -251,15 +251,6 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`$x^2 \ge 0$ nên $x^2 + 1 \ge 1 \gt 0$ với mọi $x$, do đó $P$ đúng và phủ định của nó sai.` },
 
-        { muc: 1, de: L`Mệnh đề $P \Rightarrow Q$ sai trong trường hợp nào?`,
-          dapan: [
-            L`$P$ đúng và $Q$ sai`,
-            L`$P$ sai và $Q$ đúng`,
-            L`$P$ sai và $Q$ sai`,
-            L`$P$ đúng và $Q$ đúng`
-          ],
-          dung: 0,
-          giai: L`Mệnh đề kéo theo chỉ sai khi giả thiết đúng mà kết luận sai.` },
 
         { muc: 2, de: L`Mệnh đề đảo của “Nếu tứ giác $ABCD$ là hình vuông thì nó là hình chữ nhật” là`,
           dapan: [
@@ -283,15 +274,6 @@ const CHUONG_TRINH = [
 
 
 
-        { muc: 2, de: L`Mệnh đề $P \Leftrightarrow Q$ đúng khi và chỉ khi`,
-          dapan: [
-            L`$P$ và $Q$ cùng đúng hoặc cùng sai`,
-            L`$P$ đúng và $Q$ sai`,
-            L`$P$ sai và $Q$ đúng`,
-            L`$P$ đúng, không phụ thuộc $Q$`
-          ],
-          dung: 0,
-          giai: L`Tương đương nghĩa là hai mệnh đề cùng tính đúng sai.` },
 
         { muc: 3, de: L`Mệnh đề nào sau đây tương đương với mệnh đề $x^2 = 4$ (với $x \in \mathbb{R}$)?`,
           dapan: [
@@ -336,9 +318,9 @@ const CHUONG_TRINH = [
           y: [L`Mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là mệnh đề đúng`,
               L`Mệnh đề $\exists x \in \mathbb{R},\ x^2 = -1$ là mệnh đề đúng`,
               L`Phủ định của $\exists x \in \mathbb{R},\ x \gt 2$ là $\forall x \in \mathbb{R},\ x \le 2$`,
-              L`Mệnh đề $P \Rightarrow Q$ sai khi $P$ sai và $Q$ đúng`],
+              L`Phủ định của $\forall x \in \mathbb{R},\ x^2 \ge 0$ là $\forall x \in \mathbb{R},\ x^2 \lt 0$`],
           dung: [true, false, true, false],
-          giai: L`Ý b) sai vì $x^2 \ge 0$ với mọi $x$. Ý d) sai vì $P \Rightarrow Q$ chỉ sai khi $P$ đúng mà $Q$ sai.` },
+          giai: L`Ý b) sai vì $x^2 \ge 0$ với mọi $x$. Ý d) sai vì phủ định của “với mọi” phải là “tồn tại”.` },
 
         { muc: 1, de: L`Cho $A = \{1;2;3;4;5;6\}$ và $B = \{2;4;6;8\}$.`,
           y: [
