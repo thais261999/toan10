@@ -90,8 +90,33 @@
     return de.sort(theoMuc);
   }
 
+  /* Đề có cấu trúc cố định: mỗi câu một dạng, theo đúng thứ tự ghi
+     trong deCoDinh. Dùng cho đề ôn tập, để lần nào cũng đủ các dạng
+     và đúng vị trí, chỉ số liệu là đổi. */
+  function rutCoDinh(ch, ma) {
+    var kho = (window.SINH && SINH.co(ch.id, ma)) ? SINH.ra(ch.id, ma, 80) : [];
+    kho = kho.concat((ch.cauhoi[ma] || []).slice());
+
+    var theo = {};
+    kho.forEach(function (q) {
+      if (!q.dang) return;
+      if (!theo[q.dang]) theo[q.dang] = [];
+      theo[q.dang].push(q);
+    });
+
+    var de = [], du = xaoMang(kho.slice());
+    ch.deCoDinh.forEach(function (d) {
+      var nhom = theo[d], q = null;
+      if (nhom && nhom.length) q = nhom.splice(Math.floor(Math.random() * nhom.length), 1)[0];
+      if (!q) q = du.pop();          /* thiếu mẫu thì bù tạm, không để đề hụt câu */
+      if (q) de.push(q);
+    });
+    return de;
+  }
+
   function rutDe(ch, ma) {
     var n = soCauRut(ma);
+    if (ch.deCoDinh && ma === 'tracnghiem') return rutCoDinh(ch, ma);
 
     // Có bộ sinh đề cho chương này thì lấy từ đó, số liệu mỗi lần một khác
     var kho;
@@ -478,7 +503,7 @@
       var dai = document.createElement('div');
       dai.className = 'dai';
       dai.innerHTML =
-        '<span class="dai__so">Chương ' + CHU_SO[ic] + '</span>' +
+        '<span class="dai__so">' + (ch.nhan || ('Chương ' + CHU_SO[ic])) + '</span>' +
         '<h2>' + ch.ten + '</h2>';
       el.duong.appendChild(dai);
 
@@ -486,13 +511,17 @@
       nhom.className = 'nhom';
 
       DANG.forEach(function (d, ix) {
-        var co = (ch.cauhoi[d.ma] || []).length;
+        var loiKhoa = ch.khoa && ch.khoa[d.ma];
+        var co = (ch.cauhoi[d.ma] || []).length ||
+                 (window.SINH && SINH.co(ch.id, d.ma));
 
         nhom.appendChild(veMuc({
           i: ix,
-          trangThai: 'mo',
-          hieu: d.hieu, ten: d.ten,
+          trangThai: loiKhoa ? 'khoa' : 'mo',
+          hieu: loiKhoa ? '🔒' : d.hieu,
+          ten: d.ten,
           bam: function () {
+            if (loiKhoa) { alert(loiKhoa); return; }
             if (!co) { alert('Dạng này chưa có câu hỏi. Thầy cô thêm vào js/data.js nhé.'); return; }
             batDau(ch, d.ma);
           }
@@ -694,7 +723,7 @@
     var tenDang = DANG.filter(function (d) { return d.ma === ma; })[0].ten;
 
     el.mungTieu.textContent = dat ? 'Hoàn thành!' : 'Chưa hoàn thành';
-    el.mungTen.textContent = 'Chương ' + CHU_SO[ic] + ' · ' + tenDang;
+    el.mungTen.textContent = (ch.nhan ? ch.ten : 'Chương ' + CHU_SO[ic]) + ' · ' + tenDang;
 
     if (p.xu > 0) themXu(p.xu);
     el.mungPhu.textContent = 'Đúng ' + p.diem + '/' + max +

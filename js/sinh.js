@@ -763,10 +763,303 @@
     }
   ];
 
+
+  /* ============================================================
+     ÔN TẬP GIỮA KÌ I — đề trắc nghiệm 10 câu, cấu trúc cố định
+     Mỗi mẫu gắn một nhãn dang, main.js rút đúng một câu cho mỗi
+     nhãn theo thứ tự ghi trong deCoDinh ở js/data.js.
+     ============================================================ */
+
+  /* Mượn lại mẫu đã có ở chương I, II rồi đóng nhãn cho đúng chỗ */
+  function gan(dang, mau) {
+    return function () { var q = mau(); q.dang = dang; return q; };
+  }
+
+  /* ---------- Bất phương trình: hỏi ngược lại ---------- */
+
+  /* Cặp số cho trước là nghiệm của bất phương trình NÀO */
+  function bptNao() {
+    var x = ri(-3, 5), y = ri(-3, 5), lan = 0, dung = null, nhieu = [];
+    while (nhieu.length < 3 && lan++ < 200) {
+      var a = chon([1, 2, 3, -1, -2]), b = chon([1, 2, 3, -1, -2]), c = ri(-8, 12);
+      var t = '$' + veTrai(a, b) + ' \\le ' + c + '$';
+      var thoa = a * x + b * y <= c;
+      if (thoa && !dung) dung = t;
+      else if (!thoa && nhieu.indexOf(t) === -1 && t !== dung) nhieu.push(t);
+    }
+    if (!dung || nhieu.length < 3) return bptNghiem();
+    return { muc: 2, dang: 'bpt-nghiem',
+      de: 'Cặp số $(' + x + ';\\,' + y + ')$ là nghiệm của bất phương trình nào sau đây?',
+      dapan: bon(dung, nhieu), dung: 0,
+      giai: 'Thay $x = ' + x + '$, $y = ' + y + '$ vào từng vế trái, chỉ bất phương trình này cho kết quả thoả mãn.' };
+  }
+  function bptNghiem() { var q = C2_TN[2](); q.dang = 'bpt-nghiem'; return q; }
+
+  /* Cặp số cho trước là nghiệm của HỆ nào */
+  function heNao() {
+    var x = ri(0, 6), y = ri(0, 6), lan = 0, dung = null, nhieu = [];
+    function he(a, b, c) {
+      return '$\\begin{cases} x \\ge 0 \\\\ y \\ge 0 \\\\ ' + veTrai(a, b) + ' \\le ' + c + ' \\end{cases}$';
+    }
+    while (nhieu.length < 3 && lan++ < 200) {
+      var a = chon([1, 2, 3]), b = chon([1, 2, 3]), c = ri(3, 16);
+      var t = he(a, b, c), thoa = a * x + b * y <= c;
+      if (thoa && !dung) dung = t;
+      else if (!thoa && nhieu.indexOf(t) === -1 && t !== dung) nhieu.push(t);
+    }
+    if (!dung || nhieu.length < 3) { var q = C2_TN[6](); q.dang = 'he-nghiem'; return q; }
+    return { muc: 2, dang: 'he-nghiem',
+      de: 'Cặp số $(' + x + ';\\,' + y + ')$ là nghiệm của hệ bất phương trình nào sau đây?',
+      dapan: bon(dung, nhieu), dung: 0,
+      giai: 'Cặp số này không âm nên luôn thoả hai điều kiện đầu, chỉ cần xét bất phương trình thứ ba.' };
+  }
+
+  /* Bất phương trình / hệ nào KHÔNG phải bậc nhất hai ẩn */
+  function khongPhaiBpt() {
+    var a = ri(2, 6), b = ri(2, 6), c = ri(-8, 12);
+    var sai = chon(['$x^2 + ' + b + 'y \\le ' + c + '$',
+                    '$' + a + 'xy \\ge ' + c + '$',
+                    '$' + a + 'x + \\dfrac{' + b + '}{y} \\lt ' + c + '$',
+                    '$' + a + 'x^2 + ' + b + 'y^2 \\gt ' + c + '$']);
+    return { muc: 1, dang: 'bpt-nhandang',
+      de: 'Bất phương trình nào sau đây <strong>không</strong> phải là bất phương trình bậc nhất hai ẩn?',
+      dapan: bon(sai, ['$' + veTrai(ri(1, 5), chon([1, 2, 3, -1, -2])) + ' \\le ' + c + '$',
+                       '$' + veTrai(ri(1, 4), chon([1, 2, -1, -3])) + ' \\gt ' + ri(-6, 9) + '$',
+                       '$' + veTrai(ri(2, 6), chon([1, 4, -2])) + ' \\ge ' + ri(-5, 10) + '$']),
+      dung: 0,
+      giai: 'Bậc nhất hai ẩn thì mỗi ẩn chỉ có số mũ $1$: không có $x^2$, không nhân $x$ với $y$, không có ẩn dưới mẫu.' };
+  }
+
+  /* ---------- Lượng giác ---------- */
+
+  /* Bảng giá trị lượng giác của các góc đặc biệt.
+     Chỉ liệt kê những ô có giá trị, bỏ các ô không xác định. */
+  var BANG_LG = {
+    sin: { 0:'0', 30:'\\dfrac{1}{2}', 45:'\\dfrac{1}{\\sqrt{2}}', 60:'\\dfrac{\\sqrt{3}}{2}', 90:'1',
+           120:'\\dfrac{\\sqrt{3}}{2}', 135:'\\dfrac{1}{\\sqrt{2}}', 150:'\\dfrac{1}{2}', 180:'0' },
+    cos: { 0:'1', 30:'\\dfrac{\\sqrt{3}}{2}', 45:'\\dfrac{1}{\\sqrt{2}}', 60:'\\dfrac{1}{2}', 90:'0',
+           120:'-\\dfrac{1}{2}', 135:'-\\dfrac{1}{\\sqrt{2}}', 150:'-\\dfrac{\\sqrt{3}}{2}', 180:'-1' },
+    tan: { 0:'0', 30:'\\dfrac{1}{\\sqrt{3}}', 45:'1', 60:'\\sqrt{3}',
+           120:'-\\sqrt{3}', 135:'-1', 150:'-\\dfrac{1}{\\sqrt{3}}', 180:'0' },
+    cot: { 30:'\\sqrt{3}', 45:'1', 60:'\\dfrac{1}{\\sqrt{3}}', 90:'0',
+           120:'-\\dfrac{1}{\\sqrt{3}}', 135:'-1', 150:'-\\sqrt{3}' }
+  };
+  var GIA_TRI_LG = ['0', '1', '-1', '\\dfrac{1}{2}', '-\\dfrac{1}{2}',
+    '\\dfrac{\\sqrt{3}}{2}', '-\\dfrac{\\sqrt{3}}{2}', '\\dfrac{1}{\\sqrt{2}}', '-\\dfrac{1}{\\sqrt{2}}',
+    '\\sqrt{3}', '-\\sqrt{3}', '\\dfrac{1}{\\sqrt{3}}', '-\\dfrac{1}{\\sqrt{3}}'];
+
+  function lgBang() {
+    var ham = chon(['sin', 'cos', 'tan', 'cot']);
+    var gocs = Object.keys(BANG_LG[ham]);
+    var goc = chon(gocs);
+    var dung = BANG_LG[ham][goc];
+    var con = GIA_TRI_LG.filter(function (v) { return v !== dung; });
+    return { muc: 1, dang: 'lg-bang',
+      de: 'Giá trị của $\\' + ham + ' ' + goc + '^\\circ$ bằng',
+      dapan: bon('$' + dung + '$', xaoM(con.slice()).slice(0, 3).map(function (v) { return '$' + v + '$'; })),
+      dung: 0,
+      giai: 'Tra bảng giá trị lượng giác của các góc đặc biệt: $\\' + ham + ' ' + goc +
+            '^\\circ = ' + dung + '$.' };
+  }
+
+  /* Hai góc phụ nhau và hai góc bù nhau */
+  var CAP_GOC = [
+    { de: '\\sin(90^\\circ - \\alpha)',  dung: '\\cos\\alpha',  nhieu: ['\\sin\\alpha', '-\\cos\\alpha', '\\tan\\alpha'] },
+    { de: '\\cos(90^\\circ - \\alpha)',  dung: '\\sin\\alpha',  nhieu: ['\\cos\\alpha', '-\\sin\\alpha', '\\cot\\alpha'] },
+    { de: '\\tan(90^\\circ - \\alpha)',  dung: '\\cot\\alpha',  nhieu: ['\\tan\\alpha', '-\\tan\\alpha', '\\sin\\alpha'] },
+    { de: '\\cot(90^\\circ - \\alpha)',  dung: '\\tan\\alpha',  nhieu: ['\\cot\\alpha', '-\\cot\\alpha', '\\cos\\alpha'] },
+    { de: '\\sin(180^\\circ - \\alpha)', dung: '\\sin\\alpha',  nhieu: ['-\\sin\\alpha', '\\cos\\alpha', '-\\cos\\alpha'] },
+    { de: '\\cos(180^\\circ - \\alpha)', dung: '-\\cos\\alpha', nhieu: ['\\cos\\alpha', '\\sin\\alpha', '-\\sin\\alpha'] },
+    { de: '\\tan(180^\\circ - \\alpha)', dung: '-\\tan\\alpha', nhieu: ['\\tan\\alpha', '\\cot\\alpha', '-\\cot\\alpha'] },
+    { de: '\\cot(180^\\circ - \\alpha)', dung: '-\\cot\\alpha', nhieu: ['\\cot\\alpha', '\\tan\\alpha', '-\\tan\\alpha'] }
+  ];
+  function lgGoc() {
+    var c = chon(CAP_GOC);
+    var phu = c.de.indexOf('90') !== -1;
+    return { muc: 1, dang: 'lg-goc',
+      de: 'Với $0^\\circ \\lt \\alpha \\lt 90^\\circ$, ta có $' + c.de + '$ bằng',
+      dapan: bon('$' + c.dung + '$', c.nhieu.map(function (v) { return '$' + v + '$'; })),
+      dung: 0,
+      giai: phu ? 'Hai góc phụ nhau: sin đổi thành côsin, tang đổi thành côtang.'
+                : 'Hai góc bù nhau: chỉ có sin giữ nguyên dấu, ba giá trị còn lại đổi dấu.' };
+  }
+
+  /* Định lí sin, định lí côsin và các công thức diện tích */
+  var CONG_THUC = [
+    { de: 'Định lí côsin trong tam giác $ABC$ viết là',
+      dung: '$a^2 = b^2 + c^2 - 2bc\\cos A$',
+      nhieu: ['$a^2 = b^2 + c^2 + 2bc\\cos A$', '$a^2 = b^2 + c^2 - 2bc\\sin A$',
+              '$a^2 = b^2 - c^2 - 2bc\\cos A$'],
+      giai: 'Định lí côsin: bình phương một cạnh bằng tổng bình phương hai cạnh kia trừ hai lần tích hai cạnh đó nhân côsin góc xen giữa.' },
+    { de: 'Theo định lí sin trong tam giác $ABC$, tỉ số $\\dfrac{a}{\\sin A}$ bằng',
+      dung: '$2R$', nhieu: ['$R$', '$\\dfrac{R}{2}$', '$4R$'],
+      giai: 'Định lí sin: $\\dfrac{a}{\\sin A} = \\dfrac{b}{\\sin B} = \\dfrac{c}{\\sin C} = 2R$.' },
+    { de: 'Công thức nào sau đây tính đúng diện tích tam giác $ABC$?',
+      dung: '$S = \\dfrac{1}{2}ab\\sin C$',
+      nhieu: ['$S = \\dfrac{1}{2}ab\\cos C$', '$S = ab\\sin C$', '$S = \\dfrac{1}{2}ab\\tan C$'],
+      giai: 'Diện tích bằng nửa tích hai cạnh nhân sin góc xen giữa hai cạnh đó.' },
+    { de: 'Với $R$ là bán kính đường tròn ngoại tiếp, diện tích tam giác $ABC$ bằng',
+      dung: '$S = \\dfrac{abc}{4R}$', nhieu: ['$S = \\dfrac{abc}{2R}$', '$S = \\dfrac{abc}{R}$', '$S = \\dfrac{4R}{abc}$'],
+      giai: 'Công thức $S = \\dfrac{abc}{4R}$.' },
+    { de: 'Trong công thức $S = pr$ thì $p$ và $r$ lần lượt là',
+      dung: 'nửa chu vi và bán kính đường tròn nội tiếp',
+      nhieu: ['chu vi và bán kính đường tròn nội tiếp',
+              'nửa chu vi và bán kính đường tròn ngoại tiếp',
+              'chu vi và bán kính đường tròn ngoại tiếp'],
+      giai: '$p$ là nửa chu vi, $r$ là bán kính đường tròn nội tiếp.' },
+    { de: 'Công thức Heron tính diện tích tam giác $ABC$ là',
+      dung: '$S = \\sqrt{p(p-a)(p-b)(p-c)}$',
+      nhieu: ['$S = \\sqrt{p(p+a)(p+b)(p+c)}$', '$S = p(p-a)(p-b)(p-c)$',
+              '$S = \\sqrt{(p-a)(p-b)(p-c)}$'],
+      giai: 'Công thức Heron dùng nửa chu vi $p$ và ba cạnh.' },
+    { de: 'Diện tích tam giác $ABC$ tính theo cạnh $a$ và đường cao $h_a$ là',
+      dung: '$S = \\dfrac{1}{2}ah_a$', nhieu: ['$S = ah_a$', '$S = \\dfrac{1}{3}ah_a$', '$S = \\dfrac{1}{2}a + h_a$'],
+      giai: 'Diện tích bằng nửa tích cạnh đáy với đường cao tương ứng.' }
+  ];
+  function lgDinhLy() {
+    var c = chon(CONG_THUC);
+    return { muc: 1, dang: 'lg-dinhly', de: c.de,
+      dapan: bon(c.dung, c.nhieu), dung: 0, giai: c.giai };
+  }
+
+  /* Thay số cụ thể vào công thức diện tích. Số liệu chọn sao cho
+     kết quả luôn là số nguyên, học sinh tính nhẩm được. */
+  var BO_BA = [[3,4,5],[6,8,10],[5,12,13],[9,12,15],[8,15,17],[7,24,25],[12,16,20]];
+  function dtTheSo() {
+    var k = ri(1, 5), q;
+    if (k === 1) {                                   /* S = 1/2 a h */
+      var a = 2 * ri(3, 11), h = ri(3, 14);
+      q = { de: 'Tam giác $ABC$ có cạnh $a = ' + a + '$ và đường cao $h_a = ' + h +
+                '$. Diện tích tam giác bằng',
+            dung: a * h / 2,
+            giai: '$S = \\dfrac{1}{2}ah_a = \\dfrac{1}{2}\\cdot' + a + '\\cdot' + h + ' = ' + (a * h / 2) + '$.' };
+    } else if (k === 2) {                            /* S = 1/2 ab sinC */
+      var goc = chon([30, 90, 150]), s = goc === 90 ? 1 : 0.5;
+      var b1 = 2 * ri(2, 9), b2 = 2 * ri(2, 9);
+      q = { de: 'Tam giác $ABC$ có $b = ' + b1 + '$, $c = ' + b2 + '$ và $\\widehat{A} = ' + goc +
+                '^\\circ$. Diện tích tam giác bằng',
+            dung: b1 * b2 * s / 2,
+            giai: '$S = \\dfrac{1}{2}bc\\sin A = \\dfrac{1}{2}\\cdot' + b1 + '\\cdot' + b2 +
+                  '\\cdot' + (goc === 90 ? '1' : '\\dfrac{1}{2}') + ' = ' + (b1 * b2 * s / 2) + '$.' };
+    } else if (k === 3) {                            /* Heron */
+      var t = chon(BO_BA), p = (t[0] + t[1] + t[2]) / 2;
+      var S = Math.round(Math.sqrt(p * (p - t[0]) * (p - t[1]) * (p - t[2])));
+      q = { de: 'Tam giác $ABC$ có ba cạnh $a = ' + t[0] + '$, $b = ' + t[1] + '$, $c = ' + t[2] +
+                '$. Diện tích tam giác bằng',
+            dung: S,
+            giai: 'Nửa chu vi $p = ' + p + '$, nên $S = \\sqrt{' + p + '\\cdot' + (p - t[0]) +
+                  '\\cdot' + (p - t[1]) + '\\cdot' + (p - t[2]) + '} = ' + S + '$.' };
+    } else if (k === 4) {                            /* S = pr */
+      var pp = ri(6, 20), rr = ri(2, 7);
+      q = { de: 'Tam giác $ABC$ có nửa chu vi $p = ' + pp +
+                '$ và bán kính đường tròn nội tiếp $r = ' + rr + '$. Diện tích tam giác bằng',
+            dung: pp * rr,
+            giai: '$S = pr = ' + pp + '\\cdot' + rr + ' = ' + (pp * rr) + '$.' };
+    } else {                                         /* S = abc / 4R, dùng tam giác vuông */
+      var u = chon(BO_BA), R = u[2] / 2;
+      var S2 = u[0] * u[1] / 2;
+      q = { de: 'Tam giác $ABC$ có ba cạnh $a = ' + u[0] + '$, $b = ' + u[1] + '$, $c = ' + u[2] +
+                '$ và bán kính đường tròn ngoại tiếp $R = ' + (R % 1 ? R.toString().replace('.', '{,}') : R) +
+                '$. Diện tích tam giác bằng',
+            dung: S2,
+            giai: '$S = \\dfrac{abc}{4R} = \\dfrac{' + u[0] + '\\cdot' + u[1] + '\\cdot' + u[2] +
+                  '}{4\\cdot' + (R % 1 ? R.toString().replace('.', '{,}') : R) + '} = ' + S2 + '$.' };
+    }
+    var d = q.dung;
+    return { muc: 2, dang: 'dt-theso', de: q.de,
+      dapan: bon(String(d), [String(d * 2), String(Math.round(d / 2)), String(d + ri(2, 9))]),
+      dung: 0, giai: q.giai };
+  }
+
+  /* Góc bù, góc phụ nhưng có số cụ thể, cho câu 8 phong phú hơn */
+  function lgGoc2() {
+    var k = ri(1, 3), q;
+    if (k === 1) {                                   /* hai góc bù nhau */
+      var g = chon([120, 135, 150]), b = 180 - g, ham = chon(['sin', 'cos', 'tan', 'cot']);
+      var daudoi = ham !== 'sin';
+      q = { de: 'Hai góc $' + g + '^\\circ$ và $' + b + '^\\circ$ bù nhau, nên $\\' + ham + ' ' + g + '^\\circ$ bằng',
+            dung: '$' + (daudoi ? '-' : '') + '\\' + ham + ' ' + b + '^\\circ$',
+            nhieu: ['$' + (daudoi ? '' : '-') + '\\' + ham + ' ' + b + '^\\circ$',
+                    '$\\' + (ham === 'sin' ? 'cos' : 'sin') + ' ' + b + '^\\circ$',
+                    '$-\\' + (ham === 'sin' ? 'cos' : 'sin') + ' ' + b + '^\\circ$'],
+            giai: 'Hai góc bù nhau: sin giữ nguyên, còn côsin, tang, côtang đều đổi dấu.' };
+    } else if (k === 2) {                            /* hai góc phụ nhau */
+      var g2 = chon([30, 45, 60]), p2 = 90 - g2;
+      var cap = chon([['sin', 'cos'], ['cos', 'sin'], ['tan', 'cot'], ['cot', 'tan']]);
+      q = { de: 'Hai góc $' + g2 + '^\\circ$ và $' + p2 + '^\\circ$ phụ nhau, nên $\\' + cap[0] + ' ' + g2 + '^\\circ$ bằng',
+            dung: '$\\' + cap[1] + ' ' + p2 + '^\\circ$',
+            nhieu: ['$\\' + cap[0] + ' ' + p2 + '^\\circ$', '$-\\' + cap[1] + ' ' + p2 + '^\\circ$',
+                    '$\\' + cap[1] + ' ' + g2 + '^\\circ$'],
+            giai: 'Hai góc phụ nhau: sin đổi thành côsin, tang đổi thành côtang.' };
+    } else {                                         /* cho sẵn giá trị rồi hỏi góc bù */
+      var v = chon(['\\dfrac{1}{2}', '\\dfrac{\\sqrt{3}}{2}', '\\dfrac{1}{\\sqrt{2}}']);
+      var am = '-' + v, giu = chon([true, false]);
+      q = { de: 'Biết $\\' + (giu ? 'sin' : 'cos') + '\\alpha = ' + v +
+                '$. Khi đó $\\' + (giu ? 'sin' : 'cos') + '(180^\\circ - \\alpha)$ bằng',
+            dung: '$' + (giu ? v : am) + '$',
+            nhieu: ['$' + (giu ? am : v) + '$', '$0$', '$1$'],
+            giai: giu ? 'Hai góc bù nhau thì sin bằng nhau.' : 'Hai góc bù nhau thì côsin đối nhau.' };
+    }
+    return { muc: 1, dang: 'lg-goc', de: q.de, dapan: bon(q.dung, q.nhieu), dung: 0, giai: q.giai };
+  }
+
+  /* Định lí sin, côsin nhưng thay số cụ thể, cho câu 9 phong phú hơn */
+  function lgDinhLy2() {
+    var k = ri(1, 3), q;
+    if (k === 1) {                                   /* định lí côsin, thay số */
+      var A = chon([60, 90, 120]), cosA = A === 60 ? 0.5 : A === 90 ? 0 : -0.5;
+      var b = ri(3, 12), c = ri(3, 12);
+      var a2 = b * b + c * c - 2 * b * c * cosA;
+      q = { de: 'Tam giác $ABC$ có $b = ' + b + '$, $c = ' + c + '$ và $\\widehat{A} = ' + A +
+                '^\\circ$. Theo định lí côsin, $a^2$ bằng',
+            dung: String(a2),
+            nhieu: [String(b * b + c * c + 2 * b * c * cosA), String(b * b + c * c), String(a2 + ri(3, 9))],
+            giai: '$a^2 = b^2 + c^2 - 2bc\\cos A = ' + (b * b) + ' + ' + (c * c) + ' - 2\\cdot' + b +
+                  '\\cdot' + c + '\\cdot(' + (A === 60 ? '\\dfrac{1}{2}' : A === 90 ? '0' : '-\\dfrac{1}{2}') +
+                  ') = ' + a2 + '$.' };
+    } else if (k === 2) {                            /* định lí sin, tìm R */
+      var a3 = 2 * ri(2, 10);
+      q = { de: 'Tam giác $ABC$ có $a = ' + a3 + '$ và $\\widehat{A} = 30^\\circ$. Bán kính đường tròn ngoại tiếp $R$ bằng',
+            dung: String(a3),
+            nhieu: [String(a3 / 2), String(a3 * 2), String(a3 + 2)],
+            giai: '$\\dfrac{a}{\\sin A} = 2R$ nên $2R = \\dfrac{' + a3 + '}{\\frac{1}{2}} = ' +
+                  (2 * a3) + '$, suy ra $R = ' + a3 + '$.' };
+    } else {                                         /* nửa chu vi */
+      var t = chon([[3,4,5],[6,8,10],[5,12,13],[9,12,15],[8,15,17],[7,24,25]]);
+      var p = (t[0] + t[1] + t[2]) / 2;
+      q = { de: 'Tam giác $ABC$ có ba cạnh $a = ' + t[0] + '$, $b = ' + t[1] + '$, $c = ' + t[2] +
+                '$. Nửa chu vi $p$ bằng',
+            dung: String(p),
+            nhieu: [String(2 * p), String(p + 1), String(p - 1)],
+            giai: '$p = \\dfrac{a+b+c}{2} = \\dfrac{' + (2 * p) + '}{2} = ' + p + '$.' };
+    }
+    return { muc: 1, dang: 'lg-dinhly', de: q.de, dapan: bon(q.dung, q.nhieu), dung: 0, giai: q.giai };
+  }
+
+  var OT1_TN = [
+    gan('md-nhandang', C1_TN[3]),
+    gan('md-dungsai',  C1_TN[5]),
+    gan('md-dungsai',  C1_TN[6]),
+    gan('bpt-nhandang', C2_TN[0]),
+    khongPhaiBpt,
+    bptNghiem,
+    gan('bpt-nghiem',  C2_TN[3]),
+    bptNao,
+    gan('he-nhandang', C2_TN[1]),
+    gan('he-nghiem',   C2_TN[6]),
+    gan('he-nghiem',   C2_TN[7]),
+    heNao,
+    lgBang, lgBang,
+    lgGoc,  lgGoc2, lgGoc2,
+    lgDinhLy, lgDinhLy2, lgDinhLy2,
+    dtTheSo, dtTheSo
+  ];
+
   /* ============================================================
      Bảng mẫu theo chương và theo dạng
      ============================================================ */
   var MAU = {
+    101: { tracnghiem: OT1_TN },
     1: { tracnghiem: C1_TN, dungsai: C1_DS, traloingan: C1_TLN },
     2: { tracnghiem: C2_TN, dungsai: C2_DS, traloingan: C2_TLN },
     3: { tracnghiem: C3_TN, dungsai: C3_DS, traloingan: C3_TLN }
