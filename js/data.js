@@ -51,17 +51,7 @@ const CHUONG_TRINH = [
         dung: 0,
         giai: L`Phủ định đổi $\forall$ thành $\exists$ và đổi $\ge$ thành $\lt$.` },
 
-        { muc: 1, de: L`Cho $A = \{1;\,2;\,3;\,4\}$ và $B = \{3;\,4;\,5\}$. Tập $A \setminus B$ bằng`,
-        dapan: [L`$\{1;\,2\}$`, L`$\{3;\,4\}$`, L`$\{5\}$`, L`$\{1;\,2;\,5\}$`],
-        dung: 0,
-        giai: L`$A \setminus B$ gồm các phần tử thuộc $A$ nhưng không thuộc $B$, đó là $1$ và $2$.` },
-
-        { muc: 2, de: L`Cho $A = [1;5)$ và $B = (3;7]$. Khi đó $A \cap B$ bằng`,
-        dapan: [L`$(3;5)$`, L`$[1;7]$`, L`$[1;3]$`, L`$[5;7]$`],
-        dung: 0,
-        giai: `Giao là phần chung của hai khoảng, lấy từ 3 không kể đến 5 không kể.` },
-
-        { muc: 3, de: L`Mệnh đề đảo của mệnh đề “Nếu $n$ chia hết cho $6$ thì $n$ chia hết cho $3$” là`,
+        { muc: 2, de: L`Mệnh đề đảo của mệnh đề “Nếu $n$ chia hết cho $6$ thì $n$ chia hết cho $3$” là`,
         dapan: [
           L`Nếu $n$ chia hết cho $3$ thì $n$ chia hết cho $6$`,
           L`Nếu $n$ không chia hết cho $6$ thì $n$ không chia hết cho $3$`,
@@ -241,7 +231,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Đổi lượng từ và phủ định bất đẳng thức.` },
 
-        { muc: 3, de: L`Xét mệnh đề $P: \forall x \in \mathbb{R},\ x^2 + 1 \gt 0$. Khẳng định nào đúng?`,
+        { muc: 2, de: L`Xét mệnh đề $P: \forall x \in \mathbb{R},\ x^2 + 1 \gt 0$. Khẳng định nào đúng?`,
           dapan: [
             L`$P$ đúng và phủ định của $P$ sai`,
             L`$P$ sai và phủ định của $P$ đúng`,
@@ -275,7 +265,7 @@ const CHUONG_TRINH = [
 
 
 
-        { muc: 3, de: L`Mệnh đề nào sau đây tương đương với mệnh đề $x^2 = 4$ (với $x \in \mathbb{R}$)?`,
+        { muc: 2, de: L`Mệnh đề nào sau đây tương đương với mệnh đề $x^2 = 4$ (với $x \in \mathbb{R}$)?`,
           dapan: [
             L`$x = 2$ hoặc $x = -2$`,
             L`$x = 2$`,
@@ -286,7 +276,7 @@ const CHUONG_TRINH = [
           giai: L`$x^2 = 4 \Leftrightarrow (x-2)(x+2) = 0$.` },
 
 
-        { muc: 3, de: L`Mệnh đề đảo của “Hai tam giác bằng nhau thì có diện tích bằng nhau” là mệnh đề`,
+        { muc: 2, de: L`Mệnh đề đảo của “Hai tam giác bằng nhau thì có diện tích bằng nhau” là mệnh đề`,
           dapan: [
             L`sai`,
             L`đúng`,
@@ -294,18 +284,7 @@ const CHUONG_TRINH = [
             L`không phải mệnh đề`
           ],
           dung: 0,
-          giai: L`Hai tam giác có cùng diện tích chưa chắc bằng nhau, chẳng hạn một tam giác $3 \times 4$ và một tam giác $2 \times 6$.` },
-
-        { muc: 3, de: L`Trong các mệnh đề sau, mệnh đề nào có mệnh đề đảo cũng đúng?`,
-          dapan: [
-            L`Nếu $a = b$ thì $a^3 = b^3$`,
-            L`Nếu $a = b$ thì $a^2 = b^2$`,
-            L`Nếu $a \gt b$ thì $a^2 \gt b^2$`,
-            L`Nếu $a$ chia hết cho $2$ thì $a$ chia hết cho $4$`
-          ],
-          dung: 0,
-          giai: L`Hàm lập phương đơn điệu trên $\mathbb{R}$ nên $a^3 = b^3 \Rightarrow a = b$.` }
-      ],
+          giai: L`Hai tam giác có cùng diện tích chưa chắc bằng nhau, chẳng hạn một tam giác $3 \times 4$ và một tam giác $2 \times 6$.` }],
 
       dungsai: [
         { muc: 1, de: L`Cho hai tập hợp $A = \{1;2;3;4;5\}$ và $B = \{2;4;6\}$.`,
@@ -313,14 +292,6 @@ const CHUONG_TRINH = [
               L`$A \setminus B = \{1;3;5\}$`, L`$B \subset A$`],
           dung: [true, true, true, false],
           giai: L`Ý d) sai vì $6 \in B$ nhưng $6 \notin A$.` },
-
-        { muc: 2, de: `Xét tính đúng sai của các khẳng định sau.`,
-          y: [L`Mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là mệnh đề đúng`,
-              L`Mệnh đề $\exists x \in \mathbb{R},\ x^2 = -1$ là mệnh đề đúng`,
-              L`Phủ định của $\exists x \in \mathbb{R},\ x \gt 2$ là $\forall x \in \mathbb{R},\ x \le 2$`,
-              L`Phủ định của $\forall x \in \mathbb{R},\ x^2 \ge 0$ là $\forall x \in \mathbb{R},\ x^2 \lt 0$`],
-          dung: [true, false, true, false],
-          giai: L`Ý b) sai vì $x^2 \ge 0$ với mọi $x$. Ý d) sai vì phủ định của “với mọi” phải là “tồn tại”.` },
 
         { muc: 1, de: L`Cho $A = \{1;2;3;4;5;6\}$ và $B = \{2;4;6;8\}$.`,
           y: [
@@ -332,16 +303,6 @@ const CHUONG_TRINH = [
           dung: [true, false, true, true],
           giai: L`$A \cup B = \{1;2;3;4;5;6;8\}$ chỉ có $7$ phần tử nên ý b) sai.` },
 
-        { muc: 1, de: L`Xét quan hệ giữa các tập hợp số.`,
-          y: [
-            L`$\mathbb{N} \subset \mathbb{Z}$`,
-            L`$\mathbb{Z} \subset \mathbb{Q}$`,
-            L`$\mathbb{Q} \subset \mathbb{R}$`,
-            L`$\mathbb{R} \subset \mathbb{Q}$`
-          ],
-          dung: [true, true, true, false],
-          giai: L`$\sqrt{2} \in \mathbb{R}$ nhưng không thuộc $\mathbb{Q}$ nên ý d) sai.` },
-
         { muc: 2, de: L`Cho $A = [-1;4)$ và $B = (2;6]$.`,
           y: [
             L`$A \cap B = (2;4)$`,
@@ -350,196 +311,20 @@ const CHUONG_TRINH = [
             L`$B \setminus A = (4;6]$`
           ],
           dung: [true, true, true, false],
-          giai: L`$B \setminus A$ gồm các số thuộc $B$ mà không thuộc $A$, tức $4 \le x \le 6$, vậy bằng $[4;6]$.` },
-
-        { muc: 2, de: L`Cho hai mệnh đề $P: \forall x \in \mathbb{R},\ x^2 \ge 0$ và $Q: \exists x \in \mathbb{R},\ x^2 = -1$.`,
-          y: [
-            L`$P$ là mệnh đề đúng`,
-            L`$Q$ là mệnh đề sai`,
-            L`Phủ định của $P$ là $\exists x \in \mathbb{R},\ x^2 \lt 0$`,
-            L`Phủ định của $Q$ là $\exists x \in \mathbb{R},\ x^2 \ne -1$`
-          ],
-          dung: [true, true, true, false],
-          giai: L`Phủ định của $\exists$ phải là $\forall$, tức $\forall x \in \mathbb{R},\ x^2 \ne -1$.` },
-
-        { muc: 1, de: L`Cho $X = \{x \in \mathbb{N} \mid x$ là ước của $18\}$.`,
-          y: [
-            L`$X = \{1;2;3;6;9;18\}$`,
-            L`$X$ có $6$ phần tử`,
-            L`$4 \in X$`,
-            L`$9 \in X$`
-          ],
-          dung: [true, true, false, true],
-          giai: L`$18$ không chia hết cho $4$ nên $4 \notin X$.` },
-
-        { muc: 2, de: L`Cho tập hợp $A = \{a;b;c\}$.`,
-          y: [
-            L`$A$ có $8$ tập con`,
-            L`$A$ có $3$ tập con gồm đúng một phần tử`,
-            L`$A$ có $3$ tập con gồm đúng hai phần tử`,
-            L`$A$ có $7$ tập con khác rỗng và khác chính nó`
-          ],
-          dung: [true, true, true, false],
-          giai: L`Có $7$ tập con khác rỗng, bỏ thêm chính $A$ thì còn $6$.` },
-
-        { muc: 2, de: L`Cho $A = \{x \in \mathbb{R} \mid x^2 - 5x + 6 = 0\}$.`,
-          y: [
-            L`$A = \{2;3\}$`,
-            L`$A$ có hai phần tử`,
-            L`$1 \in A$`,
-            L`$A \subset \mathbb{N}$`
-          ],
-          dung: [true, true, false, true],
-          giai: L`Thay $x = 1$ được $1 - 5 + 6 = 2 \ne 0$ nên $1 \notin A$.` },
-
-        { muc: 2, de: L`Xét các tập hợp sau có phải tập rỗng hay không.`,
-          y: [
-            L`$\{x \in \mathbb{R} \mid x^2 + 1 = 0\} = \emptyset$`,
-            L`$\{x \in \mathbb{N} \mid x \lt 0\} = \emptyset$`,
-            L`$\{x \in \mathbb{Z} \mid 2x = 1\} = \emptyset$`,
-            L`$\{x \in \mathbb{R} \mid x^2 = 0\} = \emptyset$`
-          ],
-          dung: [true, true, true, false],
-          giai: L`$x^2 = 0$ có nghiệm $x = 0$ nên tập đó bằng $\{0\}$, không rỗng.` },
-
-        { muc: 2, de: L`Cho $A = (-\infty;3]$ và $B = [1;+\infty)$.`,
-          y: [
-            L`$A \cap B = [1;3]$`,
-            L`$A \cup B = \mathbb{R}$`,
-            L`$A \setminus B = (-\infty;1]$`,
-            L`$C_{\mathbb{R}}A = (3;+\infty)$`
-          ],
-          dung: [true, true, false, true],
-          giai: L`$A \setminus B$ gồm các số nhỏ hơn $1$, tức $(-\infty;1)$, không lấy điểm $1$.` },
-
-        { muc: 3, de: L`Xét tính đúng sai của các mệnh đề có lượng từ.`,
-          y: [
-            L`$\forall n \in \mathbb{N},\ n^2 \ge n$`,
-            L`$\exists n \in \mathbb{N},\ n^2 = n$`,
-            L`$\forall x \in \mathbb{R},\ x^2 \gt x$`,
-            L`$\exists x \in \mathbb{R},\ x^2 \lt x$`
-          ],
-          dung: [true, true, false, true],
-          giai: L`Với $x = 0{,}5$ ta có $x^2 = 0{,}25 \lt 0{,}5$ nên ý c) sai còn ý d) đúng.` },
-
-        { muc: 1, de: L`Cho $A = \{1;2;3\}$ và $B = \{1;2;3;4;5\}$.`,
-          y: [
-            L`$A \subset B$`,
-            L`$A \cap B = A$`,
-            L`$A \cup B = B$`,
-            L`$A \setminus B = \{4;5\}$`
-          ],
-          dung: [true, true, true, false],
-          giai: L`Mọi phần tử của $A$ đều thuộc $B$ nên $A \setminus B = \emptyset$.` },
-
-
-        { muc: 3, de: L`Cho $A = [m;m+3]$ và $B = [0;5]$.`,
-          y: [
-            L`Với $m = 1$ thì $A \subset B$`,
-            L`Với $m = 3$ thì $A \subset B$`,
-            L`$A \subset B$ khi và chỉ khi $0 \le m \le 2$`,
-            L`Với $m = -1$ thì $A \cap B = [0;2]$`
-          ],
-          dung: [true, false, true, true],
-          giai: L`Với $m = 3$ thì $A = [3;6]$, mà $6 \notin B$ nên ý b) sai.` },
-
-        { muc: 1, de: L`Cho $A = \{0;1;2;3;4\}$ và $B = \{x \in \mathbb{N} \mid x \le 2\}$.`,
-          y: [
-            L`$B = \{0;1;2\}$`,
-            L`$B \subset A$`,
-            L`$A \setminus B = \{3;4\}$`,
-            L`$A \cap B$ có hai phần tử`
-          ],
-          dung: [true, true, true, false],
-          giai: L`$A \cap B = B = \{0;1;2\}$ nên có ba phần tử.` },
-
-        { muc: 2, de: L`Xét số phần tử của các tập hợp sau.`,
-          y: [
-            L`$\{x \in \mathbb{Z} \mid |x| \le 2\}$ có $5$ phần tử`,
-            L`$\{x \in \mathbb{N} \mid x \le 5\}$ có $6$ phần tử`,
-            L`$\{x \in \mathbb{N}^* \mid x \le 5\}$ có $5$ phần tử`,
-            L`$\{x \in \mathbb{Z} \mid x^2 = 9\}$ có $1$ phần tử`
-          ],
-          dung: [true, true, true, false],
-          giai: L`$x^2 = 9$ cho $x = 3$ và $x = -3$, tức hai phần tử.` }
-      ],
+          giai: L`$B \setminus A$ gồm các số thuộc $B$ mà không thuộc $A$, tức $4 \le x \le 6$, vậy bằng $[4;6]$.` }],
 
       traloingan: [
-        { muc: 1, de: L`Cho $A = \{1;2;3;4;5;6\}$ và $B = \{4;5;6;7;8\}$. Tập $A \cup B$ có bao nhiêu phần tử?`,
-          dapan: '8',
-          giai: L`$n(A \cup B) = 6 + 5 - 3 = 8$.` },
+        { muc: 1, de: L`Lớp 10A có $18$ bạn thích môn Toán, $14$ bạn thích môn Văn, trong đó $6$ bạn thích cả hai môn. Hỏi có bao nhiêu bạn thích ít nhất một trong hai môn?`,
+          dapan: '26',
+          giai: L`Cộng hai nhóm rồi trừ đi phần đếm trùng: $18 + 14 - 6 = 26$.` },
 
-        { muc: 2, de: `Lớp 10A có 30 học sinh, trong đó 18 em giỏi Toán, 15 em giỏi Văn và 8 em giỏi cả hai môn. Có bao nhiêu em giỏi ít nhất một trong hai môn?`,
-          dapan: '25',
-          giai: L`$18 + 15 - 8 = 25$ em.` },
+        { muc: 1, de: L`Một tổ có $12$ bạn biết chơi cầu lông, $9$ bạn biết chơi bóng bàn, trong đó $4$ bạn biết chơi cả hai môn. Hỏi có bao nhiêu bạn biết chơi ít nhất một trong hai môn?`,
+          dapan: '17',
+          giai: L`Cộng hai nhóm rồi trừ đi phần đếm trùng: $12 + 9 - 4 = 17$.` },
 
-        { muc: 1, de: L`Cho $A = \{1;2;3;4;5\}$ và $B = \{4;5;6;7\}$. Tập $A \cup B$ có bao nhiêu phần tử?`,
-          dapan: '7',
-          giai: L`$A \cup B = \{1;2;3;4;5;6;7\}$.` },
-
-        { muc: 1, de: L`Cho $A = \{1;2;3;4;5\}$ và $B = \{4;5;6;7\}$. Tập $A \cap B$ có bao nhiêu phần tử?`,
-          dapan: '2',
-          giai: L`$A \cap B = \{4;5\}$.` },
-
-        { muc: 1, de: L`Tập hợp $\{a;b;c;d\}$ có bao nhiêu tập con?`,
-          dapan: '16',
-          giai: L`Tập có $n$ phần tử thì có $2^n$ tập con, ở đây $2^4 = 16$.` },
-
-        { muc: 2, de: L`Tập hợp $\{1;2;3;4;5\}$ có bao nhiêu tập con gồm đúng hai phần tử?`,
-          dapan: '10',
-          giai: L`Chọn $2$ trong $5$ phần tử, có $10$ cách.` },
-
-        { muc: 2, de: L`Tập hợp $\{x \in \mathbb{N} \mid x$ là ước của $24\}$ có bao nhiêu phần tử?`,
-          dapan: '8',
-          giai: L`Các ước là $1, 2, 3, 4, 6, 8, 12, 24$.` },
-
-        { muc: 1, de: L`Tập hợp $\{x \in \mathbb{Z} \mid |x| \le 4\}$ có bao nhiêu phần tử?`,
-          dapan: '9',
-          giai: L`Từ $-4$ đến $4$, tất cả $9$ số nguyên.` },
-
-        { muc: 2, de: L`Có bao nhiêu số nguyên thuộc nửa khoảng $[-2;5)$?`,
-          dapan: '7',
-          giai: L`Đó là $-2, -1, 0, 1, 2, 3, 4$.` },
-
-        { muc: 2, de: L`Có bao nhiêu số nguyên thuộc nửa khoảng $(1;7]$?`,
-          dapan: '6',
-          giai: L`Đó là $2, 3, 4, 5, 6, 7$.` },
-
-        { muc: 3, de: L`Lớp có 40 học sinh, 22 em giỏi Toán, 18 em giỏi Anh, 8 em giỏi cả hai. Có bao nhiêu em giỏi ít nhất một môn?`,
-          dapan: '32',
-          giai: L`$22 + 18 - 8 = 32$.` },
-
-        { muc: 3, de: L`Vẫn lớp 40 học sinh ở trên, có bao nhiêu em không giỏi môn nào?`,
-          dapan: '8',
-          giai: L`$40 - 32 = 8$.` },
-
-        { muc: 2, de: L`Cho $A = \{x \in \mathbb{R} \mid x^2 - 7x + 12 = 0\}$. Tổng các phần tử của $A$ bằng bao nhiêu?`,
-          dapan: '7',
-          giai: L`Hai nghiệm là $3$ và $4$, tổng bằng $7$.` },
-
-        { muc: 2, de: L`Cho $A = \{x \in \mathbb{R} \mid x^2 - 4 = 0\}$. Tích các phần tử của $A$ bằng bao nhiêu?`,
-          dapan: '-4',
-          giai: L`Hai nghiệm là $2$ và $-2$, tích bằng $-4$.` },
-
-        { muc: 3, de: L`Cho $A = [0;6]$ và $B = [4;10]$. Đoạn $A \cap B$ có độ dài bằng bao nhiêu?`,
-          dapan: '2',
-          giai: L`$A \cap B = [4;6]$ nên độ dài là $6 - 4 = 2$.` },
-
-        { muc: 3, de: L`Cho $A = (-\infty;m)$ và $B = (3;+\infty)$. Giá trị nguyên nhỏ nhất của $m$ để $A \cap B \ne \emptyset$ là bao nhiêu?`,
-          dapan: '4',
-          giai: L`Cần $m \gt 3$, số nguyên nhỏ nhất thoả mãn là $4$.` },
-
-        { muc: 2, de: L`Một tập hợp có $5$ phần tử thì có bao nhiêu tập con gồm đúng ba phần tử?`,
-          dapan: '10',
-          giai: L`Chọn $3$ trong $5$ phần tử, có $10$ cách.` },
-
-        { muc: 3, de: L`Cho $n(A) = 10$, $n(B) = 7$ và $n(A \cap B) = 4$. Khi đó $n(A \cup B)$ bằng bao nhiêu?`,
-          dapan: '13',
-          giai: L`$n(A \cup B) = 10 + 7 - 4 = 13$.` },
-
-        { muc: 2, de: L`Cho $A \subset B$, biết $A$ có $5$ phần tử và $B$ có $9$ phần tử. Tập $B \setminus A$ có bao nhiêu phần tử?`,
-          dapan: '4',
-          giai: L`Vì $A \subset B$ nên $n(B \setminus A) = 9 - 5 = 4$.` }
+        { muc: 2, de: L`Trường tổ chức hai câu lạc bộ. Có $35$ bạn đăng kí câu lạc bộ Toán, $28$ bạn đăng kí câu lạc bộ Tiếng Anh, trong đó $12$ bạn đăng kí cả hai. Hỏi có bao nhiêu bạn đã đăng kí câu lạc bộ?`,
+          dapan: '51',
+          giai: L`Cộng hai nhóm rồi trừ đi phần đếm trùng: $35 + 28 - 12 = 51$.` }
       ]
     }
   },
