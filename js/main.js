@@ -607,18 +607,14 @@
         if (dung) { p.diem++; p.xu += XU_CAU.traloingan; }
       }
 
-      var tieu, giai;
-      if (p.ma === 'dungsai') {
-        tieu = (soY === 4) ? 'Đúng cả 4 ý!'
-                           : 'Mới đúng ' + soY + '/4 ý, câu này chưa được tính.';
-        giai = c.giai;
-      }
-      else                    { tieu = dung ? 'Chính xác!' : 'Chưa đúng.'; giai = c.giai; }
-      if (p.ma === 'traloingan' && !dung) giai = 'Đáp án: <b>' + c.dapan + '</b>. ' + giai;
+      var tieu = dung ? 'Chính xác!' : 'Chưa đúng.';
+      var giai = '';
+      if (p.ma === 'traloingan' && !dung) giai = 'Đáp án: <strong>' + c.dapan + '</strong>';
 
       el.phanhoi.className = 'phanhoi is-' + (dung ? 'dung' : 'sai');
       el.phanhoiTieu.textContent = tieu;
       el.phanhoiGiai.innerHTML = giai;
+      el.phanhoiGiai.hidden = !giai;
       el.thanhDay.style.width = ((p.i + 1) / p.ds.length * 100) + '%';
       el.phanhoi.hidden = false;
       el.hoc.classList.add('co-phanhoi');
