@@ -76,7 +76,7 @@
         'pointer-events:none;text-transform:uppercase}' +
         /* chừa chỗ cho dải chữ, không che mất nút dưới cùng */
         'body{padding-bottom:26px}' +
-        '.manhinh{min-height:calc(100dvh - var(--cao-top,76px) - 26px)}';
+        '.manhinh{height:calc(100svh - var(--cao-top,76px) - 26px)}';
       document.head.appendChild(s);
       var d = document.createElement('div');
       d.id = 'nhanBanNhap';

@@ -176,7 +176,7 @@
    'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
    'cho','choDong','choXu','cuCho','hangDiem','hangDo','hangNha','btnRa',
    'nhaMua','nhaHoc','nhaNho','nhaVach','phong','cuNha','btnHoc','btnHocChu',
-   'canhBui','bongNoi','bongNoiChu',
+   'cuKhu','bongNoi','bongNoiChu',
    'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
    'nutKhai','khaiTen','khaiLop','khaiBao','choChu',
    'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
@@ -836,18 +836,52 @@
     return 'toi';
   }
 
-  /* Bụi sáng bay trong phòng. Chỉ rắc một lần, sau đó CSS lo phần động. */
-  function raiBui() {
-    if (!el.canhBui || el.canhBui.children.length) return;
-    var n = window.innerWidth < 420 ? 9 : 14, h = '';
-    for (var i = 0; i < n; i++) {
-      h += '<i class="bui" style="left:' + ri(2, 96) + '%;bottom:' + ri(8, 40) + '%;' +
-           'animation-duration:' + ri(14, 30) + 's;animation-delay:-' + ri(0, 26) + 's;' +
-           'opacity:' + (ri(35, 80) / 100) + '"></i>';
-    }
-    el.canhBui.innerHTML = h;
-  }
   function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+
+  /* ---------- Cú đi qua đi lại ----------
+     Căn phòng để yên, chỉ mình cú động đậy. Thỉnh thoảng cú lững thững
+     đi sang chỗ khác rồi đứng lại nghỉ, chứ không đi liên tục.
+     Chỉ chạy khi đang ở màn hình nhà, sang màn khác là nghỉ. */
+  var CU_TRAI = 30, CU_PHAI = 70;      /* đi trong khoảng này, tính theo % bề ngang phòng */
+  var cuX = 50, henDi = null, henDung = null;
+
+  function cuDiDao() {
+    if (!el.cuKhu || manHinh !== 'nha' || document.hidden) return henCuDi();
+
+    /* chọn chỗ mới, bắt phải cách chỗ cũ ít nhất 16% cho ra dáng một chuyến đi */
+    var moi, lan = 0;
+    do { moi = ri(CU_TRAI, CU_PHAI); lan++; } while (Math.abs(moi - cuX) < 16 && lan < 12);
+
+    /* Đang bước thì thôi nói, bóng nói kéo lê theo nhìn kỳ */
+    if (el.bongNoi) el.bongNoi.hidden = true;
+    clearTimeout(henBong);
+
+    el.cuKhu.classList.add('dangdi');
+    el.cuKhu.classList.toggle('quaytrai', moi < cuX);
+    cuX = moi;
+    el.cuKhu.style.left = moi + '%';
+
+    clearTimeout(henDung);
+    henDung = setTimeout(function () {
+      el.cuKhu.classList.remove('dangdi');
+      el.cuKhu.classList.remove('quaytrai');
+    }, 2800);                            /* khớp với thời gian transition trong CSS */
+
+    henCuDi();
+  }
+
+  function henCuDi() {
+    clearTimeout(henDi);
+    henDi = setTimeout(cuDiDao, ri(9, 18) * 1000);   /* nghỉ 9-18 giây rồi mới đi tiếp */
+  }
+
+  function cuNghiDi() { clearTimeout(henDi); clearTimeout(henDung); }
+
+  /* Ẩn tab đi thì cho cú nghỉ, quay lại thì đi tiếp */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) cuNghiDi();
+    else if (manHinh === 'nha') henCuDi();
+  });
 
   /* ---------- Cú nói chuyện ---------- */
   var LOI_CU = {
@@ -905,7 +939,6 @@
     el.phong.querySelectorAll('.do-nha').forEach(function (e) { e.remove(); });
 
     el.phong.className = 'canh gio-' + khungGio();
-    raiBui();
 
     var day = 0;
     NHA.forEach(function (h) {
@@ -947,7 +980,10 @@
     el.btnHocChu.textContent = laNha ? 'Học tập' : 'Nhà cú';
     el.btnHoc.querySelector('.hoctap__hinh').textContent = laNha ? '📚' : '🏠';
     el.btnHoc.title = laNha ? 'Vào phần học tập' : 'Về nhà của cú';
-    if (laNha) { veNha(); cuNoi(loiNgauNhien(), 6); }
+    if (laNha) { veNha(); cuNoi(loiNgauNhien(), 6); henCuDi(); }
+    else cuNghiDi();
+    /* Màn nhà vừa khít màn hình, khoá cuộn lại cho khỏi nảy lên nảy xuống */
+    document.body.classList.toggle('o-nha', laNha);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

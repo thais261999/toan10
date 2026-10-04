@@ -923,8 +923,14 @@ body{
    tường, sàn, cửa sổ nhìn ra trời, nắng hắt xuống sàn, bụi bay
    trong nắng. Bầu trời đổi theo giờ thật trong ngày.
    ============================================================ */
-.manhinh{min-height:calc(100dvh - var(--cao-top, 76px));
-         display:flex;flex-direction:column;position:relative}
+/* Dùng svh chứ KHÔNG dùng dvh. Trên điện thoại dvh co giãn theo lúc
+   thanh địa chỉ ẩn hiện, mà mọi thứ trong phòng đặt theo phần trăm,
+   nên cả căn phòng trượt lên trượt xuống theo mỗi cú cuộn. svh thì đứng yên. */
+body.o-nha{overflow:hidden}
+.manhinh{height:calc(100svh - var(--cao-top, 76px));
+         height:calc(100vh - var(--cao-top, 76px));
+         height:calc(100svh - var(--cao-top, 76px));
+         display:flex;flex-direction:column;position:relative;overflow:hidden}
 
 .canh{position:relative;flex:1;overflow:hidden;isolation:isolate;
       --sanY:56%;                       /* chỗ tường gặp sàn */
@@ -981,9 +987,7 @@ body{
 /* Mặt trời ban ngày, mặt trăng ban đêm */
 .canh__vang{position:absolute;right:17%;top:15%;width:20%;aspect-ratio:1;border-radius:50%;
             background:radial-gradient(circle at 38% 36%,#fff6cf,#ffd978 62%,#ffc44d);
-            box-shadow:0 0 26px rgba(255,214,120,.9);
-            animation:vangTho 7s ease-in-out infinite}
-@keyframes vangTho{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+            box-shadow:0 0 26px rgba(255,214,120,.9)}
 .canh.gio-toi .canh__vang{
   background:radial-gradient(circle at 62% 38%,#fdfbff,#dfe3fb 58%,#c8cef3);
   box-shadow:0 0 22px rgba(215,225,255,.75)}
@@ -1005,10 +1009,11 @@ body{
   box-shadow:0 2px 5px rgba(40,25,80,.14)}
 .canh__may{position:absolute;width:52%;height:16%;border-radius:999px;
            background:rgba(255,255,255,.9);filter:blur(.5px)}
-.canh__may--a{top:18%;animation:troiMay 26s linear infinite}
-.canh__may--b{top:46%;width:38%;height:12%;opacity:.75;
-              animation:troiMay 38s linear infinite -14s}
-@keyframes troiMay{from{left:-55%}to{left:105%}}
+/* Mây đứng yên. Trước cho mây trôi, mặt trời thở, sao nhấp nháy, bụi bay
+   cùng lúc nên căn phòng lúc nào cũng nhúc nhích, nhìn mỏi mắt.
+   Giờ cả phòng đứng im, chỉ mình cú động đậy. */
+.canh__may--a{top:18%;left:8%}
+.canh__may--b{top:46%;left:46%;width:38%;height:12%;opacity:.75}
 /* Ban đêm mây phải xỉn lại, để trắng tinh như ban ngày nhìn chói mắt */
 .canh.gio-toi .canh__may{background:rgba(190,200,235,.38);filter:blur(1px)}
 .canh.gio-chieu .canh__may{background:rgba(255,236,214,.85)}
@@ -1017,37 +1022,39 @@ body{
   background-image:radial-gradient(#fff 1.2px,transparent 1.3px),
                    radial-gradient(#fff .9px,transparent 1px);
   background-size:38px 30px,53px 44px;background-position:4px 6px,21px 17px}
-.canh.gio-toi .canh__sao{opacity:.85;animation:nhapNhay 4s ease-in-out infinite}
-@keyframes nhapNhay{0%,100%{opacity:.85}50%{opacity:.5}}
+.canh.gio-toi .canh__sao{opacity:.85}
 
 /* nắng hắt từ cửa sổ xuống sàn */
 .canh__nang{position:absolute;left:10%;top:6%;width:80%;height:72%;z-index:2;
             background:radial-gradient(ellipse 58% 72% at 50% 0%,var(--nang),transparent 73%);
             filter:blur(12px);pointer-events:none;transition:background .8s ease}
 
-/* ---- Bụi bay lơ lửng trong nắng ---- */
-.canh__bui{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.bui{position:absolute;width:3.5px;height:3.5px;border-radius:50%;
-     background:rgba(255,255,255,.7);box-shadow:0 0 7px rgba(255,246,206,.75);
-     animation:buiBay linear infinite}
-@keyframes buiBay{
-  0%{transform:translateY(0) translateX(0) scale(.6);opacity:0}
-  12%{opacity:.85}
-  88%{opacity:.7}
-  100%{transform:translateY(-78vh) translateX(26px) scale(1);opacity:0}}
-
-/* ---- Cú mèo đứng giữa phòng ---- */
-.canh__cu{position:absolute;left:50%;bottom:11%;transform:translateX(-50%);
-          width:var(--cuW);height:var(--cuH);margin:0;
-          z-index:4;cursor:pointer;animation:cuTho 3.6s ease-in-out infinite;
+/* ---- Cú mèo, thứ duy nhất động đậy trong phòng ----
+   Cú và bóng nói nằm chung khối .cukhu. Muốn cú đi chỗ khác thì chỉ
+   cần đổi left của khối, bóng nói tự đi theo. */
+.cukhu{position:absolute;left:50%;bottom:11%;transform:translateX(-50%);
+       z-index:4;transition:left 2.8s cubic-bezier(.42,0,.58,1)}
+.canh__cu{position:relative;width:var(--cuW);height:var(--cuH);margin:0;
+          cursor:pointer;animation:cuTho 4.4s ease-in-out infinite;
           filter:drop-shadow(0 12px 14px rgba(40,25,80,.26))}
-@keyframes cuTho{0%,100%{transform:translateX(-50%) translateY(0)}
-                 50%{transform:translateX(-50%) translateY(-7px)}}
-.canh__cu:active{animation:none;transform:translateX(-50%) scale(.95)}
+/* thở nhẹ thôi, chỉ 3px, đứng yên một chỗ nhìn vẫn có hồn */
+@keyframes cuTho{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* lúc đang đi thì lắc lư như bước chân */
+.cukhu.dangdi .canh__cu{animation:cuBuoc .46s ease-in-out infinite}
+@keyframes cuBuoc{0%,100%{transform:translateY(0) rotate(-3.5deg)}
+                  25%{transform:translateY(-6px) rotate(0deg)}
+                  50%{transform:translateY(0) rotate(3.5deg)}
+                  75%{transform:translateY(-6px) rotate(0deg)}}
+/* quay mặt theo hướng đi */
+.cukhu.quaytrai .canh__cu{scale:-1 1}
+.canh__cu:active{animation:none;transform:scale(.95)}
 
 /* ---- Bóng nói của cú ---- */
-.bongnoi{position:absolute;left:50%;bottom:calc(11% + var(--cuH) + 14px);
-         transform:translateX(-50%);z-index:5;max-width:min(80%,320px);
+/* Bóng nói bám giữa cú. Bề ngang phải đủ hẹp để lúc cú đi ra rìa
+   (xa nhất là 30% và 70% bề ngang phòng) bóng vẫn không lòi khỏi màn hình. */
+.bongnoi{position:absolute;left:50%;bottom:calc(100% + 14px);
+         transform:translateX(-50%);z-index:5;width:max-content;max-width:min(54vw,250px);
          background:var(--card);color:var(--ink);border-radius:16px;
          padding:11px 15px;text-align:center;
          box-shadow:0 10px 26px rgba(30,20,70,.2);
@@ -1093,7 +1100,8 @@ body{
 .nutto--chinh:active{box-shadow:0 0 0 var(--tim-dam)}
 
 @media (prefers-reduced-motion:reduce){
-  .canh__cu,.canh__may,.bui,.canh.gio-toi .canh__sao{animation:none!important}
+  .canh__cu{animation:none!important}
+  .cukhu{transition:none}
 }
 @media (min-width:700px){
   .canh{--sanY:58%;--cuW:150px}
