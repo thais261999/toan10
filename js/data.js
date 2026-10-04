@@ -349,7 +349,7 @@ const CHUONG_TRINH = [
         dung: 0,
         giai: L`Với $(4;0)$ ta có $4 - 0 = 4$, không nhỏ hơn $4$ nên điểm này bị loại.` },
 
-        { muc: 3, de: `Miền nghiệm của một hệ bất phương trình bậc nhất hai ẩn luôn là`,
+        { muc: 1, de: `Miền nghiệm của một hệ bất phương trình bậc nhất hai ẩn luôn là`,
         dapan: [`Giao của các nửa mặt phẳng`, `Hợp của các nửa mặt phẳng`, `Một đường thẳng`, `Một điểm duy nhất`],
         dung: 0,
         giai: `Nghiệm của hệ phải thoả mãn mọi bất phương trình trong hệ, nên ta lấy phần chung.` }
@@ -360,23 +360,13 @@ const CHUONG_TRINH = [
           y: [L`Điểm $(1;1)$ thuộc miền nghiệm`, L`Điểm $(0;0)$ thuộc miền nghiệm`,
               L`Điểm $(2;0)$ thuộc miền nghiệm`, L`Miền nghiệm không chứa gốc toạ độ $O$`],
           dung: [true, false, true, true],
-          giai: L`Thay lần lượt: $(1;1) \to 1 \ge 1$ đúng, $(0;0) \to 0 \ge 1$ sai, $(2;0) \to 4 \ge 1$ đúng.` },
-
-        { muc: 2, de: L`Cho hệ bất phương trình $x \ge 0$, $y \ge 0$, $x + y \le 4$.`,
-          y: [`Miền nghiệm là một tam giác`, L`Điểm $(2;2)$ thuộc miền nghiệm`,
-              L`Điểm $(3;2)$ thuộc miền nghiệm`, L`$F = x + 2y$ có giá trị lớn nhất bằng $8$ trên miền nghiệm`],
-          dung: [true, true, false, true],
-          giai: L`Miền nghiệm là tam giác đỉnh $O(0;0)$, $(4;0)$, $(0;4)$. Tại ba đỉnh $F$ nhận $0$, $4$, $8$ nên giá trị lớn nhất là $8$.` }
-      ],
+          giai: L`Thay lần lượt: $(1;1) \to 1 \ge 1$ đúng, $(0;0) \to 0 \ge 1$ sai, $(2;0) \to 4 \ge 1$ đúng.` }],
 
       traloingan: [
-        { muc: 1, de: L`Miền nghiệm của một hệ là tam giác có ba đỉnh $O(0;0)$, $A(4;0)$, $B(0;3)$. Giá trị lớn nhất của $F = 2x + 3y$ trên miền đó bằng bao nhiêu?`,
-          dapan: '9',
-          giai: L`$F(O) = 0$, $F(A) = 8$, $F(B) = 9$.` },
-
-        { muc: 2, de: L`Điểm $(3;m)$ thuộc miền nghiệm của $x + 2y \le 9$. Giá trị nguyên lớn nhất của $m$ là bao nhiêu?`,
-          dapan: '3',
-          giai: L`$3 + 2m \le 9 \Leftrightarrow m \le 3$.` }
+        { muc: 2, xu: 15,
+          de: L`Một xưởng may có $100$ m vải và $120$ giờ công. May một chiếc áo cần $1$ m vải, $2$ giờ công và lãi $30$ nghìn đồng. May một chiếc quần cần $1$ m vải, $1$ giờ công và lãi $20$ nghìn đồng. Hỏi lợi nhuận lớn nhất xưởng có thể thu được là bao nhiêu nghìn đồng?`,
+          dapan: '2200',
+          giai: L`Gọi $x$ là số áo, $y$ là số quần. Ta có hệ $x \ge 0$, $y \ge 0$, $x + y \le 100$, $2x + y \le 120$. Lợi nhuận $F = 30x + 20y$ đạt giá trị lớn nhất tại một đỉnh của miền nghiệm. Tính $F$ tại $O(0;0)$, $(60;0)$, $(20;80)$, $(0;100)$ được $0$, $1800$, $2200$, $2000$. Vậy lãi nhiều nhất là $2200$ nghìn đồng, khi may $20$ áo và $80$ quần.` }
       ]
     }
   },

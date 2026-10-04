@@ -239,7 +239,7 @@
     function () {
       var a = ri(1, 4), b = ri(1, 3), p = ri(1, 4), c = a * p + b * ri(2, 6) + ri(0, b - 1);
       var mMax = Math.floor((c - a * p) / b);
-      return { muc: 3,
+      return { muc: 2,
         de: 'Điểm $(' + p + ';\\,m)$ thuộc miền nghiệm của $' + a + 'x + ' + b + 'y \\le ' + c +
             '$. Giá trị nguyên lớn nhất của $m$ là',
         dapan: bon(String(mMax), [String(mMax + 1), String(mMax - 1), String(c)]),
@@ -308,31 +308,7 @@
                    ['Không, vì $0 \\gt ' + c + '$', 'Không xác định được', 'Chỉ thuộc đường bờ']),
         dung: 0,
         giai: 'Thay $x = 0$, $y = 0$ vào vế trái được $0$, mà $0 \\le ' + c + '$ nên đúng.' };
-    },
-
-    // Đường thẳng cắt trục tung
-    function () {
-      var a = ri(2, 6), b = ri(2, 6);
-      return { muc: 1,
-        de: 'Đường thẳng $' + a + 'x + ' + b + 'y = ' + (a * b) + '$ cắt trục tung tại điểm có tung độ bằng',
-        dapan: bon(String(a), [String(b), String(a * b), '0']),
-        dung: 0,
-        giai: 'Cho $x = 0$ được $' + b + 'y = ' + (a * b) + '$ nên $y = ' + a + '$.' };
-    },
-
-    // Thay toạ độ vào vế trái
-    function () {
-      var a = ri(1, 5), b = ri(1, 5), p = ri(1, 5), q = ri(1, 5);
-      var v = a * p + b * q;
-      return { muc: 1,
-        de: 'Thay điểm $(' + p + ';\\,' + q + ')$ vào biểu thức $' + a + 'x + ' + b +
-            'y$, ta được giá trị bằng',
-        dapan: bon(String(v), [String(v + 2), String(v - 2), String(a + b)]),
-        dung: 0,
-        giai: '$' + a + '\\cdot' + p + ' + ' + b + '\\cdot' + q + ' = ' + v + '$.' };
-    }
-
-  ];
+    }];
 
   var C2_DS = [
     function () {
@@ -349,20 +325,6 @@
               '$, so với $' + c + '$ là biết ngay.' };
     },
     function () {
-      var a = ri(1, 4), b = ri(1, 4), m = ri(2, 6), n = ri(2, 6);
-      var v = [0, a * m, b * n];
-      return { muc: 3,
-        de: 'Miền nghiệm là tam giác có ba đỉnh $O(0;0)$, $A(' + m + ';0)$, $B(0;' + n +
-            ')$. Xét $F = ' + a + 'x + ' + b + 'y$.',
-        y: ['$F$ đạt giá trị lớn nhất tại một đỉnh của tam giác',
-            '$F(O) = 0$',
-            '$F(A) = ' + (a * m) + '$',
-            '$F$ đạt giá trị nhỏ nhất bằng $' + Math.max.apply(null, v) + '$'],
-        dung: [true, true, true, false],
-        giai: 'Giá trị nhỏ nhất là $0$ tại gốc toạ độ, còn $' +
-              Math.max.apply(null, v) + '$ là giá trị lớn nhất.' };
-    },
-    function () {
       var a = ri(1, 4), b = ri(1, 4), c = ri(1, 8);
       return { muc: 2,
         de: 'Cho bất phương trình $' + a + 'x + ' + b + 'y + ' + c + ' \\lt 0$.',
@@ -372,68 +334,10 @@
             'Miền nghiệm là toàn bộ mặt phẳng'],
         dung: [true, true, true, false],
         giai: 'Miền nghiệm chỉ là một nửa mặt phẳng, không bao giờ là cả mặt phẳng.' };
-    },
-    function () {
-      var a = ri(1, 3), b = ri(1, 3), c = ri(6, 14);
-      return { muc: 2,
-        de: 'Cho hệ $\\begin{cases} x \\ge 0 \\\\ y \\ge 0 \\\\ ' + a + 'x + ' + b + 'y \\le ' + c +
-            '\\end{cases}$',
-        y: ['Miền nghiệm là một tam giác',
-            'Gốc toạ độ thuộc miền nghiệm',
-            'Miền nghiệm nằm hoàn toàn trong góc phần tư thứ nhất',
-            'Miền nghiệm không bị chặn'],
-        dung: [true, true, true, false],
-        giai: 'Miền nghiệm là tam giác nên bị chặn.' };
-    }
-  ];
+    }];
 
   var C2_TLN = [
-    function () {
-      var a = ri(1, 5), b = ri(1, 5), m = ri(2, 8), n = ri(2, 8);
-      return { muc: 2,
-        de: 'Miền nghiệm là tam giác đỉnh $O(0;0)$, $A(' + m + ';0)$, $B(0;' + n +
-            ')$. Giá trị lớn nhất của $F = ' + a + 'x + ' + b + 'y$ bằng bao nhiêu?',
-        dapan: String(Math.max(0, a * m, b * n)),
-        giai: '$F$ tại ba đỉnh là $0$, $' + (a * m) + '$, $' + (b * n) + '$.' };
-    },
-    function () {
-      var a = ri(1, 4), b = ri(1, 3), p = ri(1, 5), q = ri(1, 5);
-      return { muc: 1,
-        de: 'Tính giá trị của $' + a + 'x + ' + b + 'y$ tại điểm $(' + p + ';\\,' + q + ')$.',
-        dapan: String(a * p + b * q),
-        giai: '$' + a + '\\cdot' + p + ' + ' + b + '\\cdot' + q + ' = ' + (a * p + b * q) + '$.' };
-    },
-    function () {
-      var a = ri(1, 4), b = ri(1, 3), p = ri(1, 4);
-      var c = a * p + b * ri(2, 7);
-      return { muc: 3,
-        de: 'Điểm $(' + p + ';\\,m)$ thuộc miền nghiệm của $' + a + 'x + ' + b + 'y \\le ' + c +
-            '$. Giá trị nguyên lớn nhất của $m$ là bao nhiêu?',
-        dapan: String(Math.floor((c - a * p) / b)),
-        giai: '$' + b + 'm \\le ' + (c - a * p) + '$ nên $m \\le ' +
-              ((c - a * p) / b) + '$.' };
-    },
-    function () {
-      var a = ri(1, 4), b = ri(1, 4), c = ri(6, 16);
-      return { muc: 2,
-        de: 'Miền nghiệm của hệ $x \\ge 0$, $y \\ge 0$, $' + a + 'x + ' + b + 'y \\le ' + c +
-            '$ là đa giác có bao nhiêu đỉnh?',
-        dapan: '3', giai: 'Đó là một tam giác.' };
-    },
-    function () {
-      var n = ri(2, 6), a = ri(1, 4);
-      return { muc: 2,
-        de: 'Có bao nhiêu số nguyên $y$ không âm thoả mãn $' + a + 'y \\le ' + (a * n) + '$?',
-        dapan: String(n + 1),
-        giai: '$y \\le ' + n + '$, các giá trị là $0, 1, \\ldots, ' + n + '$.' };
-    },
-    function () {
-      var a = ri(2, 6), b = ri(2, 6);
-      return { muc: 1,
-        de: 'Đường thẳng $' + a + 'x + ' + b + 'y = ' + (a * b) + '$ cắt trục hoành tại điểm có hoành độ bằng bao nhiêu?',
-        dapan: String(b),
-        giai: 'Cho $y = 0$ được $' + a + 'x = ' + (a * b) + '$ nên $x = ' + b + '$.' };
-    }
+    // Trả lời ngắn Chương II dùng đúng 1 câu viết tay trong data.js
   ];
 
   /* ============================================================

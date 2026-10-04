@@ -263,8 +263,13 @@
      ============================================================ */
   var VI_KEY = 'toan10-vi';
   /* Xu thưởng cho mỗi câu đúng, riêng từng dạng.
-     Đúng sai phải đúng trọn cả bốn ý mới được tính. */
+     Đúng sai phải đúng trọn cả bốn ý mới được tính.
+     Muốn riêng một câu nào đó thưởng khác mức chung thì thêm xu: <số> vào
+     câu đó trong data.js, ví dụ { muc: 2, xu: 15, de: ... }. */
   var XU_CAU = { tracnghiem: 1, dungsai: 5, traloingan: 5 };
+  function xuCau(ma, c) {
+    return (typeof c.xu === 'number') ? c.xu : XU_CAU[ma];
+  }
 
   /* Điểm cộng đắt dần: lần đầu 200 xu, mỗi lần sau thêm 100. */
   var DIEM_DAU = 200, DIEM_TANG = 100;
@@ -584,7 +589,7 @@
           else if (g === p.chon) o.classList.add('is-wrong');
         });
         dung = p.chon === c.dung;
-        if (dung) { p.diem++; p.xu += XU_CAU.tracnghiem; }
+        if (dung) { p.diem++; p.xu += xuCau('tracnghiem', c); }
 
       } else if (p.ma === 'dungsai') {
         el.hocThan.querySelectorAll('.y').forEach(function (hang, j) {
@@ -597,14 +602,14 @@
           if (p.chon[j] === dap) soY++;
         });
         dung = soY === 4;
-        if (dung) { p.diem++; p.xu += XU_CAU.dungsai; }
+        if (dung) { p.diem++; p.xu += xuCau('dungsai', c); }
 
       } else {
         var o2 = document.getElementById('oNhap');
         o2.disabled = true;
         dung = chuanHoa(p.chon) === chuanHoa(c.dapan);
         o2.classList.add(dung ? 'is-right' : 'is-wrong');
-        if (dung) { p.diem++; p.xu += XU_CAU.traloingan; }
+        if (dung) { p.diem++; p.xu += xuCau('traloingan', c); }
       }
 
       var tieu = dung ? 'Chính xác!' : 'Chưa đúng.';
