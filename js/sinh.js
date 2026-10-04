@@ -62,7 +62,7 @@
     function () {
       var a = ri(1, 9);
       if (kyHieu()) {
-        return { muc: 1,
+        return { muc: 1, dang: 'phudinh',
           de: 'Cho mệnh đề $P: \\forall x \\in \\mathbb{R},\\ x^2 + ' + a + ' \\gt 0$. ' +
               'Mệnh đề phủ định $\\overline{P}$ là',
           dapan: bon(
@@ -73,7 +73,7 @@
           dung: 0,
           giai: 'Đổi $\\forall$ thành $\\exists$, đồng thời đổi $\\gt$ thành $\\le$.' };
       }
-      return { muc: 1,
+      return { muc: 1, dang: 'phudinh',
         de: 'Cho mệnh đề $P$: “Với mọi số thực $x$, ta có $x^2 + ' + a + ' \\gt 0$”. ' +
             'Mệnh đề phủ định $\\overline{P}$ là',
         dapan: bon(
@@ -89,7 +89,7 @@
     function () {
       var a = ri(2, 9);
       if (kyHieu()) {
-        return { muc: 1,
+        return { muc: 1, dang: 'phudinh',
           de: 'Cho mệnh đề $P: \\exists n \\in \\mathbb{N},\\ n^2 = ' + a + '$. ' +
               'Mệnh đề phủ định $\\overline{P}$ là',
           dapan: bon(
@@ -100,7 +100,7 @@
           dung: 0,
           giai: 'Đổi $\\exists$ thành $\\forall$, đồng thời đổi dấu bằng thành dấu khác.' };
       }
-      return { muc: 1,
+      return { muc: 1, dang: 'phudinh',
         de: 'Cho mệnh đề $P$: “Tồn tại số tự nhiên $n$ sao cho $n^2 = ' + a + '$”. ' +
             'Mệnh đề phủ định $\\overline{P}$ là',
         dapan: bon(
@@ -112,40 +112,131 @@
         giai: 'Phủ định của “tồn tại” là “với mọi”, đồng thời đổi dấu bằng thành dấu khác.' };
     },
 
-    // 13. Mệnh đề kéo theo và mệnh đề đảo
-    function () {
-      var b = chon([2, 3, 5]), h = chon([2, 3, 4]), a = b * h;
-      return { muc: 2,
-        de: 'Xét mệnh đề “Nếu $n$ chia hết cho $' + a + '$ thì $n$ chia hết cho $' + b + '$”. Khẳng định nào đúng?',
-        dapan: bon(
-          'Mệnh đề đúng, mệnh đề đảo sai',
-          ['Mệnh đề sai, mệnh đề đảo đúng', 'Cả hai đều đúng', 'Cả hai đều sai']),
-        dung: 0,
-        giai: '$' + a + '$ chia hết cho $' + b + '$ nên mệnh đề đúng. Ngược lại $n = ' + b +
-              '$ chia hết cho $' + b + '$ nhưng không chia hết cho $' + a + '$.' };
-    },
-
     // Mệnh đề chứa biến, thay giá trị cụ thể
     function () {
       var p = ri(1, 6), q = ri(p + 1, p + 6), x = chon([p, q]);
-      return { muc: 1,
+      return { muc: 1, dang: 'chuabien',
         de: 'Với $x = ' + x + '$, mệnh đề chứa biến “$x^2 - ' + (p + q) + 'x + ' + (p * q) +
             ' = 0$” trở thành',
         dapan: bon('mệnh đề đúng', ['mệnh đề sai', 'không phải mệnh đề', 'vẫn là mệnh đề chứa biến']),
         dung: 0,
         giai: 'Thay $x = ' + x + '$ vào được $0 = 0$, đẳng thức đúng.' };
     },
-
-    // Mệnh đề tương đương
+    // Nhận biết: câu nào là mệnh đề, câu nào không phải mệnh đề
     function () {
-      var a = ri(2, 9);
-      return { muc: 2,
-        de: 'Mệnh đề nào sau đây tương đương với “$x^2 = ' + (a * a) + '$”?',
-        dapan: bon('$x = ' + a + '$ hoặc $x = -' + a + '$',
-                   ['$x = ' + a + '$', '$x = -' + a + '$', '$x = ' + (a * a) + '$']),
+      var md = ['$7$ là số nguyên tố', '$12$ chia hết cho $4$',
+                'Hà Nội là thủ đô của Việt Nam', '$5 + 3 = 8$',
+                'Số $10$ là số chẵn', 'Tam giác đều có ba cạnh bằng nhau',
+                'Một tuần có bảy ngày', '$2 \\lt 1$'];
+      var kh = ['Bạn tên là gì?', 'Hôm nay trời đẹp quá!', 'Hãy làm bài tập đi!',
+                'Mấy giờ rồi?', 'Ôi, bức tranh đẹp quá!', 'Đi học thôi!',
+                'Bạn có khoẻ không?', 'Chúc bạn một ngày vui!'];
+      var laMD = kyHieu();
+      return { muc: 1, dang: 'nhandang',
+        de: laMD ? 'Câu nào sau đây là mệnh đề?'
+                 : 'Câu nào sau đây <strong>không</strong> phải là mệnh đề?',
+        dapan: bon(chon(laMD ? md : kh), xaoM((laMD ? kh : md).slice()).slice(0, 3)),
         dung: 0,
-        giai: '$x^2 = ' + (a * a) + '$ cho hai nghiệm đối nhau là $' + a + '$ và $-' + a + '$.' };
-    }];
+        giai: 'Mệnh đề là câu khẳng định, hoặc đúng hoặc sai. Câu hỏi, câu cảm thán, câu cầu khiến đều không phải mệnh đề.' };
+    },
+
+    // Nhận biết mệnh đề chứa biến
+    function () {
+      var cb  = ['$x + 1 \\gt 3$', '$x^2 = 4$', '$2x - 5 = 1$', '$y + 7 \\le 10$',
+                 '$n$ chia hết cho $3$', '$x \\lt 0$', '$3x = 12$'];
+      var kcb = ['$2 + 3 = 5$', 'Hà Nội là thủ đô của Việt Nam', '$9$ chia hết cho $3$',
+                 'Hãy học bài!', 'Số $4$ là số chẵn', 'Bạn tên là gì?'];
+      return { muc: 1, dang: 'chuabien',
+        de: 'Câu nào sau đây là mệnh đề chứa biến?',
+        dapan: bon(chon(cb), xaoM(kcb.slice()).slice(0, 3)),
+        dung: 0,
+        giai: 'Mệnh đề chứa biến còn chữ chưa biết, phải thay giá trị cụ thể vào mới biết đúng hay sai.' };
+    },
+
+    // Mệnh đề nào đúng
+    function () {
+      var b = chon([2, 3, 4, 5]), a = b * ri(2, 8), sai = [];
+      while (sai.length < 3) {
+        var x = ri(5, 60);
+        if (x % b !== 0 && sai.indexOf(x) === -1) sai.push(x);
+      }
+      return { muc: 1, dang: 'dung',
+        de: 'Mệnh đề nào sau đây đúng?',
+        dapan: bon('$' + a + '$ chia hết cho $' + b + '$',
+                   sai.map(function (v) { return '$' + v + '$ chia hết cho $' + b + '$'; })),
+        dung: 0,
+        giai: '$' + a + ' = ' + b + ' \\times ' + (a / b) + '$ nên $' + a +
+              '$ chia hết cho $' + b + '$, ba số còn lại thì không.' };
+    },
+
+    // Mệnh đề nào sai
+    function () {
+      var p = ri(2, 9), q = ri(p + 1, 15);
+      return { muc: 1, dang: 'sai',
+        de: 'Mệnh đề nào sau đây <strong>sai</strong>?',
+        dapan: bon('$' + q + ' \\lt ' + p + '$',
+                   ['$' + p + ' \\lt ' + q + '$',
+                    '$' + q + ' \\gt ' + p + '$',
+                    '$' + p + ' + ' + q + ' = ' + (p + q) + '$']),
+        dung: 0,
+        giai: 'Vì $' + p + ' \\lt ' + q + '$ nên “$' + q + ' \\lt ' + p + '$” là mệnh đề sai.' };
+    },
+
+    // Phát biểu mệnh đề đảo
+    function () {
+      var c = chon([
+        { P: '$n$ chia hết cho $6$',  Q: '$n$ chia hết cho $3$',
+          kP: '$n$ không chia hết cho $6$',  kQ: '$n$ không chia hết cho $3$' },
+        { P: '$n$ chia hết cho $10$', Q: '$n$ chia hết cho $5$',
+          kP: '$n$ không chia hết cho $10$', kQ: '$n$ không chia hết cho $5$' },
+        { P: 'tứ giác $ABCD$ là hình vuông', Q: 'tứ giác $ABCD$ là hình chữ nhật',
+          kP: 'tứ giác $ABCD$ không là hình vuông', kQ: 'tứ giác $ABCD$ không là hình chữ nhật' },
+        { P: 'tam giác $ABC$ là tam giác đều', Q: 'tam giác $ABC$ là tam giác cân',
+          kP: 'tam giác $ABC$ không là tam giác đều', kQ: 'tam giác $ABC$ không là tam giác cân' }
+      ]);
+      return { muc: 2, dang: 'dao',
+        de: 'Mệnh đề đảo của mệnh đề “Nếu ' + c.P + ' thì ' + c.Q + '” là',
+        dapan: bon('Nếu ' + c.Q + ' thì ' + c.P,
+                   ['Nếu ' + c.kP + ' thì ' + c.kQ,
+                    'Nếu ' + c.P + ' thì ' + c.kQ,
+                    'Nếu ' + c.Q + ' thì ' + c.kP]),
+        dung: 0,
+        giai: 'Mệnh đề đảo là đổi chỗ giả thiết và kết luận cho nhau.' };
+    },
+
+    // Phát biểu mệnh đề phủ định, viết bằng lời cho dễ
+    function () {
+      var k = ri(1, 3), a;
+      if (k === 1) {
+        a = ri(2, 9);
+        return { muc: 1, dang: 'phudinh',
+          de: 'Phủ định của mệnh đề “$x \\gt ' + a + '$” là',
+          dapan: bon('$x \\le ' + a + '$',
+                     ['$x \\lt ' + a + '$', '$x \\ge ' + a + '$', '$x = ' + a + '$']),
+          dung: 0,
+          giai: 'Phủ định của “lớn hơn” là “nhỏ hơn hoặc bằng”.' };
+      }
+      if (k === 2) {
+        a = ri(2, 9);
+        return { muc: 1, dang: 'phudinh',
+          de: 'Phủ định của mệnh đề “$x = ' + a + '$” là',
+          dapan: bon('$x \\ne ' + a + '$',
+                     ['$x \\gt ' + a + '$', '$x \\lt ' + a + '$', '$x \\le ' + a + '$']),
+          dung: 0,
+          giai: 'Phủ định của “bằng” là “khác”.' };
+      }
+      a = chon([3, 5, 7]);
+      return { muc: 1, dang: 'phudinh',
+        de: 'Phủ định của mệnh đề “$n$ chia hết cho $' + a + '$” là',
+        dapan: bon('$n$ không chia hết cho $' + a + '$',
+                   ['$n$ chia hết cho $' + (a + 1) + '$',
+                    '$n$ chia hết cho $' + (a * 2) + '$',
+                    '$n$ là bội của $' + a + '$']),
+        dung: 0,
+        giai: 'Phủ định chỉ cần thêm chữ “không”. “Là bội của $' + a +
+              '$” chính là mệnh đề ban đầu chứ không phải phủ định.' };
+    }
+  ];
 
   var C1_DS = [
     // Đúng sai Chương I dùng đúng 3 câu viết tay trong data.js

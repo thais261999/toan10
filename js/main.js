@@ -59,6 +59,37 @@
   }
   function theoMuc(a, b) { return (a.muc || 1) - (b.muc || 1); }
 
+  /* Rút đều theo dạng câu hỏi.
+     Câu nào có gắn dang: '...' thì được xếp vào nhóm theo nhãn đó, rồi mỗi
+     nhóm góp một phần bằng nhau vào đề. Chia hết không trọn thì phần dư
+     chia ngẫu nhiên, nên lần nào dạng được thêm câu cũng khác.
+     Chương nào không gắn nhãn thì bỏ qua, rút theo mức độ như cũ. */
+  function rutTheoDang(kho, n) {
+    var nhom = {}, ten = [];
+    kho.forEach(function (q) {
+      if (!q.dang) return;
+      if (!nhom[q.dang]) { nhom[q.dang] = []; ten.push(q.dang); }
+      nhom[q.dang].push(q);
+    });
+    if (ten.length < 2) return null;
+
+    xaoMang(ten);
+    ten.forEach(function (d) { xaoMang(nhom[d]); });
+
+    var moi = Math.floor(n / ten.length), du = n - moi * ten.length;
+    var de = [];
+    ten.forEach(function (d, i) {
+      de = de.concat(nhom[d].slice(0, moi + (i < du ? 1 : 0)));
+    });
+
+    // Dạng nào không đủ câu thì bù bằng câu còn lại cho đủ số
+    if (de.length < n) {
+      var con = xaoMang(kho.filter(function (q) { return de.indexOf(q) === -1; }));
+      de = de.concat(con.slice(0, n - de.length));
+    }
+    return de.sort(theoMuc);
+  }
+
   function rutDe(ch, ma) {
     var n = soCauRut(ma);
 
@@ -70,6 +101,9 @@
       kho = (ch.cauhoi[ma] || []).slice();
     }
     if (kho.length <= n) return kho.sort(theoMuc);
+
+    var deuDang = rutTheoDang(kho, n);
+    if (deuDang) return deuDang;
 
     var theo = { 1: [], 2: [], 3: [] };
     kho.forEach(function (q) { theo[q.muc || 1].push(q); });

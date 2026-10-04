@@ -23,8 +23,22 @@
 
    muc là mức độ: 1 nhận biết, 2 thông hiểu, 3 vận dụng.
    Trang tự sắp câu theo mức độ tăng dần rồi chia thành các chặng,
-   Số câu mỗi chặng đặt trong SO_CAU ở js/main.js:
-   trắc nghiệm 20 câu, đúng sai 10 câu, trả lời ngắn 5 câu.
+   Số câu mỗi chặng đặt trong SO_CAU ở js/main.js.
+
+   dang là nhãn dạng câu hỏi, không bắt buộc. Trong một dạng bài của
+   một chương, nếu MỌI câu đều có gắn dang thì đề rút đều các dạng,
+   mỗi dạng một phần bằng nhau. Chương I trắc nghiệm đang dùng sáu nhãn:
+     'nhandang'  câu nào là mệnh đề, câu nào không phải mệnh đề
+     'chuabien'  mệnh đề chứa biến
+     'dung'      mệnh đề nào đúng
+     'sai'       mệnh đề nào sai
+     'dao'       phát biểu mệnh đề đảo
+     'phudinh'   phát biểu mệnh đề phủ định
+   Thêm câu mới cho Chương I thì nhớ gắn một trong sáu nhãn trên,
+   và gắn cả trong bộ sinh ở js/sinh.js nếu viết thêm mẫu sinh.
+
+   xu là số xu riêng cho một câu, không bắt buộc. Bỏ trống thì ăn mức
+   chung đặt trong XU_CAU ở js/main.js.
    ============================================================ */
 
 const L = String.raw;   // cho phép viết \frac thay vì \\frac
@@ -41,7 +55,7 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-        { muc: 1, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge 0$ là mệnh đề nào?`,
+        { muc: 1, dang: 'phudinh', de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge 0$ là mệnh đề nào?`,
         dapan: [
           L`$\exists x \in \mathbb{R},\ x^2 \lt 0$`,
           L`$\forall x \in \mathbb{R},\ x^2 \lt 0$`,
@@ -51,7 +65,7 @@ const CHUONG_TRINH = [
         dung: 0,
         giai: L`Phủ định đổi $\forall$ thành $\exists$ và đổi $\ge$ thành $\lt$.` },
 
-        { muc: 2, de: L`Mệnh đề đảo của mệnh đề “Nếu $n$ chia hết cho $6$ thì $n$ chia hết cho $3$” là`,
+        { muc: 2, dang: 'dao', de: L`Mệnh đề đảo của mệnh đề “Nếu $n$ chia hết cho $6$ thì $n$ chia hết cho $3$” là`,
         dapan: [
           L`Nếu $n$ chia hết cho $3$ thì $n$ chia hết cho $6$`,
           L`Nếu $n$ không chia hết cho $6$ thì $n$ không chia hết cho $3$`,
@@ -61,7 +75,7 @@ const CHUONG_TRINH = [
         dung: 0,
         giai: L`Mệnh đề đảo của $P \Rightarrow Q$ là $Q \Rightarrow P$. Lưu ý mệnh đề đảo này sai, chẳng hạn với $n = 9$.` },
 
-        { muc: 1, de: L`Câu nào sau đây <strong>không</strong> phải là mệnh đề?`,
+        { muc: 1, dang: 'nhandang', de: L`Câu nào sau đây <strong>không</strong> phải là mệnh đề?`,
           dapan: [
             L`Hôm nay trời đẹp quá!`,
             L`$2 + 3 = 5$`,
@@ -71,7 +85,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Câu cảm thán không khẳng định điều gì nên không phải mệnh đề.` },
 
-        { muc: 1, de: L`Mệnh đề nào sau đây sai?`,
+        { muc: 1, dang: 'sai', de: L`Mệnh đề nào sau đây sai?`,
           dapan: [
             L`$\sqrt{16} = \pm 4$`,
             L`$\sqrt{16} = 4$`,
@@ -81,7 +95,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Căn bậc hai số học của $16$ chỉ nhận một giá trị không âm là $4$.` },
 
-        { muc: 1, de: L`Câu nào sau đây là mệnh đề chứa biến?`,
+        { muc: 1, dang: 'chuabien', de: L`Câu nào sau đây là mệnh đề chứa biến?`,
           dapan: [
             L`$x + 1 \gt 3$`,
             L`$2 + 3 = 5$`,
@@ -91,7 +105,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Mệnh đề chứa biến chỉ xác định được đúng sai khi gán giá trị cho biến.` },
 
-        { muc: 1, de: L`Với $x = 2$, mệnh đề chứa biến $x^2 - 3x + 2 = 0$ trở thành`,
+        { muc: 1, dang: 'chuabien', de: L`Với $x = 2$, mệnh đề chứa biến $x^2 - 3x + 2 = 0$ trở thành`,
           dapan: [
             L`mệnh đề đúng`,
             L`mệnh đề sai`,
@@ -101,7 +115,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Thay $x = 2$ được $4 - 6 + 2 = 0$, đẳng thức đúng.` },
 
-        { muc: 1, de: L`Mệnh đề “$17$ là số chẵn” có tính đúng sai là`,
+        { muc: 1, dang: 'sai', de: L`Mệnh đề “$17$ là số chẵn” có tính đúng sai là`,
           dapan: [
             L`sai`,
             L`đúng`,
@@ -111,7 +125,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`$17$ không chia hết cho $2$ nên đây là mệnh đề sai.` },
 
-        { muc: 1, de: L`Câu nào sau đây là mệnh đề?`,
+        { muc: 1, dang: 'nhandang', de: L`Câu nào sau đây là mệnh đề?`,
           dapan: [
             L`$\sqrt{2}$ là số vô tỉ`,
             L`Bạn tên là gì?`,
@@ -121,7 +135,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Chỉ câu đầu là câu khẳng định xác định được đúng sai.` },
 
-        { muc: 1, de: L`Trong các mệnh đề sau, mệnh đề nào đúng?`,
+        { muc: 1, dang: 'dung', de: L`Trong các mệnh đề sau, mệnh đề nào đúng?`,
           dapan: [
             L`$6$ chia hết cho $3$`,
             L`$7$ chia hết cho $3$`,
@@ -131,7 +145,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`$6 = 3 \cdot 2$ nên $6$ chia hết cho $3$.` },
 
-        { muc: 1, de: L`Phủ định của mệnh đề “$3 \gt 2$” là`,
+        { muc: 1, dang: 'phudinh', de: L`Phủ định của mệnh đề “$3 \gt 2$” là`,
           dapan: [
             L`$3 \le 2$`,
             L`$3 \lt 2$`,
@@ -141,7 +155,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Phủ định của $\gt$ là $\le$.` },
 
-        { muc: 1, de: L`Phủ định của mệnh đề “$x = 5$” là`,
+        { muc: 1, dang: 'phudinh', de: L`Phủ định của mệnh đề “$x = 5$” là`,
           dapan: [
             L`$x \ne 5$`,
             L`$x \gt 5$`,
@@ -151,7 +165,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Phủ định của dấu bằng là dấu khác.` },
 
-        { muc: 1, de: L`Phủ định của mệnh đề “$a$ chia hết cho $3$” là`,
+        { muc: 1, dang: 'phudinh', de: L`Phủ định của mệnh đề “$a$ chia hết cho $3$” là`,
           dapan: [
             L`$a$ không chia hết cho $3$`,
             L`$a$ chia hết cho $9$`,
@@ -161,7 +175,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Phủ định chỉ việc bác bỏ khẳng định ban đầu.` },
 
-        { muc: 1, de: L`Phủ định của mệnh đề “Tam giác $ABC$ là tam giác đều” là`,
+        { muc: 1, dang: 'phudinh', de: L`Phủ định của mệnh đề “Tam giác $ABC$ là tam giác đều” là`,
           dapan: [
             L`Tam giác $ABC$ không là tam giác đều`,
             L`Tam giác $ABC$ là tam giác cân`,
@@ -171,7 +185,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Không đều thì có thể cân, vuông hay thường, nên chỉ cách viết đầu mới là phủ định.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là`,
+        { muc: 2, dang: 'phudinh', de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 + 1 \gt 0$ là`,
           dapan: [
             L`$\exists x \in \mathbb{R},\ x^2 + 1 \le 0$`,
             L`$\forall x \in \mathbb{R},\ x^2 + 1 \le 0$`,
@@ -181,7 +195,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Đổi $\forall$ thành $\exists$ và phủ định mệnh đề bên trong.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề $\exists n \in \mathbb{N},\ n^2 = 2$ là`,
+        { muc: 2, dang: 'phudinh', de: L`Phủ định của mệnh đề $\exists n \in \mathbb{N},\ n^2 = 2$ là`,
           dapan: [
             L`$\forall n \in \mathbb{N},\ n^2 \ne 2$`,
             L`$\exists n \in \mathbb{N},\ n^2 \ne 2$`,
@@ -191,7 +205,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Đổi $\exists$ thành $\forall$ và phủ định đẳng thức.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề “Có ít nhất một số thực $x$ thoả mãn $x^3 = 2$” là`,
+        { muc: 2, dang: 'phudinh', de: L`Phủ định của mệnh đề “Có ít nhất một số thực $x$ thoả mãn $x^3 = 2$” là`,
           dapan: [
             L`Mọi số thực $x$ đều thoả mãn $x^3 \ne 2$`,
             L`Có ít nhất một số thực $x$ thoả mãn $x^3 \ne 2$`,
@@ -201,7 +215,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Phủ định của “tồn tại” là “với mọi … không”.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge x$ là`,
+        { muc: 2, dang: 'phudinh', de: L`Phủ định của mệnh đề $\forall x \in \mathbb{R},\ x^2 \ge x$ là`,
           dapan: [
             L`$\exists x \in \mathbb{R},\ x^2 \lt x$`,
             L`$\forall x \in \mathbb{R},\ x^2 \lt x$`,
@@ -211,7 +225,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Đổi $\forall$ thành $\exists$ và đổi $\ge$ thành $\lt$.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề $\exists x \in \mathbb{Q},\ 4x^2 - 1 = 0$ là`,
+        { muc: 2, dang: 'phudinh', de: L`Phủ định của mệnh đề $\exists x \in \mathbb{Q},\ 4x^2 - 1 = 0$ là`,
           dapan: [
             L`$\forall x \in \mathbb{Q},\ 4x^2 - 1 \ne 0$`,
             L`$\exists x \in \mathbb{Q},\ 4x^2 - 1 \ne 0$`,
@@ -221,7 +235,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Giữ nguyên tập $\mathbb{Q}$, đổi $\exists$ thành $\forall$ và phủ định đẳng thức.` },
 
-        { muc: 2, de: L`Cho mệnh đề $P: \forall x \in \mathbb{R},\ x^2 - x + 1 \gt 0$. Mệnh đề phủ định của $P$ là`,
+        { muc: 2, dang: 'phudinh', de: L`Cho mệnh đề $P: \forall x \in \mathbb{R},\ x^2 - x + 1 \gt 0$. Mệnh đề phủ định của $P$ là`,
           dapan: [
             L`$\exists x \in \mathbb{R},\ x^2 - x + 1 \le 0$`,
             L`$\forall x \in \mathbb{R},\ x^2 - x + 1 \le 0$`,
@@ -231,18 +245,8 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Đổi lượng từ và phủ định bất đẳng thức.` },
 
-        { muc: 2, de: L`Xét mệnh đề $P: \forall x \in \mathbb{R},\ x^2 + 1 \gt 0$. Khẳng định nào đúng?`,
-          dapan: [
-            L`$P$ đúng và phủ định của $P$ sai`,
-            L`$P$ sai và phủ định của $P$ đúng`,
-            L`Cả $P$ và phủ định của $P$ đều đúng`,
-            L`Cả $P$ và phủ định của $P$ đều sai`
-          ],
-          dung: 0,
-          giai: L`$x^2 \ge 0$ nên $x^2 + 1 \ge 1 \gt 0$ với mọi $x$, do đó $P$ đúng và phủ định của nó sai.` },
 
-
-        { muc: 2, de: L`Mệnh đề đảo của “Nếu tứ giác $ABCD$ là hình vuông thì nó là hình chữ nhật” là`,
+        { muc: 2, dang: 'dao', de: L`Mệnh đề đảo của “Nếu tứ giác $ABCD$ là hình vuông thì nó là hình chữ nhật” là`,
           dapan: [
             L`Nếu tứ giác $ABCD$ là hình chữ nhật thì nó là hình vuông`,
             L`Nếu tứ giác $ABCD$ không là hình vuông thì nó không là hình chữ nhật`,
@@ -250,41 +254,7 @@ const CHUONG_TRINH = [
             L`Tứ giác $ABCD$ là hình vuông khi và chỉ khi nó là hình chữ nhật`
           ],
           dung: 0,
-          giai: L`Đổi chỗ giả thiết và kết luận. Lưu ý mệnh đề đảo này sai.` },
-
-        { muc: 2, de: L`Xét mệnh đề “Nếu $a$ chia hết cho $4$ thì $a$ chia hết cho $2$”. Khẳng định nào đúng?`,
-          dapan: [
-            L`Mệnh đề đúng, mệnh đề đảo sai`,
-            L`Mệnh đề sai, mệnh đề đảo đúng`,
-            L`Cả hai đều đúng`,
-            L`Cả hai đều sai`
-          ],
-          dung: 0,
-          giai: L`Chia hết cho $4$ thì chia hết cho $2$. Ngược lại $a = 6$ chia hết cho $2$ nhưng không chia hết cho $4$.` },
-
-
-
-
-        { muc: 2, de: L`Mệnh đề nào sau đây tương đương với mệnh đề $x^2 = 4$ (với $x \in \mathbb{R}$)?`,
-          dapan: [
-            L`$x = 2$ hoặc $x = -2$`,
-            L`$x = 2$`,
-            L`$x = -2$`,
-            L`$x = 4$`
-          ],
-          dung: 0,
-          giai: L`$x^2 = 4 \Leftrightarrow (x-2)(x+2) = 0$.` },
-
-
-        { muc: 2, de: L`Mệnh đề đảo của “Hai tam giác bằng nhau thì có diện tích bằng nhau” là mệnh đề`,
-          dapan: [
-            L`sai`,
-            L`đúng`,
-            L`vừa đúng vừa sai`,
-            L`không phải mệnh đề`
-          ],
-          dung: 0,
-          giai: L`Hai tam giác có cùng diện tích chưa chắc bằng nhau, chẳng hạn một tam giác $3 \times 4$ và một tam giác $2 \times 6$.` }],
+          giai: L`Đổi chỗ giả thiết và kết luận. Lưu ý mệnh đề đảo này sai.` }],
 
       dungsai: [
         { muc: 1, de: L`Cho hai tập hợp $A = \{1;2;3;4;5\}$ và $B = \{2;4;6\}$.`,
