@@ -848,9 +848,45 @@ body{
 /* ============================================================
    NHÀ CỦA CÚ
    ============================================================ */
-.nhahop{max-width:460px;text-align:center;padding:26px 22px 22px}
-.nhahop h2{font-size:22px;margin-bottom:16px}
+/* Nhà của cú ở dạng trang, không còn là hộp thoại */
+.nhatrang{max-width:460px;margin:18px auto 0;text-align:center;
+          background:var(--card);border-radius:22px;padding:24px 22px 22px;
+          box-shadow:var(--bong)}
+.nhatrang h2{font-size:22px;margin-bottom:16px;font-weight:700}
+.nhatrang__nut{display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.nhatrang__nut .solid,.nhatrang__nut .ghost{margin-top:0;width:100%;padding:12px}
 .cuhop{cursor:pointer}
+
+/* Nút Học tập ở góc phải thanh trên cùng */
+.hoctap{display:flex;align-items:center;gap:6px;padding:8px 14px 8px 11px;
+        border-radius:999px;border:1.5px solid var(--line);background:var(--card);
+        cursor:pointer;transition:border-color .15s,background .15s}
+.hoctap:hover{border-color:var(--tim);background:var(--tim-nhat)}
+.hoctap__hinh{font-size:17px;line-height:1}
+.hoctap b{font-family:Lexend,sans-serif;font-weight:700;font-size:15px;color:var(--ink)}
+@media (max-width:560px){
+  .hoctap b{display:none}
+  .hoctap{padding:8px 11px}
+}
+
+/* Thêm nút Học tập làm thanh đầu dễ tràn trên điện thoại.
+   Cụm nút bên phải giữ nguyên bề ngang, phần tên trang co lại trước. */
+.top__inner{gap:10px}
+.brand{min-width:0;flex:1 1 auto;overflow:hidden}
+.brand__text{min-width:0}
+.brand__text strong,.brand__text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.top__nut{flex:none}
+@media (max-width:560px){
+  .brand__text strong{font-size:16px}
+  .cuhop{width:40px;height:47px}
+  .top__inner{gap:8px}
+}
+/* Đo được: cần 422px mới đủ chỗ cho cả tên trang lẫn bốn nút bên phải.
+   Hẹp hơn thì giấu chữ đi, chỉ còn ô "10" làm dấu hiệu nhận biết,
+   chứ để chữ bị cắt cụt nhìn xấu hơn. */
+@media (max-width:430px){
+  .brand__text{display:none}
+}
 
 .phong{position:relative;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;
        background:linear-gradient(to bottom,#efeafc 0%,#efeafc 66%,#d9c6a8 66%,#cbb391 100%);

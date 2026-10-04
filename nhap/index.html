@@ -33,9 +33,12 @@
       </span>
     </a>
     <div class="top__nut">
-      <div class="cuhop" id="cuTop" title="Bạn đồng hành"></div>
+      <div class="cuhop" id="cuTop" title="Về nhà của cú"></div>
       <button class="xu" id="btnXu" title="Mở cửa hàng">
         <span class="xu__hinh">🪙</span><b id="soXu">0</b>
+      </button>
+      <button class="hoctap" id="btnHoc" title="Vào phần học tập">
+        <span class="hoctap__hinh">📚</span><b id="btnHocChu">Học tập</b>
       </button>
       <button class="tron" id="btnRa" title="Đổi người học" hidden>⎋</button>
     </div>
@@ -43,9 +46,27 @@
 </header>
 
 <!-- ============================================================
+     MÀN HÌNH CHÍNH: nhà của cú
+     ============================================================ -->
+<main class="wrap" id="viewNha">
+  <div class="nhatrang">
+    <h2>Nhà của cú</h2>
+    <div class="phong" id="phong">
+      <i class="phong__cua"></i>
+      <div class="cuhop cuhop--to phong__cu" id="cuNha"></div>
+    </div>
+    <p class="nha__nho" id="nhaNho"></p>
+    <div class="nhatrang__nut">
+      <button class="solid btn--block" id="nhaMua">Mua đồ trang trí</button>
+      <button class="ghost btn--block" id="nhaHoc">Vào học</button>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================
      LỘ TRÌNH: 9 chương, mỗi chương ba dạng bài
      ============================================================ -->
-<main class="wrap" id="viewList">
+<main class="wrap" id="viewList" hidden>
 
   <div class="duong" id="duong"><!-- JS sinh lộ trình ở đây --></div>
 </main>
@@ -164,19 +185,6 @@
   </div>
 </div>
 
-<!-- Nhà của cú -->
-<div class="mung" id="nha" hidden>
-  <div class="mung__hop nhahop">
-    <button class="cho__dong" id="nhaDong" aria-label="Đóng">✕</button>
-    <h2>Nhà của cú</h2>
-    <div class="phong" id="phong">
-      <i class="phong__cua"></i>
-      <div class="cuhop cuhop--to phong__cu" id="cuNha"></div>
-    </div>
-    <p class="nha__nho" id="nhaNho"></p>
-    <button class="solid btn--block" id="nhaMua">Mua đồ trang trí</button>
-  </div>
-</div>
 
 <div class="phao" id="phaoHoc" aria-hidden="true"></div>
 

@@ -14,12 +14,31 @@
 (function () {
   'use strict';
 
-  var HO_SO_THU = { ten: 'Bản nháp', lop: 'THỬ', duyet: true, xu: 0 };
+  /* main.js coi hồ sơ trả về đây là "dữ liệu trên máy chủ" và chép đè lên
+     bản lưu trong máy. Bản nháp không có máy chủ, nên phải đọc ngược lại
+     từ chính bộ nhớ của máy, nếu không thì tải lại trang một cái là
+     mất sạch xu với tiến độ đang thử. */
+  function doc(khoa, macDinh) {
+    try { return JSON.parse(localStorage.getItem(khoa)) || macDinh; }
+    catch (e) { return macDinh; }
+  }
+
+  function hoSoThu() {
+    var vi = doc('toan10-vi', {});
+    return {
+      ten: 'Bản nháp', lop: 'THỬ', duyet: true,
+      tienDo: doc('toan10-tiendo', {}),
+      xu:    vi.xu    || 0,
+      co:    vi.co    || [],
+      mac:   vi.mac   || [],
+      phieu: vi.phieu || 0
+    };
+  }
 
   var FB = window.FB = {
     san: false,
     u: { uid: 'nhap', displayName: 'Bản nháp', email: 'nhap@thu-nghiem' },
-    du: HO_SO_THU,
+    du: null,
     laBanNhap: true,
     EMAIL_GIAO_VIEN: []
   };
@@ -29,7 +48,8 @@
   FB.batDau = function (goi) {
     danNhan();
     setTimeout(function () {
-      goi({ loai: 'ok', u: FB.u, du: HO_SO_THU });
+      FB.du = hoSoThu();
+      goi({ loai: 'ok', u: FB.u, du: FB.du });
     }, 0);
   };
 
@@ -38,7 +58,7 @@
   FB.luu       = function () {};
   FB.thuongXu  = function () {};
   FB.ra        = function () { return Promise.resolve(); };
-  FB.taoHoSo   = function () { return Promise.resolve(HO_SO_THU); };
+  FB.taoHoSo   = function () { return Promise.resolve(hoSoThu()); };
   FB.vaoGoogle = function () { return Promise.resolve(); };
   FB.dsHocSinh = function () { return Promise.resolve([]); };
   FB.duyet     = function () { return Promise.resolve(); };

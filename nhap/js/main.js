@@ -169,13 +169,13 @@
 
   /* ---------- Gom các thẻ hay dùng ---------- */
   var el = {};
-  ['viewList','duong',
+  ['viewList','viewNha','duong',
    'hoc','hocDong','hocThan','hocDem','hocNut','thanhDay',
    'phanhoi','phanhoiTieu','phanhoiGiai',
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
    'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
    'cho','choDong','choXu','cuCho','hangDiem','hangDo','hangNha','btnRa',
-   'nha','nhaDong','nhaMua','nhaNho','phong','cuNha',
+   'nhaMua','nhaHoc','nhaNho','phong','cuNha','btnHoc','btnHocChu',
    'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
    'nutKhai','khaiTen','khaiLop','khaiBao','choChu',
    'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
@@ -827,11 +827,31 @@
       : 'Nhà còn trống trơn. Vào cửa hàng mua đồ trang trí cho cú mèo nào.';
   }
 
-  function moNha() { veNha(); el.nha.hidden = false; }
-  el.cuTop.addEventListener('click', moNha);
-  el.nhaDong.addEventListener('click', function () { el.nha.hidden = true; });
-  el.nha.addEventListener('click', function (ev) { if (ev.target === el.nha) el.nha.hidden = true; });
-  el.nhaMua.addEventListener('click', function () { el.nha.hidden = true; moCho(); });
+  /* ---------- Chuyển qua lại hai màn hình chính ----------
+     'nha'  nhà của cú, đây là màn hình mở ra đầu tiên
+     'hoc'  lộ trình chín chương
+     Nút góc phải đổi chữ theo màn hình đang xem, nên chỉ cần một nút
+     là đi được cả hai chiều. */
+  var manHinh = 'nha';
+
+  function hienMan(ten) {
+    manHinh = ten;
+    var laNha = (ten === 'nha');
+    el.viewNha.hidden  = !laNha;
+    el.viewList.hidden = laNha;
+    el.btnHocChu.textContent = laNha ? 'Học tập' : 'Nhà cú';
+    el.btnHoc.querySelector('.hoctap__hinh').textContent = laNha ? '📚' : '🏠';
+    el.btnHoc.title = laNha ? 'Vào phần học tập' : 'Về nhà của cú';
+    if (laNha) veNha();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  el.btnHoc.addEventListener('click', function () {
+    hienMan(manHinh === 'nha' ? 'hoc' : 'nha');
+  });
+  el.nhaHoc.addEventListener('click', function () { hienMan('hoc'); });
+  el.cuTop.addEventListener('click', function () { hienMan('nha'); });
+  el.nhaMua.addEventListener('click', function () { moCho(); });
 
   /* ============================================================
      ĐĂNG NHẬP VÀ ĐỒNG BỘ VỚI MÁY CHỦ
@@ -920,13 +940,14 @@
      CÁC NÚT CHUNG
      ============================================================ */
   el.brandHome.addEventListener('click', function (ev) {
-    ev.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    ev.preventDefault(); hienMan('nha');
   });
 
   /* ---------- Khởi động ---------- */
   veSoXu();
   veCu(el.cuTop);
   veDuong();
+  hienMan('nha');
 
   if (window.FB) theoDoi();
   else { el.loiChu.textContent = 'Không nạp được thư viện Firebase. Em kiểm tra mạng nhé.'; hienBuoc('buocLoi'); }
