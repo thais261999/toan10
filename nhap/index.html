@@ -40,7 +40,6 @@
       <button class="hoctap" id="btnHoc" title="Vào phần học tập">
         <span class="hoctap__hinh">📚</span><b id="btnHocChu">Học tập</b>
       </button>
-      <button class="tron" id="btnRa" title="Đổi người học" hidden>⎋</button>
     </div>
   </div>
 </header>
@@ -48,17 +47,40 @@
 <!-- ============================================================
      MÀN HÌNH CHÍNH: nhà của cú
      ============================================================ -->
-<main class="wrap" id="viewNha">
-  <div class="nhatrang">
-    <h2>Nhà của cú</h2>
-    <div class="phong" id="phong">
-      <i class="phong__cua"></i>
-      <div class="cuhop cuhop--to phong__cu" id="cuNha"></div>
+<main class="manhinh" id="viewNha">
+
+  <!-- Căn phòng tràn màn hình -->
+  <div class="canh" id="phong">
+    <div class="canh__tuong">
+      <span class="canh__cua">
+        <span class="canh__troi"></span>
+        <span class="canh__sao"></span>
+        <i class="canh__vang"></i>
+        <i class="canh__may canh__may--a"></i>
+        <i class="canh__may canh__may--b"></i>
+        <span class="canh__doi"></span>
+        <span class="canh__khung"></span>
+      </span>
+      <span class="canh__chantuong"></span>
     </div>
-    <p class="nha__nho" id="nhaNho"></p>
-    <div class="nhatrang__nut">
-      <button class="solid btn--block" id="nhaMua">Mua đồ trang trí</button>
-      <button class="ghost btn--block" id="nhaHoc">Vào học</button>
+    <div class="canh__san"><span class="canh__tham"></span></div>
+    <span class="canh__nang"></span>
+    <div class="canh__bui" id="canhBui"></div>
+
+    <div class="bongnoi" id="bongNoi" hidden><b id="bongNoiChu"></b></div>
+    <div class="cuhop canh__cu" id="cuNha"></div>
+    <!-- JS chèn đồ trang trí vào đây -->
+  </div>
+
+  <!-- Thanh dưới nổi lên trên khung cảnh -->
+  <div class="thanhduoi">
+    <div class="thanhduoi__do">
+      <span class="thanhduoi__chu" id="nhaNho"></span>
+      <span class="thanhduoi__vach"><i id="nhaVach"></i></span>
+    </div>
+    <div class="thanhduoi__nut">
+      <button class="nutto nutto--chinh" id="nhaHoc"><span>📚</span>Vào học</button>
+      <button class="nutto" id="nhaMua"><span>🛍️</span>Cửa hàng</button>
     </div>
   </div>
 </main>

@@ -71,9 +71,12 @@
       var s = document.createElement('style');
       s.textContent =
         '#nhanBanNhap{position:fixed;left:0;right:0;bottom:0;z-index:99999;' +
-        'background:#e8590c;color:#fff;font:700 12px/1.6 system-ui,sans-serif;' +
-        'text-align:center;letter-spacing:.08em;padding:3px 8px;' +
-        'pointer-events:none;text-transform:uppercase}';
+        'background:#e8590c;color:#fff;font:700 11px/1.5 system-ui,sans-serif;' +
+        'text-align:center;letter-spacing:.06em;padding:3px 8px;' +
+        'pointer-events:none;text-transform:uppercase}' +
+        /* chừa chỗ cho dải chữ, không che mất nút dưới cùng */
+        'body{padding-bottom:26px}' +
+        '.manhinh{min-height:calc(100dvh - var(--cao-top,76px) - 26px)}';
       document.head.appendChild(s);
       var d = document.createElement('div');
       d.id = 'nhanBanNhap';

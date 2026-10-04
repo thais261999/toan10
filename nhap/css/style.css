@@ -877,14 +877,13 @@ body{
 .brand__text strong,.brand__text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .top__nut{flex:none}
 @media (max-width:560px){
-  .brand__text strong{font-size:16px}
+  .brand__text strong{font-size:15px}
   .cuhop{width:40px;height:47px}
   .top__inner{gap:8px}
 }
-/* Đo được: cần 422px mới đủ chỗ cho cả tên trang lẫn bốn nút bên phải.
-   Hẹp hơn thì giấu chữ đi, chỉ còn ô "10" làm dấu hiệu nhận biết,
-   chứ để chữ bị cắt cụt nhìn xấu hơn. */
-@media (max-width:430px){
+/* Bỏ nút thoát rồi nên chỉ còn ba nút, đo lại thì từ 365px trở lên là
+   tên trang hiện đủ. Hẹp hơn nữa mới giấu đi, chứ để chữ cắt cụt xấu hơn. */
+@media (max-width:364px){
   .brand__text{display:none}
 }
 
@@ -916,4 +915,186 @@ body{
 @media (max-width:680px){
   .do-nha{font-size:25px}
   .phong__cu{width:62px;height:73px}
+}
+
+/* ============================================================
+   NHÀ CỦA CÚ — KHUNG CẢNH TRÀN MÀN HÌNH
+   Màn hình chính của app. Cố ý làm như một căn phòng thật:
+   tường, sàn, cửa sổ nhìn ra trời, nắng hắt xuống sàn, bụi bay
+   trong nắng. Bầu trời đổi theo giờ thật trong ngày.
+   ============================================================ */
+.manhinh{min-height:calc(100dvh - var(--cao-top, 76px));
+         display:flex;flex-direction:column;position:relative}
+
+.canh{position:relative;flex:1;overflow:hidden;isolation:isolate;
+      --sanY:56%;                       /* chỗ tường gặp sàn */
+      --tuong1:#efeafc; --tuong2:#e4ddfa;
+      --san1:#e0c9a6;  --san2:#c9ad84;
+      --troi1:#bfe6ff; --troi2:#8ecdf5;
+      --nang:rgba(255,236,170,.46);
+      --cuW:min(31vw,132px);           /* bề ngang cú */
+      --cuH:calc(var(--cuW) * 87 / 74) /* chiều cao suy từ tỉ lệ hình cú */}
+
+/* ---- Bốn khung giờ trong ngày ---- */
+.canh.gio-sang{--troi1:#ffe2b8;--troi2:#ffc98a;--nang:rgba(255,222,150,.5);
+               --tuong1:#f6ecf6;--tuong2:#efe2f3}
+.canh.gio-trua{--troi1:#bfe6ff;--troi2:#79c2f2;--nang:rgba(255,243,190,.52)}
+.canh.gio-chieu{--troi1:#ffd3a8;--troi2:#f79d8a;--nang:rgba(255,196,142,.46);
+                --tuong1:#f3e6ee;--tuong2:#ecd9e6}
+.canh.gio-toi{--troi1:#2b3568;--troi2:#141a3a;
+              --nang:rgba(150,170,255,.22);
+              --tuong1:#cfc7ea;--tuong2:#bdb3df;
+              --san1:#bda78a;--san2:#a98f6e}
+
+.canh__tuong{position:absolute;inset:0 0 calc(100% - var(--sanY)) 0;
+             background:linear-gradient(to bottom,var(--tuong1),var(--tuong2))}
+/* giấy dán tường chấm bi rất nhạt cho đỡ trống */
+.canh__tuong::before{content:"";position:absolute;inset:0;opacity:.5;
+  background-image:radial-gradient(currentColor 1.1px,transparent 1.2px);
+  background-size:26px 26px;color:rgba(90,79,224,.13)}
+
+.canh__san{position:absolute;inset:var(--sanY) 0 0 0;
+           background:linear-gradient(to bottom,var(--san1),var(--san2));
+           box-shadow:inset 0 3px 0 rgba(0,0,0,.07)}
+/* ván sàn chạy xa dần */
+.canh__san::before{content:"";position:absolute;inset:0;opacity:.35;
+  background:repeating-linear-gradient(to bottom,
+    transparent 0 16px, rgba(120,88,52,.5) 16px 17px)}
+
+.canh__tham{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);
+            width:min(72%,340px);aspect-ratio:5/2;border-radius:50%;
+            background:radial-gradient(ellipse at 50% 50%,
+              rgba(90,79,224,.28),rgba(90,79,224,.13) 62%,transparent 73%)}
+
+/* ---- Cửa sổ ---- */
+.canh__cua{position:absolute;left:50%;top:13%;transform:translateX(-50%);
+           width:min(62%,280px);aspect-ratio:6/5;
+           border-radius:999px 999px 14px 14px;overflow:hidden;
+           box-shadow:0 0 0 6px rgba(255,255,255,.82),0 14px 30px rgba(30,20,70,.2)}
+.canh__troi{position:absolute;inset:0;
+            background:linear-gradient(to bottom,var(--troi1),var(--troi2));
+            transition:background .8s ease}
+.canh__khung{position:absolute;inset:0;
+  background:linear-gradient(to right,transparent calc(50% - 3px),rgba(255,255,255,.92) calc(50% - 3px) calc(50% + 3px),transparent calc(50% + 3px)),
+             linear-gradient(to bottom,transparent calc(58% - 3px),rgba(255,255,255,.92) calc(58% - 3px) calc(58% + 3px),transparent calc(58% + 3px))}
+
+/* Mặt trời ban ngày, mặt trăng ban đêm */
+.canh__vang{position:absolute;right:17%;top:15%;width:20%;aspect-ratio:1;border-radius:50%;
+            background:radial-gradient(circle at 38% 36%,#fff6cf,#ffd978 62%,#ffc44d);
+            box-shadow:0 0 26px rgba(255,214,120,.9);
+            animation:vangTho 7s ease-in-out infinite}
+@keyframes vangTho{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.canh.gio-toi .canh__vang{
+  background:radial-gradient(circle at 62% 38%,#fdfbff,#dfe3fb 58%,#c8cef3);
+  box-shadow:0 0 22px rgba(215,225,255,.75)}
+.canh.gio-chieu .canh__vang{top:36%;
+  background:radial-gradient(circle at 40% 40%,#fff1c9,#ffb36b 60%,#ff8f52)}
+
+/* Đồi xa ngoài cửa sổ cho có chiều sâu */
+.canh__doi{position:absolute;left:-10%;right:-10%;bottom:0;height:34%;
+  background:
+    radial-gradient(ellipse 58% 150% at 24% 100%, rgba(74,150,120,.85) 0 99%, transparent 100%),
+    radial-gradient(ellipse 52% 120% at 72% 100%, rgba(58,128,102,.9) 0 99%, transparent 100%),
+    linear-gradient(to top, rgba(92,166,134,.75), rgba(92,166,134,.2))}
+.canh.gio-toi .canh__doi{filter:brightness(.42) saturate(.7)}
+.canh.gio-chieu .canh__doi{filter:brightness(.82) saturate(1.1) hue-rotate(-8deg)}
+
+/* Chân tường, tách tường với sàn cho gọn mắt */
+.canh__chantuong{position:absolute;left:0;right:0;bottom:0;height:13px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.9),rgba(255,255,255,.55));
+  box-shadow:0 2px 5px rgba(40,25,80,.14)}
+.canh__may{position:absolute;width:52%;height:16%;border-radius:999px;
+           background:rgba(255,255,255,.9);filter:blur(.5px)}
+.canh__may--a{top:18%;animation:troiMay 26s linear infinite}
+.canh__may--b{top:46%;width:38%;height:12%;opacity:.75;
+              animation:troiMay 38s linear infinite -14s}
+@keyframes troiMay{from{left:-55%}to{left:105%}}
+/* Ban đêm mây phải xỉn lại, để trắng tinh như ban ngày nhìn chói mắt */
+.canh.gio-toi .canh__may{background:rgba(190,200,235,.38);filter:blur(1px)}
+.canh.gio-chieu .canh__may{background:rgba(255,236,214,.85)}
+/* sao chỉ hiện buổi tối */
+.canh__sao{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;
+  background-image:radial-gradient(#fff 1.2px,transparent 1.3px),
+                   radial-gradient(#fff .9px,transparent 1px);
+  background-size:38px 30px,53px 44px;background-position:4px 6px,21px 17px}
+.canh.gio-toi .canh__sao{opacity:.85;animation:nhapNhay 4s ease-in-out infinite}
+@keyframes nhapNhay{0%,100%{opacity:.85}50%{opacity:.5}}
+
+/* nắng hắt từ cửa sổ xuống sàn */
+.canh__nang{position:absolute;left:10%;top:6%;width:80%;height:72%;z-index:2;
+            background:radial-gradient(ellipse 58% 72% at 50% 0%,var(--nang),transparent 73%);
+            filter:blur(12px);pointer-events:none;transition:background .8s ease}
+
+/* ---- Bụi bay lơ lửng trong nắng ---- */
+.canh__bui{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.bui{position:absolute;width:3.5px;height:3.5px;border-radius:50%;
+     background:rgba(255,255,255,.7);box-shadow:0 0 7px rgba(255,246,206,.75);
+     animation:buiBay linear infinite}
+@keyframes buiBay{
+  0%{transform:translateY(0) translateX(0) scale(.6);opacity:0}
+  12%{opacity:.85}
+  88%{opacity:.7}
+  100%{transform:translateY(-78vh) translateX(26px) scale(1);opacity:0}}
+
+/* ---- Cú mèo đứng giữa phòng ---- */
+.canh__cu{position:absolute;left:50%;bottom:11%;transform:translateX(-50%);
+          width:var(--cuW);height:var(--cuH);margin:0;
+          z-index:4;cursor:pointer;animation:cuTho 3.6s ease-in-out infinite;
+          filter:drop-shadow(0 12px 14px rgba(40,25,80,.26))}
+@keyframes cuTho{0%,100%{transform:translateX(-50%) translateY(0)}
+                 50%{transform:translateX(-50%) translateY(-7px)}}
+.canh__cu:active{animation:none;transform:translateX(-50%) scale(.95)}
+
+/* ---- Bóng nói của cú ---- */
+.bongnoi{position:absolute;left:50%;bottom:calc(11% + var(--cuH) + 14px);
+         transform:translateX(-50%);z-index:5;max-width:min(80%,320px);
+         background:var(--card);color:var(--ink);border-radius:16px;
+         padding:11px 15px;text-align:center;
+         box-shadow:0 10px 26px rgba(30,20,70,.2);
+         animation:bongHien .34s cubic-bezier(.2,1.3,.35,1)}
+.bongnoi b{font-family:Lexend,sans-serif;font-size:14.5px;font-weight:600;line-height:1.5}
+.bongnoi::after{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-8px;
+                border:8px solid transparent;border-top-color:var(--card);border-bottom:0}
+@keyframes bongHien{from{transform:translateX(-50%) translateY(8px) scale(.9);opacity:0}
+                    to{transform:translateX(-50%);opacity:1}}
+
+/* ---- Đồ trang trí trong phòng ---- */
+.canh .do-nha{position:absolute;transform:translate(-50%,-50%);
+              font-size:clamp(30px,8.5vw,46px);line-height:1;z-index:3;
+              filter:drop-shadow(0 7px 7px rgba(40,25,80,.22));
+              animation:hienDo .4s cubic-bezier(.2,1.4,.4,1)}
+
+/* ---- Thanh dưới ---- */
+/* Tấm panel trượt lên che mép dưới căn phòng. Cố ý dùng nền đặc thay
+   cho dải chuyển màu, vì chuyển màu sang var(--paper) thì ở chế độ tối
+   nó loang thành vệt đục trên mặt sàn. */
+.thanhduoi{position:relative;z-index:6;margin-top:-18px;
+           padding:15px 18px calc(16px + env(safe-area-inset-bottom));
+           background:var(--paper);border-radius:22px 22px 0 0;
+           box-shadow:0 -10px 26px rgba(20,14,46,.16)}
+.thanhduoi__do{max-width:460px;margin:0 auto 11px;text-align:center}
+.thanhduoi__chu{display:block;font-size:13.5px;color:var(--muted);line-height:1.5}
+.thanhduoi__vach{display:block;height:7px;border-radius:999px;margin:8px auto 0;
+                 width:min(82%,300px);background:var(--line);overflow:hidden}
+.thanhduoi__vach i{display:block;height:100%;width:0;border-radius:999px;
+                   background:linear-gradient(90deg,var(--tim),#8b7cf6);
+                   transition:width .5s cubic-bezier(.3,1.2,.4,1)}
+.thanhduoi__nut{max-width:460px;margin:0 auto;display:flex;gap:10px}
+
+.nutto{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+       padding:14px 12px;border-radius:16px;cursor:pointer;
+       font-family:Lexend,sans-serif;font-size:15.5px;font-weight:700;
+       border:1.5px solid var(--line);background:var(--card);color:var(--ink);
+       box-shadow:0 3px 0 var(--line);transition:transform .12s,box-shadow .12s}
+.nutto span{font-size:18px;line-height:1}
+.nutto:active{transform:translateY(3px);box-shadow:0 0 0 var(--line)}
+.nutto--chinh{border-color:var(--tim-dam);background:var(--tim);color:#fff;
+              box-shadow:0 3px 0 var(--tim-dam)}
+.nutto--chinh:active{box-shadow:0 0 0 var(--tim-dam)}
+
+@media (prefers-reduced-motion:reduce){
+  .canh__cu,.canh__may,.bui,.canh.gio-toi .canh__sao{animation:none!important}
+}
+@media (min-width:700px){
+  .canh{--sanY:58%;--cuW:150px}
 }
