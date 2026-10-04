@@ -140,7 +140,8 @@
    'phanhoi','phanhoiTieu','phanhoiGiai',
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
    'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
-   'cho','choDong','choXu','cuCho','hangDiem','hangDo','btnRa',
+   'cho','choDong','choXu','cuCho','hangDiem','hangDo','hangNha','btnRa',
+   'nha','nhaDong','nhaMua','nhaNho','phong','cuNha',
    'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
    'nutKhai','khaiTen','khaiLop','khaiBao','choChu',
    'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
@@ -268,6 +269,20 @@
   /* Điểm cộng đắt dần: lần đầu 200 xu, mỗi lần sau thêm 100. */
   var DIEM_DAU = 200, DIEM_TANG = 100;
   function giaDiemCong() { return DIEM_DAU + DIEM_TANG * (vi.phieu || 0); }
+
+  /* Đồ trang trí nhà cú. x và y là vị trí trong phòng, tính theo phần trăm. */
+  var NHA = [
+    { ma: 'cay',    ten: 'Chậu cây',      hinh: '🪴', gia: 150,  x: 8,  y: 70 },
+    { ma: 'tranh',  ten: 'Tranh treo',    hinh: '🖼️', gia: 200,  x: 73, y: 16 },
+    { ma: 'gau',    ten: 'Gấu bông',      hinh: '🧸', gia: 280,  x: 29, y: 78 },
+    { ma: 'den',    ten: 'Đèn tường',     hinh: '💡', gia: 350,  x: 17, y: 15 },
+    { ma: 'ke',     ten: 'Kệ sách',       hinh: '📚', gia: 450,  x: 87, y: 52 },
+    { ma: 'dongho', ten: 'Đồng hồ',       hinh: '🕰️', gia: 550,  x: 50, y: 10 },
+    { ma: 'cup',    ten: 'Tủ cúp',        hinh: '🏆', gia: 700,  x: 11, y: 46 },
+    { ma: 'sofa',   ten: 'Ghế sofa',      hinh: '🛋️', gia: 900,  x: 79, y: 77 },
+    { ma: 'dan',    ten: 'Đàn piano',     hinh: '🎹', gia: 1200, x: 63, y: 80 },
+    { ma: 'meo',    ten: 'Mèo bạn thân',  hinh: '🐈', gia: 1500, x: 37, y: 88 }
+  ];
 
   var HANG = [
     { ma: 'mu',    ten: 'Mũ tốt nghiệp', gia: 200 },
@@ -679,6 +694,20 @@
           '" data-diem="1">🪙 ' + giaDiemCong() + '</button>' +
       '</div>';
 
+    el.hangNha.innerHTML = NHA.map(function (h) {
+      var co = vi.co.indexOf(h.ma) !== -1, dat = vi.mac.indexOf(h.ma) !== -1;
+      var nut = co
+        ? '<button class="mon__nut mon__nut--' + (dat ? 'bo' : 'mac') + '" data-mac="' + h.ma + '">' +
+          (dat ? 'Cất đi' : 'Bày ra') + '</button>'
+        : '<button class="mon__nut' + (vi.xu >= h.gia ? '' : ' is-thieu') +
+          '" data-mua="' + h.ma + '">🪙 ' + h.gia + '</button>';
+      return '<div class="mon' + (co ? ' is-co' : '') + '">' +
+               '<span class="mon__hinh">' + h.hinh + '</span>' +
+               '<div class="mon__chu"><b>' + h.ten + '</b>' +
+                 '<small>' + (dat ? 'Đang bày trong nhà' : co ? 'Đã có, chưa bày' : 'Chưa mua') + '</small></div>' +
+               nut + '</div>';
+    }).join('');
+
     el.hangDo.innerHTML = HANG.map(function (h) {
       var co = vi.co.indexOf(h.ma) !== -1;
       var mac = vi.mac.indexOf(h.ma) !== -1;
@@ -721,12 +750,12 @@
     }
 
     if (b.dataset.mua) {
-      var h = HANG.filter(function (x) { return x.ma === b.dataset.mua; })[0];
+      var h = HANG.concat(NHA).filter(function (x) { return x.ma === b.dataset.mua; })[0];
       if (!h || vi.xu < h.gia) { nhacThieu(b); return; }
       vi.xu -= h.gia;
       vi.co.push(h.ma);
       vi.mac.push(h.ma);
-      ghiVi(); veCho(); veCu(el.cuTop);
+      ghiVi(); veCho(); veCu(el.cuTop); veNha();
       phaoGiay(el.phaoHoc, 24);
       return;
     }
@@ -735,13 +764,39 @@
       var ma = b.dataset.mac;
       var k = vi.mac.indexOf(ma);
       if (k === -1) vi.mac.push(ma); else vi.mac.splice(k, 1);
-      ghiVi(); veCho(); veCu(el.cuTop);
+      ghiVi(); veCho(); veCu(el.cuTop); veNha();
     }
   });
 
   function nhacThieu(b) {
     b.classList.remove('lac'); void b.offsetWidth; b.classList.add('lac');
   }
+
+
+  /* ---------- Nhà của cú ---------- */
+  function veNha() {
+    if (!el.phong) return;
+    el.phong.querySelectorAll('.do-nha').forEach(function (e) { e.remove(); });
+
+    var day = 0;
+    NHA.forEach(function (h) {
+      if (vi.mac.indexOf(h.ma) === -1) return;
+      day++;
+      el.phong.insertAdjacentHTML('beforeend',
+        '<span class="do-nha" title="' + h.ten + '" style="left:' + h.x + '%;top:' + h.y + '%">' +
+        h.hinh + '</span>');
+    });
+    veCu(el.cuNha);
+    el.nhaNho.textContent = day
+      ? 'Nhà cú đang có ' + day + '/' + NHA.length + ' món đồ. Vào cửa hàng mua thêm nhé.'
+      : 'Nhà còn trống trơn. Vào cửa hàng mua đồ trang trí cho cú mèo nào.';
+  }
+
+  function moNha() { veNha(); el.nha.hidden = false; }
+  el.cuTop.addEventListener('click', moNha);
+  el.nhaDong.addEventListener('click', function () { el.nha.hidden = true; });
+  el.nha.addEventListener('click', function (ev) { if (ev.target === el.nha) el.nha.hidden = true; });
+  el.nhaMua.addEventListener('click', function () { el.nha.hidden = true; moCho(); });
 
   /* ============================================================
      ĐĂNG NHẬP VÀ ĐỒNG BỘ VỚI MÁY CHỦ

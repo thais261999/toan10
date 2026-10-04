@@ -844,3 +844,40 @@ body{
 .ggl__g{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;
         font-family:Lexend,sans-serif;font-weight:700;font-size:15px;color:#fff;
         background:conic-gradient(#ea4335 0 25%,#fbbc05 0 50%,#34a853 0 75%,#4285f4 0)}
+
+/* ============================================================
+   NHÀ CỦA CÚ
+   ============================================================ */
+.nhahop{max-width:460px;text-align:center;padding:26px 22px 22px}
+.nhahop h2{font-size:22px;margin-bottom:16px}
+.cuhop{cursor:pointer}
+
+.phong{position:relative;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;
+       background:linear-gradient(to bottom,#efeafc 0%,#efeafc 66%,#d9c6a8 66%,#cbb391 100%);
+       box-shadow:inset 0 -2px 0 rgba(0,0,0,.08)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .phong{
+    background:linear-gradient(to bottom,#2a2746 0%,#2a2746 66%,#4a3d2e 66%,#3d3326 100%)}
+}
+.phong__cua{position:absolute;left:6%;top:24%;width:24%;height:30%;border-radius:8px;
+            background:linear-gradient(160deg,#bfe3ff,#8ec9f5);
+            box-shadow:0 0 0 4px rgba(255,255,255,.6) inset,0 2px 8px rgba(0,0,0,.1)}
+.phong__cua::after{content:"";position:absolute;inset:0;
+            background:linear-gradient(to right,transparent 48%,rgba(255,255,255,.7) 48% 52%,transparent 52%),
+                       linear-gradient(to bottom,transparent 48%,rgba(255,255,255,.7) 48% 52%,transparent 52%)}
+
+.phong__cu{position:absolute;left:50%;top:72%;transform:translate(-50%,-50%);
+           width:74px;height:87px;margin:0;z-index:3;cursor:default}
+
+.do-nha{position:absolute;transform:translate(-50%,-50%);font-size:30px;line-height:1;
+        z-index:2;animation:hienDo .3s ease-out}
+@keyframes hienDo{from{transform:translate(-50%,-50%) scale(.4);opacity:0}
+                  to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+
+.nha__nho{margin:14px 0 4px;font-size:13.5px;color:var(--muted);line-height:1.55}
+.nhahop .solid{margin-top:10px}
+
+@media (max-width:680px){
+  .do-nha{font-size:25px}
+  .phong__cu{width:62px;height:73px}
+}
