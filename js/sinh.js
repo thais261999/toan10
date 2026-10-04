@@ -252,14 +252,22 @@
      ============================================================ */
 
   /* Sinh 4 điểm sao cho đúng một điểm thoả bất phương trình */
-  function bonDiem(kt) {
-    for (var lan = 0; lan < 300; lan++) {
+  /* Bốn cặp số khác nhau, đúng một cặp thoả điều kiện kt.
+     lo, hi là khoảng lấy toạ độ, mặc định -3 đến 6.
+     canDuong là số cặp tối thiểu có cả hai toạ độ không âm. Đặt số này
+     để học sinh không đoán được đáp án chỉ bằng cách nhìn dấu âm. */
+  function bonDiem(kt, lo, hi, canDuong) {
+    if (lo === undefined) lo = -3;
+    if (hi === undefined) hi = 6;
+    canDuong = canDuong || 0;
+    for (var lan = 0; lan < 400; lan++) {
       var d = [], seen = {};
-      for (var i = 0; i < 60 && d.length < 4; i++) {
-        var p = [ri(-3, 6), ri(-3, 6)], k = p[0] + ',' + p[1];
+      for (var i = 0; i < 80 && d.length < 4; i++) {
+        var p = [ri(lo, hi), ri(lo, hi)], k = p[0] + ',' + p[1];
         if (!seen[k]) { seen[k] = 1; d.push(p); }
       }
       if (d.length < 4) continue;
+      if (d.filter(function (p) { return p[0] >= 0 && p[1] >= 0; }).length < canDuong) continue;
       var ok = d.filter(kt);
       if (ok.length === 1) {
         var dung = ok[0];
@@ -269,137 +277,163 @@
     }
     return null;
   }
+
+  /* Viết vế trái ax + by cho đúng quy ước: bỏ hệ số 1, hệ số âm viết dấu trừ.
+     veTrai(1, 2) -> 'x + 2y';  veTrai(3, -1) -> '3x - y' */
+  function veTrai(a, b) {
+    var s = (a === 1) ? 'x' : (a === -1) ? '-x' : a + 'x';
+    if (b === 1) return s + ' + y';
+    if (b === -1) return s + ' - y';
+    return s + (b < 0 ? ' - ' + (-b) : ' + ' + b) + 'y';
+  }
   function diem(p) { return '$(' + p[0] + ';\\,' + p[1] + ')$'; }
 
   var C2_TN = [
-
-    // 1. Điểm nào thuộc miền nghiệm
+    // 1. Nhận dạng bất phương trình bậc nhất hai ẩn
     function () {
-      var a = ri(1, 4), b = ri(1, 4), c = ri(2, 10);
-      var d = bonDiem(function (p) { return a * p[0] + b * p[1] <= c; });
-      if (!d) return C2_TN[1]();
-      return { muc: 1,
-        de: 'Điểm nào sau đây thuộc miền nghiệm của bất phương trình $' +
-            a + 'x + ' + b + 'y \\le ' + c + '$?',
-        dapan: d.map(diem), dung: 0,
-        giai: 'Thay toạ độ vào vế trái: $' + a + '\\cdot' + d[0][0] + ' + ' + b + '\\cdot' +
-              d[0][1] + ' = ' + (a * d[0][0] + b * d[0][1]) + ' \\le ' + c + '$.' };
-    },
-
-    // 2. Điểm nào KHÔNG thuộc miền nghiệm
-    function () {
-      var a = ri(1, 4), b = ri(1, 4), c = ri(2, 10);
-      var d = bonDiem(function (p) { return a * p[0] + b * p[1] > c; });
-      if (!d) return C2_TN[0]();
-      return { muc: 2,
-        de: 'Điểm nào sau đây <strong>không</strong> thuộc miền nghiệm của $' +
-            a + 'x + ' + b + 'y \\le ' + c + '$?',
-        dapan: d.map(diem), dung: 0,
-        giai: '$' + a + '\\cdot' + d[0][0] + ' + ' + b + '\\cdot' + d[0][1] + ' = ' +
-              (a * d[0][0] + b * d[0][1]) + ' \\gt ' + c + '$ nên điểm này bị loại.' };
-    },
-
-    // 3. Giá trị lớn nhất của F trên miền tam giác
-    function () {
-      var a = ri(1, 5), b = ri(1, 5), m = ri(2, 7), n = ri(2, 7);
-      var v = [0, a * m, b * n], max = Math.max.apply(null, v);
-      return { muc: 2,
-        de: 'Miền nghiệm của một hệ là tam giác có ba đỉnh $O(0;0)$, $A(' + m + ';0)$, $B(0;' + n +
-            ')$. Giá trị lớn nhất của $F = ' + a + 'x + ' + b + 'y$ trên miền đó bằng',
-        dapan: bon(String(max), [String(Math.min(a * m, b * n)), String(a * m + b * n), String(m + n)]),
-        dung: 0,
-        giai: 'Tính $F$ tại ba đỉnh được $0$, $' + (a * m) + '$, $' + (b * n) +
-              '$. Giá trị lớn nhất là $' + max + '$.' };
-    },
-
-    // 4. Giá trị nhỏ nhất của F
-    function () {
-      var a = ri(1, 5), b = ri(1, 5), m = ri(2, 7), n = ri(2, 7);
-      return { muc: 2,
-        de: 'Miền nghiệm là tam giác có ba đỉnh $O(0;0)$, $A(' + m + ';0)$, $B(0;' + n +
-            ')$. Giá trị nhỏ nhất của $F = ' + a + 'x + ' + b + 'y$ trên miền đó bằng',
-        dapan: bon('0', [String(Math.min(a * m, b * n)), String(Math.max(a * m, b * n)), String(a + b)]),
-        dung: 0,
-        giai: '$F$ tại ba đỉnh là $0$, $' + (a * m) + '$, $' + (b * n) +
-              '$, nhỏ nhất là $0$ tại gốc toạ độ.' };
-    },
-
-    // 5. Miền nghiệm có chứa gốc toạ độ không
-
-    // 6. Tìm m nguyên lớn nhất
-    function () {
-      var a = ri(1, 4), b = ri(1, 3), p = ri(1, 4), c = a * p + b * ri(2, 6) + ri(0, b - 1);
-      var mMax = Math.floor((c - a * p) / b);
-      return { muc: 2,
-        de: 'Điểm $(' + p + ';\\,m)$ thuộc miền nghiệm của $' + a + 'x + ' + b + 'y \\le ' + c +
-            '$. Giá trị nguyên lớn nhất của $m$ là',
-        dapan: bon(String(mMax), [String(mMax + 1), String(mMax - 1), String(c)]),
-        dung: 0,
-        giai: '$' + (a * p) + ' + ' + b + 'm \\le ' + c + '$ nên $m \\le ' +
-              ((c - a * p) / b).toFixed(2).replace('.', '{,}').replace('{,}00', '') +
-              '$, số nguyên lớn nhất là $' + mMax + '$.' };
-    },
-
-    // 7. Nhận dạng bất phương trình bậc nhất hai ẩn
-    function () {
-      var a = ri(2, 6), b = ri(2, 6), c = ri(1, 9);
+      var a = ri(1, 6), b = chon([1, 2, 3, 4, 5, -1, -2, -3, -4]), c = ri(-8, 12);
+      var a2 = ri(2, 6), b2 = ri(2, 6);
       return { muc: 1,
         de: 'Bất phương trình nào sau đây là bất phương trình bậc nhất hai ẩn?',
-        dapan: bon('$' + a + 'x + ' + b + 'y \\le ' + c + '$',
-                   ['$x^2 + ' + b + 'y \\le ' + c + '$',
-                    '$' + a + 'xy \\ge ' + c + '$',
-                    '$' + a + 'x + \\dfrac{' + b + '}{y} \\lt ' + c + '$']),
+        dapan: bon('$' + veTrai(a, b) + ' \\le ' + c + '$',
+                   ['$x^2 + ' + b2 + 'y \\le ' + c + '$',
+                    '$' + a2 + 'xy \\ge ' + c + '$',
+                    '$' + a2 + 'x + \\dfrac{' + b2 + '}{y} \\lt ' + c + '$']),
         dung: 0,
-        giai: 'Bậc nhất hai ẩn thì mỗi ẩn chỉ có số mũ $1$ và không nhân nhau, không nằm dưới mẫu.' };
+        giai: 'Bậc nhất hai ẩn thì mỗi ẩn chỉ có số mũ $1$: không có $x^2$, không nhân $x$ với $y$, không có ẩn dưới mẫu.' };
     },
 
-    // 8. Miền nghiệm của hệ
+    // 2. Nhận dạng hệ bất phương trình bậc nhất hai ẩn
     function () {
+      var c = ri(2, 14), g = ri(-6, 9), a2 = ri(2, 5), b2 = ri(2, 5);
+      var d1 = veTrai(ri(1, 4), chon([1, 2, 3, -1, -2])) + ' \\le ' + c;
+      var d2 = veTrai(ri(1, 3), chon([1, 2, -1, -2])) + ' \\ge ' + g;
+      function he(t1, t2) { return '$\\begin{cases} ' + t1 + ' \\\\ ' + t2 + ' \\end{cases}$'; }
       return { muc: 1,
-        de: 'Miền nghiệm của một hệ bất phương trình bậc nhất hai ẩn là',
-        dapan: bon('Giao của các nửa mặt phẳng nghiệm',
-                   ['Hợp của các nửa mặt phẳng nghiệm', 'Một đường thẳng', 'Một điểm duy nhất']),
+        de: 'Hệ nào sau đây là hệ bất phương trình bậc nhất hai ẩn?',
+        dapan: bon(he(d1, d2),
+                   [he('x^2 + ' + b2 + 'y \\le ' + c, d2),
+                    he(d1, a2 + 'xy \\ge ' + g),
+                    he('\\dfrac{' + a2 + '}{x} + y \\le ' + c, d2)]),
         dung: 0,
-        giai: 'Nghiệm của hệ phải thoả mãn mọi bất phương trình nên lấy phần chung.' };
+        giai: 'Hệ bậc nhất hai ẩn là hệ mà mọi bất phương trình trong hệ đều bậc nhất hai ẩn.' };
     },
 
-    // 9. Cặp số nào là nghiệm của hệ
+    // 3. Cặp số nào là nghiệm của bất phương trình
     function () {
-      var a = ri(1, 3), b = ri(1, 3), c = ri(6, 14);
+      var a = chon([1, 2, 3, 4, -1, -2, -3]), b = chon([1, 2, 3, 4, -1, -2, -3]);
+      var c = ri(-6, 12);
+      var d = bonDiem(function (p) { return a * p[0] + b * p[1] <= c; }, -4, 7, 2);
+      if (!d) return C2_TN[5]();
+      return { muc: 1,
+        de: 'Cặp số nào sau đây là nghiệm của bất phương trình $' +
+            veTrai(a, b) + ' \\le ' + c + '$?',
+        dapan: d.map(diem), dung: 0,
+        giai: 'Thay vào vế trái được $' + (a * d[0][0] + b * d[0][1]) + ' \\le ' + c +
+              '$ nên cặp này là nghiệm, ba cặp còn lại đều cho giá trị lớn hơn $' + c + '$.' };
+    },
+
+    // 4. Cặp số nào KHÔNG là nghiệm của bất phương trình
+    function () {
+      var a = chon([1, 2, 3, 4, -1, -2, -3]), b = chon([1, 2, 3, 4, -1, -2, -3]);
+      var c = ri(-6, 12);
+      var d = bonDiem(function (p) { return a * p[0] + b * p[1] > c; }, -4, 7, 2);
+      if (!d) return C2_TN[2]();
+      return { muc: 2,
+        de: 'Cặp số nào sau đây <strong>không</strong> là nghiệm của bất phương trình $' +
+            veTrai(a, b) + ' \\le ' + c + '$?',
+        dapan: d.map(diem), dung: 0,
+        giai: 'Thay vào vế trái được $' + (a * d[0][0] + b * d[0][1]) + ' \\gt ' + c +
+              '$ nên cặp này không thoả, ba cặp còn lại đều thoả.' };
+    },
+
+    // 5. Một cặp số cho trước có là nghiệm của bất phương trình không
+    function () {
+      var a = chon([1, 2, 3, 4, -1, -2, -3]), b = chon([1, 2, 3, 4, -1, -2, -3]);
+      var x = ri(-4, 6), y = ri(-4, 6);
+      var vt = a * x + b * y, c = vt + chon([-6, -4, -3, -2, -1, 1, 2, 3, 4, 6]);
+      var la = vt <= c;
+      return { muc: 1,
+        de: 'Cặp số $(' + x + ';\\,' + y + ')$ có phải là nghiệm của bất phương trình $' +
+            veTrai(a, b) + ' \\le ' + c + '$ không?',
+        dapan: bon(la ? 'Có, vì $' + vt + ' \\le ' + c + '$' : 'Không, vì $' + vt + ' \\gt ' + c + '$',
+                   [la ? 'Không, vì $' + vt + ' \\gt ' + c + '$' : 'Có, vì $' + vt + ' \\le ' + c + '$',
+                    'Không xác định được',
+                    'Cặp số này nằm trên đường bờ']),
+        dung: 0,
+        giai: 'Thay $x = ' + x + '$ và $y = ' + y + '$ vào vế trái được $' + vt + '$, so với $' + c +
+              '$ thì ' + (la ? 'nhỏ hơn nên là nghiệm.' : 'lớn hơn nên không là nghiệm.') };
+    },
+
+    // 6. Gốc toạ độ có thuộc miền nghiệm không
+    function () {
+      var a = chon([1, 2, 3, 4, 5, -1, -2, -3]), b = chon([1, 2, 3, 4, 5, -1, -2, -3]);
+      var c = chon([-9, -7, -5, -4, -3, -2, -1, 2, 3, 5, 6, 8, 10, 12]);
+      var la = 0 <= c;
+      return { muc: 1,
+        de: 'Điểm $O(0;0)$ có thuộc miền nghiệm của bất phương trình $' +
+            veTrai(a, b) + ' \\le ' + c + '$ không?',
+        dapan: bon(la ? 'Có, vì $0 \\le ' + c + '$' : 'Không, vì $0 \\gt ' + c + '$',
+                   [la ? 'Không, vì $0 \\gt ' + c + '$' : 'Có, vì $0 \\le ' + c + '$',
+                    'Không xác định được',
+                    'Gốc toạ độ nằm trên đường bờ']),
+        dung: 0,
+        giai: 'Thay $x = 0$, $y = 0$ vào vế trái được $0$, mà $0 ' +
+              (la ? '\\le ' : '\\gt ') + c + '$.' };
+    },
+
+    // 7. Cặp số nào là nghiệm của hệ
+    function () {
+      var a = chon([1, 2, 3]), b = chon([1, 2, 3]), c = ri(6, 16);
       var d = bonDiem(function (p) {
         return p[0] >= 0 && p[1] >= 0 && a * p[0] + b * p[1] <= c;
-      });
-      if (!d) return C2_TN[7]();
+      }, -3, 8, 2);
+      if (!d) return C2_TN[0]();
       return { muc: 2,
-        de: 'Cặp số nào là nghiệm của hệ $\\begin{cases} x \\ge 0 \\\\ y \\ge 0 \\\\ ' +
-            a + 'x + ' + b + 'y \\le ' + c + '\\end{cases}$?',
+        de: 'Cặp số nào sau đây là nghiệm của hệ $\\begin{cases} x \\ge 0 \\\\ y \\ge 0 \\\\ ' +
+            veTrai(a, b) + ' \\le ' + c + ' \\end{cases}$?',
         dapan: d.map(diem), dung: 0,
-        giai: 'Chỉ cặp này thoả cả ba điều kiện, các cặp còn lại vi phạm ít nhất một điều kiện.' };
+        giai: 'Chỉ cặp $(' + d[0][0] + ';\\,' + d[0][1] +
+              ')$ thoả cả ba điều kiện, ba cặp còn lại vi phạm ít nhất một điều kiện.' };
     },
 
-    // 10. Số đỉnh của miền nghiệm
+    // 8. Cặp số nào KHÔNG là nghiệm của hệ (cả bốn cặp đều không âm)
     function () {
-      var a = ri(1, 4), b = ri(1, 4), c = ri(6, 14);
+      var a = chon([1, 2, 3]), b = chon([1, 2, 3]), c = ri(6, 18);
+      var d = bonDiem(function (p) { return a * p[0] + b * p[1] > c; }, 0, 9, 4);
+      if (!d) return C2_TN[6]();
       return { muc: 2,
-        de: 'Miền nghiệm của hệ $\\begin{cases} x \\ge 0 \\\\ y \\ge 0 \\\\ ' +
-            a + 'x + ' + b + 'y \\le ' + c + '\\end{cases}$ là một đa giác có bao nhiêu đỉnh?',
-        dapan: bon('3', ['2', '4', '5']),
-        dung: 0,
-        giai: 'Đó là tam giác với ba đỉnh $O(0;0)$, $\\left(\\dfrac{' + c + '}{' + a +
-              '};0\\right)$ và $\\left(0;\\dfrac{' + c + '}{' + b + '}\\right)$.' };
+        de: 'Cặp số nào sau đây <strong>không</strong> là nghiệm của hệ $\\begin{cases} x \\ge 0 \\\\ y \\ge 0 \\\\ ' +
+            veTrai(a, b) + ' \\le ' + c + ' \\end{cases}$?',
+        dapan: d.map(diem), dung: 0,
+        giai: 'Bốn cặp đều không âm, nhưng cặp này cho $' + (a * d[0][0] + b * d[0][1]) +
+              ' \\gt ' + c + '$ nên vi phạm bất phương trình thứ ba.' };
     },
 
-    // Gốc toạ độ có thuộc miền nghiệm không
+    // 9. Một cặp số cho trước có là nghiệm của hệ không
     function () {
-      var a = ri(1, 5), b = ri(1, 5), c = ri(3, 12);
-      return { muc: 1,
-        de: 'Điểm $O(0;0)$ có thuộc miền nghiệm của bất phương trình $' + a + 'x + ' + b +
-            'y \\le ' + c + '$ không?',
-        dapan: bon('Có, vì $0 \\le ' + c + '$',
-                   ['Không, vì $0 \\gt ' + c + '$', 'Không xác định được', 'Chỉ thuộc đường bờ']),
+      var a = chon([1, 2, 3]), b = chon([1, 2, 3]), c = ri(6, 16);
+      var x = ri(-3, 8), y = ri(-3, 8);
+      var vt = a * x + b * y;
+      var la = (x >= 0 && y >= 0 && vt <= c);
+      var vi = (x < 0) ? 'vì $x = ' + x + ' \\lt 0$'
+             : (y < 0) ? 'vì $y = ' + y + ' \\lt 0$'
+             : 'vì $' + vt + ' \\gt ' + c + '$';
+      return { muc: 2,
+        de: 'Cặp số $(' + x + ';\\,' + y + ')$ có phải là nghiệm của hệ $\\begin{cases} x \\ge 0 \\\\ y \\ge 0 \\\\ ' +
+            veTrai(a, b) + ' \\le ' + c + ' \\end{cases}$ không?',
+        dapan: bon(la ? 'Có, vì cả ba điều kiện đều thoả mãn' : 'Không, ' + vi,
+                   la ? ['Không, vì $' + vt + ' \\gt ' + c + '$',
+                         'Không, vì $x \\lt 0$',
+                         'Không xác định được']
+                      : ['Có, vì cả ba điều kiện đều thoả mãn',
+                         'Không xác định được',
+                         'Còn tuỳ giá trị của $x$ và $y$']),
         dung: 0,
-        giai: 'Thay $x = 0$, $y = 0$ vào vế trái được $0$, mà $0 \\le ' + c + '$ nên đúng.' };
-    }];
+        giai: la ? 'Thay vào thấy $x \\ge 0$, $y \\ge 0$ và $' + vt + ' \\le ' + c + '$ nên là nghiệm.'
+                 : 'Cặp số này không là nghiệm, ' + vi + '.' };
+    }
+  ];
 
   var C2_DS = [
     function () {

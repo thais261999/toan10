@@ -317,13 +317,7 @@ const CHUONG_TRINH = [
         { muc: 2, de: L`Điểm nào sau đây <strong>không</strong> thuộc miền nghiệm của $x - 2y \lt 4$?`,
         dapan: [L`$(4;0)$`, L`$(0;0)$`, L`$(1;2)$`, L`$(-1;1)$`],
         dung: 0,
-        giai: L`Với $(4;0)$ ta có $4 - 0 = 4$, không nhỏ hơn $4$ nên điểm này bị loại.` },
-
-        { muc: 1, de: `Miền nghiệm của một hệ bất phương trình bậc nhất hai ẩn luôn là`,
-        dapan: [`Giao của các nửa mặt phẳng`, `Hợp của các nửa mặt phẳng`, `Một đường thẳng`, `Một điểm duy nhất`],
-        dung: 0,
-        giai: `Nghiệm của hệ phải thoả mãn mọi bất phương trình trong hệ, nên ta lấy phần chung.` }
-      ],
+        giai: L`Với $(4;0)$ ta có $4 - 0 = 4$, không nhỏ hơn $4$ nên điểm này bị loại.` }],
 
       dungsai: [
         { muc: 1, de: L`Cho bất phương trình $2x - y \ge 1$.`,
