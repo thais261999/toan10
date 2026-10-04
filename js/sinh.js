@@ -177,14 +177,6 @@
     },
 
     // 10. Đếm số nguyên trong nửa khoảng
-    function () {
-      var a = ri(-6, 2), b = ri(a + 3, a + 9);
-      return { muc: 2,
-        de: 'Có bao nhiêu số nguyên thuộc nửa khoảng $[' + a + ';' + b + ')$?',
-        dapan: bon(String(b - a), [String(b - a + 1), String(b - a - 1), String(b + a)]),
-        dung: 0,
-        giai: 'Các số nguyên từ $' + a + '$ đến $' + (b - 1) + '$, tất cả $' + (b - a) + '$ số.' };
-    },
 
     // 11. Bài toán hai tập hợp
     function () {
@@ -213,7 +205,7 @@
     // 13. Mệnh đề kéo theo và mệnh đề đảo
     function () {
       var b = chon([2, 3, 5]), h = chon([2, 3, 4]), a = b * h;
-      return { muc: 3,
+      return { muc: 2,
         de: 'Xét mệnh đề “Nếu $n$ chia hết cho $' + a + '$ thì $n$ chia hết cho $' + b + '$”. Khẳng định nào đúng?',
         dapan: bon(
           'Mệnh đề đúng, mệnh đề đảo sai',
@@ -324,15 +316,6 @@
     },
 
     // Số phần tử của hợp khi biết giao
-    function () {
-      var c = ri(2, 8), a = ri(c + 2, c + 10), b = ri(c + 2, c + 10);
-      return { muc: 2,
-        de: 'Hai tập hợp $A$ và $B$ có $' + a + '$ và $' + b +
-            '$ phần tử, phần chung có $' + c + '$ phần tử. Tập $A \\cup B$ có bao nhiêu phần tử?',
-        dapan: bon(String(a + b - c), [String(a + b), String(a + b + c), String(Math.abs(a - b))]),
-        dung: 0,
-        giai: '$' + a + ' + ' + b + ' - ' + c + ' = ' + (a + b - c) + '$.' };
-    },
 
     // Phần bù trong tập số thực
     function () {
@@ -497,22 +480,30 @@
 
 
     // 5. Bài toán hai tập hợp
-    function () {
-      var c = ri(4, 10), a = ri(c + 4, c + 12), b = ri(c + 3, c + 10);
-      var N = ri(a + b - c + 3, a + b - c + 10);
-      return { muc: 3,
-        de: 'Lớp có ' + N + ' học sinh, ' + a + ' em giỏi Toán, ' + b +
-            ' em giỏi Anh và ' + c + ' em giỏi cả hai môn.',
-        y: ['Số em giỏi ít nhất một môn là $' + (a + b - c) + '$',
-            'Số em không giỏi môn nào là $' + (N - a - b + c) + '$',
-            'Số em chỉ giỏi Toán là $' + (a - c) + '$',
-            'Số em chỉ giỏi Anh là $' + b + '$'],
-        dung: [true, true, true, false],
-        giai: 'Số em chỉ giỏi Anh là $' + b + ' - ' + c + ' = ' + (b - c) + '$.' };
-    }
+
   ];
 
   var C1_TLN = [
+    function () {
+      var c = ri(3, 9), a = ri(c + 3, c + 12), b = ri(c + 2, c + 10);
+      var N = ri(a + b - c + 2, a + b - c + 10);
+      return { muc: 2,
+        de: 'Lớp có ' + N + ' học sinh, ' + a + ' em giỏi Toán, ' + b + ' em giỏi Văn, ' +
+            c + ' em giỏi cả hai môn. Có bao nhiêu em giỏi ít nhất một môn?',
+        dapan: String(a + b - c),
+        giai: 'Lấy $' + a + ' + ' + b + '$ rồi trừ $' + c + '$ em đã đếm hai lần, được $' +
+              (a + b - c) + '$.' };
+    },
+
+    function () {
+      var a = ri(10, 25), b = ri(8, 20), c = ri(3, 7);
+      return { muc: 2,
+        de: 'Một nhóm có ' + a + ' bạn thích bóng đá, ' + b + ' bạn thích cầu lông, ' + c +
+            ' bạn thích cả hai môn. Có bao nhiêu bạn chỉ thích bóng đá?',
+        dapan: String(a - c),
+        giai: 'Lấy ' + a + ' trừ đi ' + c + ' bạn thích cả hai, còn ' + (a - c) + ' bạn.' };
+    },
+
     function () {
       var ds = [], seen = {};
       while (ds.length < 6) {
@@ -636,7 +627,7 @@
     function () {
       var a = ri(1, 5), b = ri(1, 5), m = ri(2, 7), n = ri(2, 7);
       var v = [0, a * m, b * n], max = Math.max.apply(null, v);
-      return { muc: 3,
+      return { muc: 2,
         de: 'Miền nghiệm của một hệ là tam giác có ba đỉnh $O(0;0)$, $A(' + m + ';0)$, $B(0;' + n +
             ')$. Giá trị lớn nhất của $F = ' + a + 'x + ' + b + 'y$ trên miền đó bằng',
         dapan: bon(String(max), [String(Math.min(a * m, b * n)), String(a * m + b * n), String(m + n)]),
@@ -648,7 +639,7 @@
     // 4. Giá trị nhỏ nhất của F
     function () {
       var a = ri(1, 5), b = ri(1, 5), m = ri(2, 7), n = ri(2, 7);
-      return { muc: 3,
+      return { muc: 2,
         de: 'Miền nghiệm là tam giác có ba đỉnh $O(0;0)$, $A(' + m + ';0)$, $B(0;' + n +
             ')$. Giá trị nhỏ nhất của $F = ' + a + 'x + ' + b + 'y$ trên miền đó bằng',
         dapan: bon('0', [String(Math.min(a * m, b * n)), String(Math.max(a * m, b * n)), String(a + b)]),
@@ -658,17 +649,6 @@
     },
 
     // 5. Miền nghiệm có chứa gốc toạ độ không
-    function () {
-      var a = ri(1, 5), b = ri(1, 5), c = ri(1, 8);
-      return { muc: 1,
-        de: 'Miền nghiệm của bất phương trình $' + a + 'x + ' + b + 'y + ' + c +
-            ' \\lt 0$ có chứa gốc toạ độ $O(0;0)$ không?',
-        dapan: bon('Không, vì $' + c + ' \\gt 0$',
-                   ['Có, vì $' + c + ' \\lt 0$', 'Có, vì gốc toạ độ luôn thuộc miền nghiệm',
-                    'Không xác định được']),
-        dung: 0,
-        giai: 'Thay $x = y = 0$ được $' + c + ' \\lt 0$, mệnh đề sai nên $O$ không thuộc miền nghiệm.' };
-    },
 
     // 6. Tìm m nguyên lớn nhất
     function () {
@@ -922,7 +902,7 @@
     // 4. Công thức Heron
     function () {
       var t = chon(HERON), a = t[0], b = t[1], c = t[2], S = t[3];
-      return { muc: 3,
+      return { muc: 2,
         de: 'Tam giác có ba cạnh $' + a + '$, $' + b + '$, $' + c + '$. Diện tích tam giác bằng',
         dapan: bon(String(S), [String(S + 6), String(S - 6), String((a + b + c) / 2)]),
         dung: 0,
@@ -944,18 +924,6 @@
     },
 
     // 6. Tìm góc từ ba cạnh
-    function () {
-      var g = chon([60, 120]);
-      var t = chon(g === 60 ? BO60 : BO120);
-      return { muc: 3,
-        de: 'Tam giác $ABC$ có $a = ' + t[2] + '$, $b = ' + t[0] + '$, $c = ' + t[1] +
-            '$. Số đo góc $A$ bằng',
-        dapan: bon(g + '^\\circ', [(g === 60 ? '120' : '60') + '^\\circ', '90^\\circ', '45^\\circ'])
-                 .map(function (x) { return '$' + x + '$'; }),
-        dung: 0,
-        giai: '$\\cos A = \\dfrac{b^2 + c^2 - a^2}{2bc} = ' + (g === 60 ? '\\dfrac{1}{2}' : '-\\dfrac{1}{2}') +
-              '$ nên $\\widehat{A} = ' + g + '^\\circ$.' };
-    },
 
     // 7. Bán kính đường tròn nội tiếp
     function () {

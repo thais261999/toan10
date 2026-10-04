@@ -201,16 +201,6 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Đổi $\exists$ thành $\forall$ và phủ định đẳng thức.` },
 
-        { muc: 2, de: L`Phủ định của mệnh đề “Mọi học sinh trong lớp đều thích môn Toán” là`,
-          dapan: [
-            L`Có ít nhất một học sinh trong lớp không thích môn Toán`,
-            L`Mọi học sinh trong lớp đều không thích môn Toán`,
-            L`Có ít nhất một học sinh trong lớp thích môn Toán`,
-            L`Không có học sinh nào trong lớp thích môn Toán`
-          ],
-          dung: 0,
-          giai: L`Phủ định của “mọi” là “tồn tại ít nhất một … không”.` },
-
         { muc: 2, de: L`Phủ định của mệnh đề “Có ít nhất một số thực $x$ thoả mãn $x^3 = 2$” là`,
           dapan: [
             L`Mọi số thực $x$ đều thoả mãn $x^3 \ne 2$`,
@@ -446,16 +436,6 @@ const CHUONG_TRINH = [
           ],
           dung: [true, true, true, false],
           giai: L`Có $7$ tập con khác rỗng, bỏ thêm chính $A$ thì còn $6$.` },
-
-        { muc: 3, de: L`Lớp 10A có 45 học sinh, trong đó 24 em giỏi Toán, 20 em giỏi Lí và 9 em giỏi cả hai môn.`,
-          y: [
-            L`Số em giỏi ít nhất một môn là $35$`,
-            L`Số em không giỏi môn nào là $10$`,
-            L`Số em chỉ giỏi Toán là $15$`,
-            L`Số em chỉ giỏi Lí là $20$`
-          ],
-          dung: [true, true, true, false],
-          giai: L`Số em chỉ giỏi Lí là $20 - 9 = 11$.` },
 
         { muc: 2, de: L`Cho $A = \{x \in \mathbb{R} \mid x^2 - 5x + 6 = 0\}$.`,
           y: [
@@ -995,11 +975,6 @@ const CHUONG_TRINH = [
     ],
     cauhoi: {
       tracnghiem: [
-        { muc: 1, de: `Số cách chọn 3 học sinh từ một nhóm 10 học sinh để đi trực nhật là`,
-        dapan: [L`$120$`, L`$720$`, L`$30$`, L`$1000$`],
-        dung: 0,
-        giai: L`Không phân biệt thứ tự nên dùng tổ hợp, $C_{10}^{3} = 120$.` },
-
         { muc: 1, de: `Có bao nhiêu cách xếp 5 bạn ngồi thành một hàng ngang?`,
         dapan: [L`$120$`, L`$25$`, L`$60$`, L`$720$`],
         dung: 0,
