@@ -304,16 +304,6 @@
         giai: 'Thay $x = ' + x + '$ vào được $0 = 0$, đẳng thức đúng.' };
     },
 
-    // Điều kiện cần, điều kiện đủ
-    function () {
-      var b = chon([2, 3, 5]), h = chon([2, 3, 4]), a = b * h;
-      return { muc: 2,
-        de: '“Số tự nhiên $n$ chia hết cho $' + a + '$” là điều kiện gì của “$n$ chia hết cho $' + b + '$”?',
-        dapan: bon('Điều kiện đủ', ['Điều kiện cần', 'Điều kiện cần và đủ', 'Không phải điều kiện nào']),
-        dung: 0,
-        giai: 'Chia hết cho $' + a + '$ thì chắc chắn chia hết cho $' + b +
-              '$, nhưng ngược lại không đúng, ví dụ $n = ' + b + '$.' };
-    },
 
     // Số phần tử của hợp khi biết giao
 

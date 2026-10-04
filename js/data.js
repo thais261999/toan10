@@ -281,25 +281,7 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`Chia hết cho $4$ thì chia hết cho $2$. Ngược lại $a = 6$ chia hết cho $2$ nhưng không chia hết cho $4$.` },
 
-        { muc: 2, de: L`Trong mệnh đề $P \Rightarrow Q$, ta nói $P$ là`,
-          dapan: [
-            L`điều kiện đủ để có $Q$`,
-            L`điều kiện cần để có $Q$`,
-            L`điều kiện cần và đủ để có $Q$`,
-            L`không liên quan tới $Q$`
-          ],
-          dung: 0,
-          giai: L`Giả thiết là điều kiện đủ, còn kết luận là điều kiện cần.` },
 
-        { muc: 2, de: L`Phát biểu “Tam giác đều thì có ba góc bằng nhau” bằng thuật ngữ điều kiện cần là`,
-          dapan: [
-            L`Có ba góc bằng nhau là điều kiện cần để tam giác là tam giác đều`,
-            L`Có ba góc bằng nhau là điều kiện đủ để tam giác là tam giác đều`,
-            L`Tam giác đều là điều kiện cần để có ba góc bằng nhau`,
-            L`Tam giác đều là điều kiện cần và đủ để có ba cạnh bằng nhau`
-          ],
-          dung: 0,
-          giai: L`Trong $P \Rightarrow Q$, kết luận $Q$ là điều kiện cần.` },
 
         { muc: 2, de: L`Mệnh đề $P \Leftrightarrow Q$ đúng khi và chỉ khi`,
           dapan: [
@@ -321,15 +303,6 @@ const CHUONG_TRINH = [
           dung: 0,
           giai: L`$x^2 = 4 \Leftrightarrow (x-2)(x+2) = 0$.` },
 
-        { muc: 3, de: L`“Số tự nhiên $n$ chia hết cho $6$” là điều kiện gì của “$n$ chia hết cho $3$”?`,
-          dapan: [
-            L`điều kiện đủ`,
-            L`điều kiện cần`,
-            L`điều kiện cần và đủ`,
-            L`không phải điều kiện nào`
-          ],
-          dung: 0,
-          giai: L`Chia hết cho $6$ kéo theo chia hết cho $3$, nhưng chiều ngược lại không đúng.` },
 
         { muc: 3, de: L`Mệnh đề đảo của “Hai tam giác bằng nhau thì có diện tích bằng nhau” là mệnh đề`,
           dapan: [
@@ -349,17 +322,7 @@ const CHUONG_TRINH = [
             L`Nếu $a$ chia hết cho $2$ thì $a$ chia hết cho $4$`
           ],
           dung: 0,
-          giai: L`Hàm lập phương đơn điệu trên $\mathbb{R}$ nên $a^3 = b^3 \Rightarrow a = b$.` },
-
-        { muc: 3, de: L`Điều kiện cần và đủ để tứ giác là hình thoi là`,
-          dapan: [
-            L`hình bình hành có hai cạnh kề bằng nhau`,
-            L`tứ giác có hai đường chéo vuông góc`,
-            L`tứ giác có bốn góc bằng nhau`,
-            L`hình bình hành có một góc vuông`
-          ],
-          dung: 0,
-          giai: L`Hai đường chéo vuông góc chưa đủ, bốn góc bằng nhau cho hình chữ nhật.` }
+          giai: L`Hàm lập phương đơn điệu trên $\mathbb{R}$ nên $a^3 = b^3 \Rightarrow a = b$.` }
       ],
 
       dungsai: [
@@ -487,15 +450,6 @@ const CHUONG_TRINH = [
           dung: [true, true, true, false],
           giai: L`Mọi phần tử của $A$ đều thuộc $B$ nên $A \setminus B = \emptyset$.` },
 
-        { muc: 3, de: L`Xét điều kiện cần và điều kiện đủ.`,
-          y: [
-            L`“$n$ chia hết cho $10$” là điều kiện đủ để “$n$ chia hết cho $5$”`,
-            L`“$n$ chia hết cho $5$” là điều kiện cần để “$n$ chia hết cho $10$”`,
-            L`“$n$ chia hết cho $5$” là điều kiện đủ để “$n$ chia hết cho $10$”`,
-            L`“Tam giác đều” là điều kiện đủ để “tam giác cân”`
-          ],
-          dung: [true, true, false, true],
-          giai: L`$n = 15$ chia hết cho $5$ nhưng không chia hết cho $10$ nên ý c) sai.` },
 
         { muc: 3, de: L`Cho $A = [m;m+3]$ và $B = [0;5]$.`,
           y: [
