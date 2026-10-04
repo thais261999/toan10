@@ -169,13 +169,14 @@
 
   /* ---------- Gom các thẻ hay dùng ---------- */
   var el = {};
-  ['viewList','duong',
+  ['viewList','viewNha','duong',
    'hoc','hocDong','hocThan','hocDem','hocNut','thanhDay',
    'phanhoi','phanhoiTieu','phanhoiGiai',
    'mung','mungTieu','mungTen','mungPhu','mungPhao','mungOk',
    'cuTop','cuPhanHoi','cuMung','phaoHoc','btnXu','soXu',
    'cho','choDong','choXu','cuCho','hangDiem','hangDo','hangNha','btnRa',
-   'nha','nhaDong','nhaMua','nhaNho','phong','cuNha',
+   'nhaMua','nhaHoc','nhaNho','nhaVach','phong','cuNha','btnHoc','btnHocChu',
+   'cuKhu','bongNoi','bongNoiChu',
    'vao','cuVao','buocChua','buocKhai','buocCho','buocLoi',
    'nutKhai','khaiTen','khaiLop','khaiBao','choChu',
    'nutKiemTra','nutTaiLai','nutRaPhu','loiChu',
@@ -310,17 +311,21 @@
   function giaDiemCong() { return DIEM_DAU + DIEM_TANG * (vi.phieu || 0); }
 
   /* Đồ trang trí nhà cú. x và y là vị trí trong phòng, tính theo phần trăm. */
+  /* x, y là chỗ đặt món đồ, tính theo phần trăm cả căn phòng.
+     Cửa sổ chiếm khoảng x 19-81%, y 7-38%; tường gặp sàn ở 56%;
+     cú đứng giữa, chiếm khoảng x 32-68%, y 66-89%.
+     Xếp tránh ba chỗ đó ra, đừng để đồ chồng lên nhau. */
   var NHA = [
-    { ma: 'cay',    ten: 'Chậu cây',      hinh: '🪴', gia: 150,  x: 8,  y: 70 },
-    { ma: 'tranh',  ten: 'Tranh treo',    hinh: '🖼️', gia: 200,  x: 73, y: 16 },
-    { ma: 'gau',    ten: 'Gấu bông',      hinh: '🧸', gia: 280,  x: 29, y: 78 },
-    { ma: 'den',    ten: 'Đèn tường',     hinh: '💡', gia: 350,  x: 17, y: 15 },
-    { ma: 'ke',     ten: 'Kệ sách',       hinh: '📚', gia: 450,  x: 87, y: 52 },
-    { ma: 'dongho', ten: 'Đồng hồ',       hinh: '🕰️', gia: 550,  x: 50, y: 10 },
-    { ma: 'cup',    ten: 'Tủ cúp',        hinh: '🏆', gia: 700,  x: 11, y: 46 },
-    { ma: 'sofa',   ten: 'Ghế sofa',      hinh: '🛋️', gia: 900,  x: 79, y: 77 },
-    { ma: 'dan',    ten: 'Đàn piano',     hinh: '🎹', gia: 1200, x: 63, y: 80 },
-    { ma: 'meo',    ten: 'Mèo bạn thân',  hinh: '🐈', gia: 1500, x: 37, y: 88 }
+    { ma: 'cay',    ten: 'Chậu cây',      hinh: '🪴', gia: 150,  x: 8,  y: 66 },
+    { ma: 'tranh',  ten: 'Tranh treo',    hinh: '🖼️', gia: 200,  x: 90, y: 17 },
+    { ma: 'gau',    ten: 'Gấu bông',      hinh: '🧸', gia: 280,  x: 21, y: 86 },
+    { ma: 'den',    ten: 'Đèn tường',     hinh: '💡', gia: 350,  x: 9,  y: 16 },
+    { ma: 'ke',     ten: 'Kệ sách',       hinh: '📚', gia: 450,  x: 89, y: 45 },
+    { ma: 'dongho', ten: 'Đồng hồ',       hinh: '🕰️', gia: 550,  x: 50, y: 47 },
+    { ma: 'cup',    ten: 'Tủ cúp',        hinh: '🏆', gia: 700,  x: 10, y: 45 },
+    { ma: 'sofa',   ten: 'Ghế sofa',      hinh: '🛋️', gia: 900,  x: 84, y: 70 },
+    { ma: 'dan',    ten: 'Đàn piano',     hinh: '🎹', gia: 1200, x: 80, y: 88 },
+    { ma: 'meo',    ten: 'Mèo bạn thân',  hinh: '🐈', gia: 1500, x: 15, y: 77 }
   ];
 
   var HANG = [
@@ -808,10 +813,132 @@
   }
 
 
-  /* ---------- Nhà của cú ---------- */
+  /* ============================================================
+     NHÀ CỦA CÚ — MÀN HÌNH CHÍNH
+     Một căn phòng tràn màn hình. Bầu trời ngoài cửa sổ đổi theo giờ
+     thật, bụi bay lơ lửng trong nắng, cú thở đều và biết nói chuyện.
+     ============================================================ */
+
+  /* Chiều cao thanh đầu đổi theo khổ màn hình, đo rồi báo cho CSS biết
+     để căn phòng chiếm đúng phần còn lại, không thừa không thiếu. */
+  function doThanhDau() {
+    var t = document.querySelector('.top');
+    if (t) document.documentElement.style.setProperty('--cao-top', t.offsetHeight + 'px');
+  }
+  doThanhDau();
+  window.addEventListener('resize', doThanhDau);
+
+  function khungGio() {
+    var g = new Date().getHours();
+    if (g >= 5  && g < 10) return 'sang';
+    if (g >= 10 && g < 15) return 'trua';
+    if (g >= 15 && g < 18) return 'chieu';
+    return 'toi';
+  }
+
+  function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+
+  /* ---------- Cú đi qua đi lại ----------
+     Căn phòng để yên, chỉ mình cú động đậy. Thỉnh thoảng cú lững thững
+     đi sang chỗ khác rồi đứng lại nghỉ, chứ không đi liên tục.
+     Chỉ chạy khi đang ở màn hình nhà, sang màn khác là nghỉ. */
+  var CU_TRAI = 30, CU_PHAI = 70;      /* đi trong khoảng này, tính theo % bề ngang phòng */
+  var cuX = 50, henDi = null, henDung = null;
+
+  function cuDiDao() {
+    if (!el.cuKhu || manHinh !== 'nha' || document.hidden) return henCuDi();
+
+    /* chọn chỗ mới, bắt phải cách chỗ cũ ít nhất 16% cho ra dáng một chuyến đi */
+    var moi, lan = 0;
+    do { moi = ri(CU_TRAI, CU_PHAI); lan++; } while (Math.abs(moi - cuX) < 16 && lan < 12);
+
+    /* Đang bước thì thôi nói, bóng nói kéo lê theo nhìn kỳ */
+    if (el.bongNoi) el.bongNoi.hidden = true;
+    clearTimeout(henBong);
+
+    el.cuKhu.classList.add('dangdi');
+    el.cuKhu.classList.toggle('quaytrai', moi < cuX);
+    cuX = moi;
+    el.cuKhu.style.left = moi + '%';
+
+    clearTimeout(henDung);
+    henDung = setTimeout(function () {
+      el.cuKhu.classList.remove('dangdi');
+      el.cuKhu.classList.remove('quaytrai');
+    }, 2800);                            /* khớp với thời gian transition trong CSS */
+
+    henCuDi();
+  }
+
+  function henCuDi() {
+    clearTimeout(henDi);
+    henDi = setTimeout(cuDiDao, ri(9, 18) * 1000);   /* nghỉ 9-18 giây rồi mới đi tiếp */
+  }
+
+  function cuNghiDi() { clearTimeout(henDi); clearTimeout(henDung); }
+
+  /* Ẩn tab đi thì cho cú nghỉ, quay lại thì đi tiếp */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) cuNghiDi();
+    else if (manHinh === 'nha') henCuDi();
+  });
+
+  /* ---------- Cú nói chuyện ---------- */
+  var LOI_CU = {
+    sang:  ['Chào buổi sáng! Hôm nay học gì nào?',
+            'Dậy sớm thế, giỏi quá!',
+            'Làm một bài cho tỉnh ngủ nhé.'],
+    trua:  ['Trưa rồi, nghỉ tay chút rồi học tiếp nha.',
+            'Mình làm vài câu thôi, không cần nhiều đâu.',
+            'Nắng đẹp ghê. Học xong đi chơi nhé!'],
+    chieu: ['Chiều nay làm một chương nhé?',
+            'Cố thêm chút nữa là xong rồi đó.',
+            'Mình chờ bạn ở phòng học nè.'],
+    toi:   ['Tối rồi, học nhẹ nhàng thôi nha.',
+            'Một bài nữa rồi đi ngủ nhé.',
+            'Khuya rồi đó, giữ sức khoẻ nha bạn.']
+  };
+  var LOI_THEM = [
+    'Mỗi ngày một chút, lâu dần thành giỏi.',
+    'Sai cũng không sao, biết vì sao sai mới quan trọng.',
+    'Bạn làm được mà, mình tin đó.',
+    'Làm sai một câu thì học được một điều.'
+  ];
+
+  var henBong = null;
+  function cuNoi(chu, giay) {
+    if (!el.bongNoi) return;
+    el.bongNoiChu.textContent = chu;
+    el.bongNoi.hidden = false;
+    el.bongNoi.style.animation = 'none';
+    void el.bongNoi.offsetWidth;
+    el.bongNoi.style.animation = '';
+    clearTimeout(henBong);
+    henBong = setTimeout(function () { el.bongNoi.hidden = true; }, (giay || 5) * 1000);
+  }
+  function loiNgauNhien() {
+    var kho = LOI_CU[khungGio()].concat(LOI_THEM);
+    /* Nói về căn nhà thì phải đúng với tình trạng thật, không thì
+       nhà đủ đồ rồi mà cú vẫn kêu trống, nghe vô duyên. */
+    var day = NHA.filter(function (h) { return vi.mac.indexOf(h.ma) !== -1; }).length;
+    if (day === 0)
+      kho = kho.concat(['Nhà trống quá, mua cho mình chậu cây đi!',
+                        'Bạn trang trí nhà giúp mình với.']);
+    else if (day >= NHA.length)
+      kho = kho.concat(['Nhà mình đủ đồ rồi, đẹp quá, cảm ơn bạn nhé!',
+                        'Nhà đẹp thế này học cũng vui hơn hẳn.']);
+    else
+      kho = kho.concat(['Học xong nhớ ghé cửa hàng sắm thêm đồ nhé!',
+                        'Còn ' + (NHA.length - day) + ' món nữa là nhà mình đủ đồ đó.']);
+    return kho[Math.floor(Math.random() * kho.length)];
+  }
+
+  /* ---------- Vẽ lại cả căn phòng ---------- */
   function veNha() {
     if (!el.phong) return;
     el.phong.querySelectorAll('.do-nha').forEach(function (e) { e.remove(); });
+
+    el.phong.className = 'canhnha gio-' + khungGio();
 
     var day = 0;
     NHA.forEach(function (h) {
@@ -822,16 +949,50 @@
         h.hinh + '</span>');
     });
     veCu(el.cuNha);
-    el.nhaNho.textContent = day
-      ? 'Nhà cú đang có ' + day + '/' + NHA.length + ' món đồ. Vào cửa hàng mua thêm nhé.'
-      : 'Nhà còn trống trơn. Vào cửa hàng mua đồ trang trí cho cú mèo nào.';
+
+    el.nhaNho.textContent =
+      day >= NHA.length ? 'Nhà cú đã đủ ' + NHA.length + '/' + NHA.length + ' món đồ 🎉'
+      : day             ? 'Nhà cú đã có ' + day + '/' + NHA.length + ' món đồ'
+                        : 'Nhà còn trống trơn, trang trí cho cú nào';
+    if (el.nhaVach) el.nhaVach.style.width = (day / NHA.length * 100) + '%';
   }
 
-  function moNha() { veNha(); el.nha.hidden = false; }
-  el.cuTop.addEventListener('click', moNha);
-  el.nhaDong.addEventListener('click', function () { el.nha.hidden = true; });
-  el.nha.addEventListener('click', function (ev) { if (ev.target === el.nha) el.nha.hidden = true; });
-  el.nhaMua.addEventListener('click', function () { el.nha.hidden = true; moCho(); });
+  /* Chạm vào cú thì cú vui và nói một câu */
+  if (el.cuNha) {
+    el.cuNha.addEventListener('click', function () {
+      cuPhanUng(el.cuNha, true);
+      cuNoi(loiNgauNhien());
+    });
+  }
+
+  /* ---------- Chuyển qua lại hai màn hình chính ----------
+     'nha'  nhà của cú, đây là màn hình mở ra đầu tiên
+     'hoc'  lộ trình chín chương
+     Nút góc phải đổi chữ theo màn hình đang xem, nên chỉ cần một nút
+     là đi được cả hai chiều. */
+  var manHinh = 'nha';
+
+  function hienMan(ten) {
+    manHinh = ten;
+    var laNha = (ten === 'nha');
+    el.viewNha.hidden  = !laNha;
+    el.viewList.hidden = laNha;
+    el.btnHocChu.textContent = laNha ? 'Học tập' : 'Nhà cú';
+    el.btnHoc.querySelector('.hoctap__hinh').textContent = laNha ? '📚' : '🏠';
+    el.btnHoc.title = laNha ? 'Vào phần học tập' : 'Về nhà của cú';
+    if (laNha) { veNha(); cuNoi(loiNgauNhien(), 6); henCuDi(); }
+    else cuNghiDi();
+    /* Màn nhà vừa khít màn hình, khoá cuộn lại cho khỏi nảy lên nảy xuống */
+    document.body.classList.toggle('o-nha', laNha);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  el.btnHoc.addEventListener('click', function () {
+    hienMan(manHinh === 'nha' ? 'hoc' : 'nha');
+  });
+  el.nhaHoc.addEventListener('click', function () { hienMan('hoc'); });
+  el.cuTop.addEventListener('click', function () { hienMan('nha'); });
+  el.nhaMua.addEventListener('click', function () { moCho(); });
 
   /* ============================================================
      ĐĂNG NHẬP VÀ ĐỒNG BỘ VỚI MÁY CHỦ
@@ -857,8 +1018,10 @@
 
     el.vao.hidden = true;
     document.body.classList.remove('khoa-cuon');
-    el.btnRa.hidden = false;
-    el.btnRa.title = du.ten + ' · ' + du.lop + ' — bấm để đăng xuất';
+    if (el.btnRa) {
+      el.btnRa.hidden = false;
+      el.btnRa.title = du.ten + ' · ' + du.lop + ' — bấm để đăng xuất';
+    }
 
     veSoXu();
     veCu(el.cuTop);
@@ -912,7 +1075,7 @@
   el.nutKiemTra.addEventListener('click', function () { location.reload(); });
   el.nutTaiLai.addEventListener('click', function () { location.reload(); });
   el.nutRaPhu.addEventListener('click', function () { FB.ra().then(function(){ location.reload(); }); });
-  el.btnRa.addEventListener('click', function () {
+  if (el.btnRa) el.btnRa.addEventListener('click', function () {
     if (confirm('Đăng xuất khỏi tài khoản này?')) FB.ra().then(function(){ location.reload(); });
   });
 
@@ -920,13 +1083,14 @@
      CÁC NÚT CHUNG
      ============================================================ */
   el.brandHome.addEventListener('click', function (ev) {
-    ev.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    ev.preventDefault(); hienMan('nha');
   });
 
   /* ---------- Khởi động ---------- */
   veSoXu();
   veCu(el.cuTop);
   veDuong();
+  hienMan('nha');
 
   if (window.FB) theoDoi();
   else { el.loiChu.textContent = 'Không nạp được thư viện Firebase. Em kiểm tra mạng nhé.'; hienBuoc('buocLoi'); }

@@ -33,19 +33,63 @@
       </span>
     </a>
     <div class="top__nut">
-      <div class="cuhop" id="cuTop" title="Bạn đồng hành"></div>
+      <div class="cuhop" id="cuTop" title="Về nhà của cú"></div>
       <button class="xu" id="btnXu" title="Mở cửa hàng">
         <span class="xu__hinh">🪙</span><b id="soXu">0</b>
       </button>
-      <button class="tron" id="btnRa" title="Đổi người học" hidden>⎋</button>
+      <button class="hoctap" id="btnHoc" title="Vào phần học tập">
+        <span class="hoctap__hinh">📚</span><b id="btnHocChu">Học tập</b>
+      </button>
     </div>
   </div>
 </header>
 
 <!-- ============================================================
+     MÀN HÌNH CHÍNH: nhà của cú
+     ============================================================ -->
+<main class="manhinh" id="viewNha">
+
+  <!-- Căn phòng tràn màn hình -->
+  <div class="canhnha" id="phong">
+    <div class="canhnha__tuong">
+      <span class="canhnha__cua">
+        <span class="canhnha__troi"></span>
+        <span class="canhnha__sao"></span>
+        <i class="canhnha__vang"></i>
+        <i class="canhnha__may canhnha__may--a"></i>
+        <i class="canhnha__may canhnha__may--b"></i>
+        <span class="canhnha__doi"></span>
+        <span class="canhnha__khung"></span>
+      </span>
+      <span class="canhnha__chantuong"></span>
+    </div>
+    <div class="canhnha__san"><span class="canhnha__tham"></span></div>
+    <span class="canhnha__nang"></span>
+    <!-- Cú và bóng nói đi liền một khối, để cú đi đâu bóng nói theo đó -->
+    <div class="cukhu" id="cuKhu">
+      <div class="bongnoi" id="bongNoi" hidden><b id="bongNoiChu"></b></div>
+      <div class="cuhop canhnha__cu" id="cuNha"></div>
+    </div>
+    <!-- JS chèn đồ trang trí vào đây -->
+  </div>
+
+  <!-- Thanh dưới nổi lên trên khung cảnh -->
+  <div class="thanhduoi">
+    <div class="thanhduoi__do">
+      <span class="thanhduoi__chu" id="nhaNho"></span>
+      <span class="thanhduoi__vach"><i id="nhaVach"></i></span>
+    </div>
+    <div class="thanhduoi__nut">
+      <button class="nutto nutto--chinh" id="nhaHoc"><span>📚</span>Vào học</button>
+      <button class="nutto" id="nhaMua"><span>🛍️</span>Cửa hàng</button>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================
      LỘ TRÌNH: 9 chương, mỗi chương ba dạng bài
      ============================================================ -->
-<main class="wrap" id="viewList">
+<main class="wrap" id="viewList" hidden>
 
   <div class="duong" id="duong"><!-- JS sinh lộ trình ở đây --></div>
 </main>
@@ -164,19 +208,6 @@
   </div>
 </div>
 
-<!-- Nhà của cú -->
-<div class="mung" id="nha" hidden>
-  <div class="mung__hop nhahop">
-    <button class="cho__dong" id="nhaDong" aria-label="Đóng">✕</button>
-    <h2>Nhà của cú</h2>
-    <div class="phong" id="phong">
-      <i class="phong__cua"></i>
-      <div class="cuhop cuhop--to phong__cu" id="cuNha"></div>
-    </div>
-    <p class="nha__nho" id="nhaNho"></p>
-    <button class="solid btn--block" id="nhaMua">Mua đồ trang trí</button>
-  </div>
-</div>
 
 <div class="phao" id="phaoHoc" aria-hidden="true"></div>
 

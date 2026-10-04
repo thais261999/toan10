@@ -932,7 +932,7 @@ body.o-nha{overflow:hidden}
          height:calc(100svh - var(--cao-top, 76px));
          display:flex;flex-direction:column;position:relative;overflow:hidden}
 
-.canh{position:relative;flex:1;overflow:hidden;isolation:isolate;
+.canhnha{position:relative;flex:1;overflow:hidden;isolation:isolate;
       --sanY:56%;                       /* chỗ tường gặp sàn */
       --tuong1:#efeafc; --tuong2:#e4ddfa;
       --san1:#e0c9a6;  --san2:#c9ad84;
@@ -942,90 +942,90 @@ body.o-nha{overflow:hidden}
       --cuH:calc(var(--cuW) * 87 / 74) /* chiều cao suy từ tỉ lệ hình cú */}
 
 /* ---- Bốn khung giờ trong ngày ---- */
-.canh.gio-sang{--troi1:#ffe2b8;--troi2:#ffc98a;--nang:rgba(255,222,150,.5);
+.canhnha.gio-sang{--troi1:#ffe2b8;--troi2:#ffc98a;--nang:rgba(255,222,150,.5);
                --tuong1:#f6ecf6;--tuong2:#efe2f3}
-.canh.gio-trua{--troi1:#bfe6ff;--troi2:#79c2f2;--nang:rgba(255,243,190,.52)}
-.canh.gio-chieu{--troi1:#ffd3a8;--troi2:#f79d8a;--nang:rgba(255,196,142,.46);
+.canhnha.gio-trua{--troi1:#bfe6ff;--troi2:#79c2f2;--nang:rgba(255,243,190,.52)}
+.canhnha.gio-chieu{--troi1:#ffd3a8;--troi2:#f79d8a;--nang:rgba(255,196,142,.46);
                 --tuong1:#f3e6ee;--tuong2:#ecd9e6}
-.canh.gio-toi{--troi1:#2b3568;--troi2:#141a3a;
+.canhnha.gio-toi{--troi1:#2b3568;--troi2:#141a3a;
               --nang:rgba(150,170,255,.22);
               --tuong1:#cfc7ea;--tuong2:#bdb3df;
               --san1:#bda78a;--san2:#a98f6e}
 
-.canh__tuong{position:absolute;inset:0 0 calc(100% - var(--sanY)) 0;
+.canhnha__tuong{position:absolute;inset:0 0 calc(100% - var(--sanY)) 0;
              background:linear-gradient(to bottom,var(--tuong1),var(--tuong2))}
 /* giấy dán tường chấm bi rất nhạt cho đỡ trống */
-.canh__tuong::before{content:"";position:absolute;inset:0;opacity:.5;
+.canhnha__tuong::before{content:"";position:absolute;inset:0;opacity:.5;
   background-image:radial-gradient(currentColor 1.1px,transparent 1.2px);
   background-size:26px 26px;color:rgba(90,79,224,.13)}
 
-.canh__san{position:absolute;inset:var(--sanY) 0 0 0;
+.canhnha__san{position:absolute;inset:var(--sanY) 0 0 0;
            background:linear-gradient(to bottom,var(--san1),var(--san2));
            box-shadow:inset 0 3px 0 rgba(0,0,0,.07)}
 /* ván sàn chạy xa dần */
-.canh__san::before{content:"";position:absolute;inset:0;opacity:.35;
+.canhnha__san::before{content:"";position:absolute;inset:0;opacity:.35;
   background:repeating-linear-gradient(to bottom,
     transparent 0 16px, rgba(120,88,52,.5) 16px 17px)}
 
-.canh__tham{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);
+.canhnha__tham{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);
             width:min(72%,340px);aspect-ratio:5/2;border-radius:50%;
             background:radial-gradient(ellipse at 50% 50%,
               rgba(90,79,224,.28),rgba(90,79,224,.13) 62%,transparent 73%)}
 
 /* ---- Cửa sổ ---- */
-.canh__cua{position:absolute;left:50%;top:13%;transform:translateX(-50%);
+.canhnha__cua{position:absolute;left:50%;top:13%;transform:translateX(-50%);
            width:min(62%,280px);aspect-ratio:6/5;
            border-radius:999px 999px 14px 14px;overflow:hidden;
            box-shadow:0 0 0 6px rgba(255,255,255,.82),0 14px 30px rgba(30,20,70,.2)}
-.canh__troi{position:absolute;inset:0;
+.canhnha__troi{position:absolute;inset:0;
             background:linear-gradient(to bottom,var(--troi1),var(--troi2));
             transition:background .8s ease}
-.canh__khung{position:absolute;inset:0;
+.canhnha__khung{position:absolute;inset:0;
   background:linear-gradient(to right,transparent calc(50% - 3px),rgba(255,255,255,.92) calc(50% - 3px) calc(50% + 3px),transparent calc(50% + 3px)),
              linear-gradient(to bottom,transparent calc(58% - 3px),rgba(255,255,255,.92) calc(58% - 3px) calc(58% + 3px),transparent calc(58% + 3px))}
 
 /* Mặt trời ban ngày, mặt trăng ban đêm */
-.canh__vang{position:absolute;right:17%;top:15%;width:20%;aspect-ratio:1;border-radius:50%;
+.canhnha__vang{position:absolute;right:17%;top:15%;width:20%;aspect-ratio:1;border-radius:50%;
             background:radial-gradient(circle at 38% 36%,#fff6cf,#ffd978 62%,#ffc44d);
             box-shadow:0 0 26px rgba(255,214,120,.9)}
-.canh.gio-toi .canh__vang{
+.canhnha.gio-toi .canhnha__vang{
   background:radial-gradient(circle at 62% 38%,#fdfbff,#dfe3fb 58%,#c8cef3);
   box-shadow:0 0 22px rgba(215,225,255,.75)}
-.canh.gio-chieu .canh__vang{top:36%;
+.canhnha.gio-chieu .canhnha__vang{top:36%;
   background:radial-gradient(circle at 40% 40%,#fff1c9,#ffb36b 60%,#ff8f52)}
 
 /* Đồi xa ngoài cửa sổ cho có chiều sâu */
-.canh__doi{position:absolute;left:-10%;right:-10%;bottom:0;height:34%;
+.canhnha__doi{position:absolute;left:-10%;right:-10%;bottom:0;height:34%;
   background:
     radial-gradient(ellipse 58% 150% at 24% 100%, rgba(74,150,120,.85) 0 99%, transparent 100%),
     radial-gradient(ellipse 52% 120% at 72% 100%, rgba(58,128,102,.9) 0 99%, transparent 100%),
     linear-gradient(to top, rgba(92,166,134,.75), rgba(92,166,134,.2))}
-.canh.gio-toi .canh__doi{filter:brightness(.42) saturate(.7)}
-.canh.gio-chieu .canh__doi{filter:brightness(.82) saturate(1.1) hue-rotate(-8deg)}
+.canhnha.gio-toi .canhnha__doi{filter:brightness(.42) saturate(.7)}
+.canhnha.gio-chieu .canhnha__doi{filter:brightness(.82) saturate(1.1) hue-rotate(-8deg)}
 
 /* Chân tường, tách tường với sàn cho gọn mắt */
-.canh__chantuong{position:absolute;left:0;right:0;bottom:0;height:13px;
+.canhnha__chantuong{position:absolute;left:0;right:0;bottom:0;height:13px;
   background:linear-gradient(to bottom,rgba(255,255,255,.9),rgba(255,255,255,.55));
   box-shadow:0 2px 5px rgba(40,25,80,.14)}
-.canh__may{position:absolute;width:52%;height:16%;border-radius:999px;
+.canhnha__may{position:absolute;width:52%;height:16%;border-radius:999px;
            background:rgba(255,255,255,.9);filter:blur(.5px)}
 /* Mây đứng yên. Trước cho mây trôi, mặt trời thở, sao nhấp nháy, bụi bay
    cùng lúc nên căn phòng lúc nào cũng nhúc nhích, nhìn mỏi mắt.
    Giờ cả phòng đứng im, chỉ mình cú động đậy. */
-.canh__may--a{top:18%;left:8%}
-.canh__may--b{top:46%;left:46%;width:38%;height:12%;opacity:.75}
+.canhnha__may--a{top:18%;left:8%}
+.canhnha__may--b{top:46%;left:46%;width:38%;height:12%;opacity:.75}
 /* Ban đêm mây phải xỉn lại, để trắng tinh như ban ngày nhìn chói mắt */
-.canh.gio-toi .canh__may{background:rgba(190,200,235,.38);filter:blur(1px)}
-.canh.gio-chieu .canh__may{background:rgba(255,236,214,.85)}
+.canhnha.gio-toi .canhnha__may{background:rgba(190,200,235,.38);filter:blur(1px)}
+.canhnha.gio-chieu .canhnha__may{background:rgba(255,236,214,.85)}
 /* sao chỉ hiện buổi tối */
-.canh__sao{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;
+.canhnha__sao{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;
   background-image:radial-gradient(#fff 1.2px,transparent 1.3px),
                    radial-gradient(#fff .9px,transparent 1px);
   background-size:38px 30px,53px 44px;background-position:4px 6px,21px 17px}
-.canh.gio-toi .canh__sao{opacity:.85}
+.canhnha.gio-toi .canhnha__sao{opacity:.85}
 
 /* nắng hắt từ cửa sổ xuống sàn */
-.canh__nang{position:absolute;left:10%;top:6%;width:80%;height:72%;z-index:2;
+.canhnha__nang{position:absolute;left:10%;top:6%;width:80%;height:72%;z-index:2;
             background:radial-gradient(ellipse 58% 72% at 50% 0%,var(--nang),transparent 73%);
             filter:blur(12px);pointer-events:none;transition:background .8s ease}
 
@@ -1034,21 +1034,21 @@ body.o-nha{overflow:hidden}
    cần đổi left của khối, bóng nói tự đi theo. */
 .cukhu{position:absolute;left:50%;bottom:11%;transform:translateX(-50%);
        z-index:4;transition:left 2.8s cubic-bezier(.42,0,.58,1)}
-.canh__cu{position:relative;width:var(--cuW);height:var(--cuH);margin:0;
+.canhnha__cu{position:relative;width:var(--cuW);height:var(--cuH);margin:0;
           cursor:pointer;animation:cuTho 4.4s ease-in-out infinite;
           filter:drop-shadow(0 12px 14px rgba(40,25,80,.26))}
 /* thở nhẹ thôi, chỉ 3px, đứng yên một chỗ nhìn vẫn có hồn */
 @keyframes cuTho{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 
 /* lúc đang đi thì lắc lư như bước chân */
-.cukhu.dangdi .canh__cu{animation:cuBuoc .46s ease-in-out infinite}
+.cukhu.dangdi .canhnha__cu{animation:cuBuoc .46s ease-in-out infinite}
 @keyframes cuBuoc{0%,100%{transform:translateY(0) rotate(-3.5deg)}
                   25%{transform:translateY(-6px) rotate(0deg)}
                   50%{transform:translateY(0) rotate(3.5deg)}
                   75%{transform:translateY(-6px) rotate(0deg)}}
 /* quay mặt theo hướng đi */
-.cukhu.quaytrai .canh__cu{scale:-1 1}
-.canh__cu:active{animation:none;transform:scale(.95)}
+.cukhu.quaytrai .canhnha__cu{scale:-1 1}
+.canhnha__cu:active{animation:none;transform:scale(.95)}
 
 /* ---- Bóng nói của cú ---- */
 /* Bóng nói bám giữa cú. Bề ngang phải đủ hẹp để lúc cú đi ra rìa
@@ -1066,7 +1066,7 @@ body.o-nha{overflow:hidden}
                     to{transform:translateX(-50%);opacity:1}}
 
 /* ---- Đồ trang trí trong phòng ---- */
-.canh .do-nha{position:absolute;transform:translate(-50%,-50%);
+.canhnha .do-nha{position:absolute;transform:translate(-50%,-50%);
               font-size:clamp(30px,8.5vw,46px);line-height:1;z-index:3;
               filter:drop-shadow(0 7px 7px rgba(40,25,80,.22));
               animation:hienDo .4s cubic-bezier(.2,1.4,.4,1)}
@@ -1100,9 +1100,9 @@ body.o-nha{overflow:hidden}
 .nutto--chinh:active{box-shadow:0 0 0 var(--tim-dam)}
 
 @media (prefers-reduced-motion:reduce){
-  .canh__cu{animation:none!important}
+  .canhnha__cu{animation:none!important}
   .cukhu{transition:none}
 }
 @media (min-width:700px){
-  .canh{--sanY:58%;--cuW:150px}
+  .canhnha{--sanY:58%;--cuW:150px}
 }

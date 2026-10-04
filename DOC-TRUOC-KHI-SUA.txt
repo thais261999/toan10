@@ -1,0 +1,48 @@
+BẢN NHÁP THỬ NGHIỆM — ĐỌC TRƯỚC KHI SỬA
+========================================
+
+Thư mục này là bản sao của web Toán 10 để thử nghiệm.
+Sửa thoải mái trong đây, học sinh không thấy gì hết.
+
+HAI ĐỊA CHỈ
+  Bản chính thức (học sinh đang dùng)
+      https://thais261999.github.io/toan10/
+  Bản nháp (chỉ thầy cô xem)
+      https://thais261999.github.io/toan10/nhap/
+
+CÁCH LÀM VIỆC
+  1. Sửa tệp trong thư mục  nhap/  này.
+  2. Bấm đúp  CAP-NHAT.command  (ở thư mục ngoài) để đưa lên mạng.
+     Nút này đẩy cả hai bản, nhưng bản chính thức không đổi gì
+     nếu thầy cô chỉ sửa trong nhap/.
+  3. Mở địa chỉ bản nháp trên điện thoại mà xem thử.
+  4. Ưng rồi thì bấm đúp  DUA-NHAP-LEN-CHINH.command
+     Nó chép tệp từ nhap/ ra bản chính thức rồi đẩy lên luôn.
+     Trước khi chép nó có liệt kê rõ tệp nào sẽ bị ghi đè và
+     bắt gõ chữ DONG Y, nên không sợ lỡ tay.
+  5. Nếu bản nháp sửa lung tung muốn làm lại từ đầu thì bấm đúp
+     LAY-BAN-CHINH-VE-NHAP.command
+
+BA TỆP RIÊNG CỦA BẢN NHÁP — KHÔNG BAO GIỜ ĐƯA LÊN BẢN CHÍNH
+  js/fb.js       Bản giả, không nối Firebase. Nhờ nó mà bản nháp
+                 vào thẳng trang học, khỏi đăng nhập khỏi chờ duyệt,
+                 và KHÔNG ghi gì vào dữ liệu học sinh thật.
+                 Xu với tiến độ trong bản nháp chỉ nằm trong máy.
+  sw.js          Bản rỗng, cố tình không lưu đệm, để mở ra là thấy
+                 ngay bản vừa sửa. Bản chính thức vẫn lưu đệm bình
+                 thường để chạy được cả khi mất mạng.
+  manifest.json  Chỉ khác mỗi cái tên, cho khỏi nhầm khi cài về
+                 màn hình chính điện thoại.
+
+  Hai nút bấm ở trên đã được dặn bỏ qua ba tệp này rồi, thầy cô
+  không phải nhớ gì cả.
+
+DẤU HIỆU NHẬN BIẾT
+  Bản nháp có dải chữ cam ở đáy màn hình:
+  "Bản nháp thử nghiệm — không phải bản học sinh đang dùng"
+  Không thấy dải chữ đó nghĩa là đang mở bản chính thức, cẩn thận.
+
+TRANG QUẢN LÝ
+  quanly.html trong bản nháp không chạy được, vì bản nháp cố tình
+  không nối Firebase. Muốn duyệt học sinh thì vào trang quản lý
+  của bản chính thức.

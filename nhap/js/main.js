@@ -938,7 +938,7 @@
     if (!el.phong) return;
     el.phong.querySelectorAll('.do-nha').forEach(function (e) { e.remove(); });
 
-    el.phong.className = 'canh gio-' + khungGio();
+    el.phong.className = 'canhnha gio-' + khungGio();
 
     var day = 0;
     NHA.forEach(function (h) {
