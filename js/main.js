@@ -11,14 +11,16 @@
 
 
   /* Số câu đúng tối thiểu để được tính là Hoàn thành.
-     Riêng đúng sai, một câu chỉ được tính khi làm đúng cả bốn ý. */
-  var DAT = { tracnghiem: 7, dungsai: 3, traloingan: 2 };
+     Riêng đúng sai, một câu chỉ được tính khi làm đúng cả bốn ý, mà
+     đề đúng sai chỉ có 2 câu, nên làm trọn được một câu là xem như đạt.
+     Muốn siết lại thì sửa dungsai thành 2, bắt đúng cả 8 ý mới đạt. */
+  var DAT = { tracnghiem: 7, dungsai: 1, traloingan: 2 };
 
   /* Số câu rút ra mỗi lần làm bài, riêng cho từng dạng.
      Viết một số thì lần nào cũng bấy nhiêu câu.
      Viết một khoảng [ít nhất, nhiều nhất] thì mỗi lần một số khác nhau,
      ví dụ tracnghiem: [18, 25] sẽ ra từ 18 đến 25 câu tuỳ lượt. */
-  var SO_CAU = { tracnghiem: 10, dungsai: 5, traloingan: 3 };
+  var SO_CAU = { tracnghiem: 10, dungsai: 2, traloingan: 3 };
 
   /* Khi ngân hàng chưa đủ câu, đề ngắn lại thì ngưỡng cũng co theo cho công bằng. */
   function canDat(ma, soCau) {
@@ -90,11 +92,25 @@
     return de.sort(theoMuc);
   }
 
+  /* Dạng bài nào có cấu trúc cố định thì trả về danh sách nhãn dang
+     của từng câu, theo đúng thứ tự muốn chúng xuất hiện.
+     deCoDinh viết kiểu mảng là lối cũ, chỉ dành cho trắc nghiệm,
+     viết kiểu { tracnghiem: [...], dungsai: [...] } thì dạng nào có
+     tên trong đó là dạng ấy có cấu trúc cố định. */
+  function nhanCoDinh(ch, ma) {
+    var d = ch.deCoDinh;
+    if (!d) return null;
+    if (Object.prototype.toString.call(d) === '[object Array]')
+      return (ma === 'tracnghiem') ? d : null;
+    return d[ma] || null;
+  }
+
   /* Đề có cấu trúc cố định: mỗi câu một dạng, theo đúng thứ tự ghi
      trong deCoDinh. Dùng cho đề ôn tập, để lần nào cũng đủ các dạng
      và đúng vị trí, chỉ số liệu là đổi. */
-  function rutCoDinh(ch, ma) {
-    var kho = (window.SINH && SINH.co(ch.id, ma)) ? SINH.ra(ch.id, ma, 80) : [];
+  function rutCoDinh(ch, ma, nhan) {
+    var can = Math.max(20, nhan.length * 10);
+    var kho = (window.SINH && SINH.co(ch.id, ma)) ? SINH.ra(ch.id, ma, can) : [];
     kho = kho.concat((ch.cauhoi[ma] || []).slice());
 
     var theo = {};
@@ -105,7 +121,7 @@
     });
 
     var de = [], du = xaoMang(kho.slice());
-    ch.deCoDinh.forEach(function (d) {
+    nhan.forEach(function (d) {
       var nhom = theo[d], q = null;
       if (nhom && nhom.length) q = nhom.splice(Math.floor(Math.random() * nhom.length), 1)[0];
       if (!q) q = du.pop();          /* thiếu mẫu thì bù tạm, không để đề hụt câu */
@@ -116,7 +132,8 @@
 
   function rutDe(ch, ma) {
     var n = soCauRut(ma);
-    if (ch.deCoDinh && ma === 'tracnghiem') return rutCoDinh(ch, ma);
+    var nhan = nhanCoDinh(ch, ma);
+    if (nhan && nhan.length) return rutCoDinh(ch, ma, nhan);
 
     // Có bộ sinh đề cho chương này thì lấy từ đó, số liệu mỗi lần một khác
     var kho;

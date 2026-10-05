@@ -1056,10 +1056,600 @@
   ];
 
   /* ============================================================
+     ÔN TẬP GIỮA KÌ I — ĐỀ ĐÚNG SAI HAI CÂU, CẤU TRÚC CỐ ĐỊNH
+     Câu 1 về tập hợp, câu 2 về bất phương trình bậc nhất hai ẩn,
+     mỗi câu bốn ý. Phải đúng trọn cả bốn ý mới được xu, sai một ý
+     là không có xu nào, nên mọi ý đều giữ ở mức nhận biết và thông
+     hiểu: hỏi thẳng một việc, không gài bẫy, không bắt tính dài.
+
+     Không có đáp án nào viết tay sẵn. Máy dựng số liệu trước rồi
+     tự tính lại từng ý bằng vòng lặp hoặc bằng công thức đã kiểm,
+     nên ý nào cũng đúng với số liệu vừa bốc.
+     ============================================================ */
+
+  /* Tung đồng xu, dùng để quyết định một ý sẽ viết đúng hay viết lệch đi */
+  function tung() { return Math.random() < 0.5; }
+
+  /* ---------- Tập con của R: khoảng, đoạn, nửa khoảng ----------
+     Một tập con của R ghi bằng bốn thông tin: hai đầu d, c và hai dấu
+     ngoặc layD, layC (true là lấy đầu đó, tức viết ngoặc vuông).
+     Hai đầu vô cực ghi -Infinity và Infinity, luôn là ngoặc tròn. */
+  function khoang(d, c, layD, layC) {
+    return { d: d, c: c,
+             lD: (d === -Infinity) ? false : !!layD,
+             lC: (c === Infinity)  ? false : !!layC };
+  }
+  function vietKhoang(k) {
+    if (k.d === -Infinity && k.c === Infinity) return '\\mathbb{R}';
+    return (k.lD ? '[' : '(') +
+           (k.d === -Infinity ? '-\\infty' : k.d) + ';\\,' +
+           (k.c === Infinity  ? '+\\infty' : k.c) +
+           (k.lC ? ']' : ')');
+  }
+  function thuocKhoang(k, x) {
+    return (k.lD ? x >= k.d : x > k.d) && (k.lC ? x <= k.c : x < k.c);
+  }
+  function bangKhoang(p, q) {
+    return p.d === q.d && p.c === q.c && p.lD === q.lD && p.lC === q.lC;
+  }
+  /* Tên gọi theo sách: lấy cả hai đầu là đoạn, không lấy đầu nào là
+     khoảng, lấy đúng một đầu là nửa khoảng. Đầu vô cực không lấy được
+     nên tính như đầu mở. */
+  function tenKhoang(k) {
+    if (k.lD && k.lC) return 'đoạn';
+    if (!k.lD && !k.lC) return 'khoảng';
+    return 'nửa khoảng';
+  }
+  /* Các số nguyên nằm trong tập, trả về null khi tập trải ra vô cực
+     vì khi ấy đếm không được. Cũng dùng để đếm số phần tử nguyên. */
+  function nguyenTrong(k) {
+    if (k.d === -Infinity || k.c === Infinity) return null;
+    var r = [];
+    for (var x = Math.ceil(k.d) - 1; x <= Math.floor(k.c) + 1; x++)
+      if (thuocKhoang(k, x)) r.push(x);
+    return r;
+  }
+  /* Các số tự nhiên nằm trong tập, chỉ cần đầu bên phải hữu hạn */
+  function tuNhienTrong(k) {
+    if (k.c === Infinity) return null;
+    var r = [];
+    for (var x = 0; x <= Math.floor(k.c) + 1; x++)
+      if (thuocKhoang(k, x)) r.push(x);
+    return r;
+  }
+  /* Một tập lệch đi một chút để làm ý sai: đổi một dấu ngoặc, hoặc
+     xê dịch một đầu đi một đơn vị. Trả về null khi không lệch được
+     (tập R), lúc đó ý sẽ viết đúng. */
+  function lechKhoang(k) {
+    var cach = xaoM([1, 2, 3, 4]);
+    for (var i = 0; i < cach.length; i++) {
+      var t = null, v = cach[i];
+      if (v === 1 && k.d !== -Infinity) t = khoang(k.d, k.c, !k.lD, k.lC);
+      if (v === 2 && k.c !== Infinity)  t = khoang(k.d, k.c, k.lD, !k.lC);
+      if (v === 3 && k.d !== -Infinity && k.c - k.d > 1) t = khoang(k.d + 1, k.c, k.lD, k.lC);
+      if (v === 4 && k.c !== Infinity  && k.c - k.d > 1) t = khoang(k.d, k.c - 1, k.lD, k.lC);
+      if (t && !bangKhoang(t, k)) return t;
+    }
+    return null;
+  }
+
+  /* ---------- Các kiểu ý cho tập con của R ----------
+     Mỗi hàm trả về { t: lời của ý, d: ý đó đúng hay sai },
+     hoặc null khi số liệu lần này không hỏi kiểu đó được. */
+
+  /* Viết kết quả một phép toán, một nửa số lần viết lệch đi cho thành ý sai */
+  function yKhoang(ten, k) {
+    var s = tung() ? lechKhoang(k) : null;
+    return { nhom: 'phep', t: '$' + ten + ' = ' + vietKhoang(s || k) + '$', d: !s };
+  }
+  /* Gọi tên đoạn, khoảng hay nửa khoảng */
+  function yTenKhoang(ten, k) {
+    if (k.d === -Infinity && k.c === Infinity) return null;
+    var that = tenKhoang(k), noi = that;
+    if (tung()) noi = chon(['đoạn', 'khoảng', 'nửa khoảng'].filter(
+      function (s) { return s !== that; }));
+    return { t: 'Tập hợp $' + ten + '$ là một ' + noi, d: noi === that };
+  }
+  /* Trong tập có bao nhiêu số nguyên */
+  function yDemNguyen(ten, k) {
+    var ds = nguyenTrong(k);
+    if (!ds || ds.length < 1 || ds.length > 9) return null;
+    var n = ds.length, m = n;
+    if (tung()) m = (n > 1 && tung()) ? n - 1 : n + 1;
+    return { nhom: 'dem', t: 'Có đúng $' + m + '$ số nguyên thuộc tập hợp $' + ten + '$',
+             d: m === n };
+  }
+  /* Trong tập có bao nhiêu số tự nhiên */
+  function yDemTuNhien(ten, k) {
+    var ds = tuNhienTrong(k);
+    if (!ds || ds.length > 9) return null;
+    var n = ds.length;
+    if (n === 0) {
+      if (tung()) return { nhom: 'dem',
+        t: 'Tập hợp $' + ten + '$ không chứa số tự nhiên nào', d: true };
+      return { nhom: 'dem',
+        t: 'Tập hợp $' + ten + '$ chứa đúng $' + ri(1, 3) + '$ số tự nhiên', d: false };
+    }
+    var m = n;
+    if (tung()) m = (n > 1 && tung()) ? n - 1 : n + 1;
+    return { nhom: 'dem', t: 'Tập hợp $' + ten + '$ chứa đúng $' + m + '$ số tự nhiên',
+             d: m === n };
+  }
+  /* Liệt kê các số nguyên của tập */
+  function yLietKeNguyen(ten, k) {
+    var ds = nguyenTrong(k);
+    if (!ds || ds.length < 2 || ds.length > 6) return null;
+    var hien = ds.slice(), sai = false;
+    if (tung()) {
+      sai = true;
+      /* Lệch kiểu hay gặp nhất: lấy thêm đúng cái đầu mà tập không lấy */
+      var v = ri(1, 3);
+      if (v === 1)      hien = [ds[0] - 1].concat(ds);
+      else if (v === 2) hien = ds.concat([ds[ds.length - 1] + 1]);
+      else              hien = ds.slice(1);
+    }
+    return { nhom: 'dem',
+             t: 'Các số nguyên thuộc tập hợp $' + ten + '$ là $' + tap(hien) + '$', d: !sai };
+  }
+  /* Một số cho trước có thuộc tập hay không */
+  function yThuocKhoang(ten, k, x) {
+    if (tung()) return { nhom: 'thuoc', t: '$' + x + ' \\in ' + ten + '$',
+                         d: thuocKhoang(k, x) };
+    return { nhom: 'thuoc', t: '$' + x + ' \\notin ' + ten + '$', d: !thuocKhoang(k, x) };
+  }
+  /* Số nguyên lớn nhất của tập */
+  function yLonNhatNguyen(ten, k) {
+    var ds = nguyenTrong(k);
+    if (!ds || !ds.length) return null;
+    var m = ds[ds.length - 1], v = tung() ? m : m + 1;
+    return { nhom: 'dem',
+             t: 'Số nguyên lớn nhất thuộc tập hợp $' + ten + '$ là $' + v + '$', d: v === m };
+  }
+
+  /* ---------- Tập hữu hạn các số tự nhiên, số nguyên ----------
+     Tập nào cũng được quét bằng vòng lặp từ điều kiện đề bài, nên
+     danh sách phần tử chắc chắn khớp với lời đề. */
+  function quetSo(lo, hi, kt) {
+    var r = [];
+    for (var x = lo; x <= hi; x++) if (kt(x)) r.push(x);
+    return r;
+  }
+  function laNguyenTo(x) {
+    if (x < 2) return false;
+    for (var i = 2; i * i <= x; i++) if (x % i === 0) return false;
+    return true;
+  }
+  /* Vế trái của phương trình bậc hai có hai nghiệm p, q:
+     $x^2 - (p+q)x + pq = 0$, viết gọn lại cho đúng dấu và bỏ hệ số 1. */
+  function vietBac2(p, q) {
+    var S = p + q, P = p * q, t = 'x^2';
+    if (S !== 0) t += (S > 0 ? ' - ' + (S === 1 ? '' : S) + 'x'
+                             : ' + ' + (S === -1 ? '' : -S) + 'x');
+    if (P !== 0) t += (P > 0 ? ' + ' + P : ' - ' + (-P));
+    return t + ' = 0';
+  }
+  /* Cũng phương trình ấy nhưng để dạng tích $(x - p)(x - q) = 0$ */
+  function vietTich(p, q) {
+    function nt(v) { return v === 0 ? 'x' : (v > 0 ? '(x - ' + v + ')' : '(x + ' + (-v) + ')'); }
+    return nt(p) + nt(q) + ' = 0';
+  }
+  /* Hai nghiệm nguyên khác nhau, dùng cho các dạng cho bằng phương trình.
+     Nghiệm phải là số nguyên, vì các ý sau còn liệt kê và đếm phần tử. */
+  function haiNghiem(nho) {
+    var p, q;
+    do { p = ri(nho ? 0 : -4, 6); q = ri(nho ? 0 : -4, 6); } while (p === q);
+    return p < q ? [p, q] : [q, p];
+  }
+
+  /* Bốc một tập và lời mô tả của nó. ten là chữ A hoặc B.
+     bang: true là mô tả viết được thành $A = \{...\}$, false là tả bằng lời.
+     ds luôn do vòng lặp quét ra từ đúng điều kiện của lời đề. */
+  function moTaTap(ten) {
+    var k = ri(1, 11), n, p, q, ng;
+
+    if (k === 1) {                                  /* số tự nhiên nhỏ hơn n */
+      n = ri(5, 9);
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{N} \\mid x \\lt ' + n + '\\}$',
+               ds: quetSo(0, 50, function (x) { return x < n; }) };
+    }
+    if (k === 2) {                                  /* số tự nhiên không quá n */
+      n = ri(4, 8);
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{N} \\mid x \\le ' + n + '\\}$',
+               ds: quetSo(0, 50, function (x) { return x <= n; }) };
+    }
+    if (k === 3) {                                  /* số nguyên trong một khoảng */
+      p = ri(1, 4); q = ri(2, 5);
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid -' + p +
+                   ' \\le x \\lt ' + q + '\\}$',
+               ds: quetSo(-20, 20, function (x) { return x >= -p && x < q; }) };
+    }
+    if (k === 4) {                                  /* trị tuyệt đối */
+      p = ri(2, 4);
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid |x| \\le ' + p + '\\}$',
+               ds: quetSo(-20, 20, function (x) { return Math.abs(x) <= p; }) };
+    }
+    if (k === 5) {                                  /* phương trình dạng tích */
+      ng = haiNghiem(false);
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid ' + vietTich(ng[0], ng[1]) + '\\}$',
+               ds: quetSo(-60, 60, function (x) {
+                     return (x - ng[0]) * (x - ng[1]) === 0; }) };
+    }
+    if (k === 6) {                                  /* phương trình bậc hai, lấy nghiệm nguyên */
+      ng = haiNghiem(false);
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid ' + vietBac2(ng[0], ng[1]) + '\\}$',
+               ds: quetSo(-60, 60, function (x) {
+                     return x * x - (ng[0] + ng[1]) * x + ng[0] * ng[1] === 0; }) };
+    }
+    if (k === 7) {                                  /* bậc hai nhưng chỉ lấy nghiệm tự nhiên */
+      ng = haiNghiem(false);
+      if (ng[1] < 0) ng = [ng[0], ri(1, 6)];        /* chắc chắn còn ít nhất một nghiệm tự nhiên */
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{N} \\mid ' + vietBac2(ng[0], ng[1]) + '\\}$',
+               ds: quetSo(0, 60, function (x) {
+                     return x * x - (ng[0] + ng[1]) * x + ng[0] * ng[1] === 0; }) };
+    }
+    if (k === 8) {                                  /* x bình phương bằng một số chính phương */
+      n = chon([1, 4, 9, 16, 25]);
+      return { bang: true,
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid x^2 = ' + n + '\\}$',
+               ds: quetSo(-60, 60, function (x) { return x * x === n; }) };
+    }
+    if (k === 9) {                                  /* ước số */
+      n = chon([12, 18, 20, 24, 28, 30]);
+      return { bang: false,
+               mo: '$' + ten + '$ là tập hợp các ước số tự nhiên của $' + n + '$',
+               ds: quetSo(1, n, function (x) { return n % x === 0; }) };
+    }
+    if (k === 10) {                                 /* bội số */
+      p = chon([2, 3, 4, 5]); n = p * ri(3, 5);
+      return { bang: false,
+               mo: '$' + ten + '$ là tập hợp các số tự nhiên là bội của $' + p +
+                   '$ và không vượt quá $' + n + '$',
+               ds: quetSo(0, n, function (x) { return x % p === 0; }) };
+    }
+    n = chon([10, 12, 15, 20]);                     /* số nguyên tố */
+    return { bang: false,
+             mo: '$' + ten + '$ là tập hợp các số nguyên tố nhỏ hơn $' + n + '$',
+             ds: quetSo(0, n, function (x) { return laNguyenTo(x) && x < n; }) };
+  }
+  function giaoTap(a, b) { return a.filter(function (x) { return b.indexOf(x) !== -1; }); }
+  function hieuTap(a, b) { return a.filter(function (x) { return b.indexOf(x) === -1; }); }
+  function hopTap(a, b) {
+    return a.concat(b.filter(function (x) { return a.indexOf(x) === -1; }))
+            .sort(function (p, q) { return p - q; });
+  }
+  function vietTap(ds) { return ds.length ? tap(ds) : '\\varnothing'; }
+
+  /* ---------- Các kiểu ý cho tập hữu hạn ---------- */
+
+  /* Liệt kê một tập, một nửa số lần bỏ hoặc thêm một phần tử cho thành ý sai */
+  function yLietKeTap(ten, ds) {
+    var hien = ds.slice(), sai = false;
+    if (ds.length && tung()) {
+      sai = true;
+      /* Tập số tự nhiên hay bị quên mất số 0, cho ý lệch đúng vào chỗ đó */
+      var v = (ds[0] === 0 && ds.length > 1 && tung()) ? 3 : ri(1, 3);
+      if (v === 1)      hien = [ds[0] - 1].concat(ds);
+      else if (v === 2) hien = ds.concat([ds[ds.length - 1] + 1]);
+      else if (ds.length > 1) hien = ds.slice(1);
+      else              hien = [ds[0] - 1].concat(ds);
+    }
+    return { nhom: 'lietke', t: '$' + ten + ' = ' + vietTap(hien) + '$', d: !sai };
+  }
+  /* Số phần tử của một tập */
+  function ySoPhanTu(ten, ds) {
+    if (!ds.length) return null;
+    var n = ds.length, m = n;
+    if (tung()) m = (n > 1 && tung()) ? n - 1 : n + 1;
+    return { nhom: 'dem', t: 'Tập hợp $' + ten + '$ có $' + m + '$ phần tử', d: m === n };
+  }
+  /* Một số cho trước có thuộc tập hay không */
+  function yThuocTap(ten, ds, x) {
+    var co = ds.indexOf(x) !== -1;
+    if (tung()) return { nhom: 'thuoc', t: '$' + x + ' \\in ' + ten + '$', d: co };
+    return { nhom: 'thuoc', t: '$' + x + ' \\notin ' + ten + '$', d: !co };
+  }
+  /* Quan hệ tập con giữa hai tập */
+  function yConTap(a, b) {
+    if (tung()) return { t: '$A \\subset B$', d: hieuTap(a, b).length === 0 };
+    return { t: '$B \\subset A$', d: hieuTap(b, a).length === 0 };
+  }
+  /* Trong tập có bao nhiêu số thoả một điều kiện đơn giản */
+  function yDieuKienTap(ten, ds) {
+    var dk = chon([
+      { chu: 'số chẵn',             kt: function (x) { return x % 2 === 0; } },
+      { chu: 'số lẻ',               kt: function (x) { return x % 2 !== 0; } },
+      { chu: 'số chia hết cho $3$', kt: function (x) { return x % 3 === 0; } },
+      { chu: 'số lớn hơn $2$',      kt: function (x) { return x > 2; } }
+    ]);
+    var n = ds.filter(dk.kt).length;
+    if (n === 0) return null;
+    var m = n;
+    if (tung()) m = (n > 1 && tung()) ? n - 1 : n + 1;
+    return { nhom: 'dem',
+             t: 'Trong tập hợp $' + ten + '$ có đúng $' + m + '$ ' + dk.chu, d: m === n };
+  }
+
+  /* ---------- Bốc bốn ý ----------
+     Lấy bốn ý trong túi, theo hai lệ:
+     — có cả ý đúng lẫn ý sai, để bấm Đúng hết hay Sai hết đều không ăn điểm,
+     — mỗi nhóm ý góp nhiều nhất hai ý, để một câu không thành bốn ý y như nhau. */
+  function bonY(tui, tran) {
+    tran = tran || 2;
+    var gan = null;
+    for (var lan = 0; lan < 200; lan++) {
+      var y = [], d = xaoM(tui.slice()), dem = {}, i, o;
+      for (i = 0; i < d.length && y.length < 4; i++) {
+        o = d[i]();
+        if (!o) continue;
+        if (o.nhom) {
+          if ((dem[o.nhom] || 0) >= tran) continue;
+          dem[o.nhom] = (dem[o.nhom] || 0) + 1;
+        }
+        y.push(o);
+      }
+      if (y.length < 4) continue;
+      gan = y;
+      var sd = 0;
+      for (i = 0; i < 4; i++) if (y[i].d) sd++;
+      if (sd > 0 && sd < 4) return y;
+    }
+    return gan;                     /* hiếm khi tới đây, lấy bộ gần nhất */
+  }
+  function raCau(dang, de, y, giai) {
+    return { muc: 2, dang: dang, de: de,
+             y:    y.map(function (o) { return o.t; }),
+             dung: y.map(function (o) { return o.d; }),
+             giai: giai };
+  }
+
+  /* ============================================================
+     CÂU 1 — TẬP HỢP
+     Hai dạng thay nhau: tập con của R (hay có đầu vô cực) và tập
+     hữu hạn các số tự nhiên, số nguyên cho bằng tính chất.
+     ============================================================ */
+
+  /* Dạng 1: hai tập con của R.
+     Dựng A và B gối lên nhau theo đúng thứ tự a1 < b1 < a2 < b2. Nhờ
+     thế hợp, giao và hai hiệu đều gọn trong một khoảng duy nhất, viết
+     ra theo công thức dưới đây là chắc đúng:
+       A ∩ B lấy đầu trong của mỗi tập,  A ∪ B lấy đầu ngoài,
+       A \ B cắt tại đầu của B và đổi dấu ngoặc ở chỗ cắt,
+       B \ A cắt tại đầu của A và cũng đổi dấu ngoặc ở chỗ cắt. */
+  function dsTapR() {
+    var a1 = ri(-6, 1), b1 = a1 + ri(2, 4), a2 = b1 + ri(2, 4), b2 = a2 + ri(2, 4);
+
+    /* Cho đầu vô cực xuất hiện thường xuyên, vì học sinh hay quên rằng
+       hai đầu ấy luôn viết ngoặc tròn. */
+    var noVo = chon(['', 'A', 'B', 'AB', 'A', 'B', 'AB']);
+    var voA = noVo.indexOf('A') !== -1, voB = noVo.indexOf('B') !== -1;
+
+    var A = khoang(voA ? -Infinity : a1, a2, tung(), tung());
+    var B = khoang(b1, voB ? Infinity : b2, tung(), tung());
+
+    var giao = khoang(B.d, A.c, B.lD, A.lC);
+    var hop  = khoang(A.d, B.c, A.lD, B.lC);
+    var hieu = khoang(A.d, B.d, A.lD, !B.lD);
+    var hieu2 = khoang(A.c, B.c, !A.lC, B.lC);
+
+    var tui = [
+      function () { return yKhoang('A \\cap B', giao); },
+      function () { return yKhoang('A \\cup B', hop); },
+      function () { return yKhoang('A \\setminus B', hieu); },
+      function () { return yKhoang('B \\setminus A', hieu2); },
+      function () { return yTenKhoang('A \\cap B', giao); },
+      function () { return yTenKhoang('A \\cup B', hop); },
+      function () { return yDemNguyen('A \\cap B', giao); },
+      function () { return yDemNguyen('A \\setminus B', hieu); },
+      function () { return yDemTuNhien('A \\cap B', giao); },
+      function () { return yDemTuNhien('A', A); },
+      function () { return yLietKeNguyen('A \\cap B', giao); },
+      function () { return yLonNhatNguyen('A \\cap B', giao); },
+      function () { return yThuocKhoang('A', A, chon(voA ? [b1, a2, a2 - 1] : [a1, b1, a2])); },
+      function () { return yThuocKhoang('B', B, chon(voB ? [b1, a2, b1 + 1] : [b1, a2, b2])); }
+    ];
+
+    var y = bonY(tui);
+    return raCau('ts-taphop',
+      'Cho hai tập hợp $A = ' + vietKhoang(A) + '$ và $B = ' + vietKhoang(B) + '$.',
+      y,
+      'Vẽ hai tập lên cùng một trục số rồi đọc ra: $A \\cap B = ' + vietKhoang(giao) +
+      '$, $A \\cup B = ' + vietKhoang(hop) + '$, $A \\setminus B = ' + vietKhoang(hieu) +
+      '$, $B \\setminus A = ' + vietKhoang(hieu2) + '$.');
+  }
+
+  /* Dạng 2: hai tập hữu hạn các số tự nhiên, số nguyên.
+     Bốc lại cho tới khi hai tập vừa tầm liệt kê, có phần chung và
+     không trùng khít nhau. Không dựng được thì chuyển sang dạng 1. */
+  function dsTapZ() {
+    for (var lan = 0; lan < 250; lan++) {
+      var A = moTaTap('A'), B = moTaTap('B');
+      /* Tập cho bằng phương trình chỉ có một hai phần tử, nên chỉ cần mỗi
+         tập có phần tử và hai tập cộng lại đủ rộng để hỏi cho ra chuyện. */
+      if (!A.ds.length || A.ds.length > 8) continue;
+      if (!B.ds.length || B.ds.length > 8) continue;
+      if (A.ds.length + B.ds.length < 5) continue;
+
+      var giao = giaoTap(A.ds, B.ds);
+      if (!giao.length) continue;                       /* phải có phần chung */
+      var hieu = hieuTap(A.ds, B.ds), hieu2 = hieuTap(B.ds, A.ds);
+      if (!hieu.length && !hieu2.length) continue;      /* hai tập trùng nhau thì bỏ */
+      var hop = hopTap(A.ds, B.ds);
+
+      /* Các số đem ra hỏi: lấy ngay trong hai tập, thêm một số sát ngoài
+         rìa để ý hỏi không phải lúc nào cũng đúng. */
+      var ngoai = [hop[0] - 1, hop[hop.length - 1] + 1];
+      var tui = [
+        function () { return yLietKeTap('A', A.ds); },
+        function () { return yLietKeTap('B', B.ds); },
+        function () { return yLietKeTap('A \\cap B', giao); },
+        function () { return yLietKeTap('A \\cup B', hop); },
+        function () { return yLietKeTap('A \\setminus B', hieu); },
+        function () { return yLietKeTap('B \\setminus A', hieu2); },
+        function () { return ySoPhanTu('A', A.ds); },
+        function () { return ySoPhanTu('B', B.ds); },
+        function () { return ySoPhanTu('A \\cap B', giao); },
+        function () { return ySoPhanTu('A \\cup B', hop); },
+        function () { return yThuocTap('A', A.ds, chon(hop.concat(ngoai))); },
+        function () { return yThuocTap('B', B.ds, chon(hop.concat(ngoai))); },
+        function () { return yConTap(A.ds, B.ds); },
+        function () { return yDieuKienTap('A', A.ds); },
+        function () { return yDieuKienTap('A \\cup B', hop); }
+      ];
+
+      var y = bonY(tui);
+      if (!y) continue;
+      /* Hai tập đều viết được dạng $A = \{...\}$ thì mở đầu “Cho hai tập hợp”,
+         có tập tả bằng lời thì mở đầu gọn là “Cho”. Nối hai mô tả bằng chữ
+         “và”, trừ khi trong một mô tả đã sẵn chữ “và” thì nối bằng dấu phẩy
+         cho câu khỏi hai chữ “và” chồng nhau. */
+      var deu = (A.bang && B.bang);
+      var noi = ((A.mo + B.mo).indexOf(' và ') === -1) ? ' và ' : ', ';
+      return raCau('ts-taphop',
+        (deu ? 'Cho hai tập hợp ' : 'Cho ') + A.mo + noi + B.mo + '.',
+        y,
+        'Liệt kê ra rồi so sánh: $A = ' + vietTap(A.ds) + '$, $B = ' + vietTap(B.ds) +
+        '$, $A \\cap B = ' + vietTap(giao) + '$, $A \\cup B = ' + vietTap(hop) + '$.');
+    }
+    return null;
+  }
+
+  function dsTapHop() {
+    if (tung()) {
+      var q = dsTapZ();
+      if (q) return q;
+    }
+    return dsTapR();
+  }
+
+  /* ============================================================
+     CÂU 2 — BẤT PHƯƠNG TRÌNH BẬC NHẤT HAI ẨN
+     Cho một bất phương trình rồi hỏi bốn ý quanh nó: nhận dạng,
+     thử nghiệm, đường bờ và miền nghiệm.
+     ============================================================ */
+
+  /* lay cho biết dấu có kèm dấu bằng, doi là dấu sau khi nhân hai vế với -1 */
+  var DAU_BPT = [
+    { ma: '\\le', lay: true,  doi: '\\ge' },
+    { ma: '\\lt', lay: false, doi: '\\gt' },
+    { ma: '\\ge', lay: true,  doi: '\\le' },
+    { ma: '\\gt', lay: false, doi: '\\lt' }
+  ];
+
+  function dsBpt() {
+    var a = chon([1, 2, 3, -1, -2]), b = chon([1, 2, 3, -1, -2, -3]);
+    var d = chon(DAU_BPT), vt = veTrai(a, b);
+
+    /* Chọn trước một điểm nguyên rồi lấy c bằng giá trị vế trái tại đó,
+       nhờ vậy luôn có sẵn một điểm nằm đúng trên đường bờ để đem ra hỏi. */
+    var x0 = ri(-3, 5), y0 = ri(-3, 5), c = a * x0 + b * y0;
+    var bien = [x0, y0];
+
+    /* Lùi một bước theo chiều của x làm vế trái giảm đi |a|, tiến một
+       bước làm vế trái tăng thêm |a|, nên hai điểm này nằm hai bên bờ. */
+    var buoc = (a > 0) ? 1 : -1;
+    var thap = [x0 - buoc, y0];
+    var cao  = [x0 + buoc, y0];
+
+    function thoa(x, y) {
+      var v = a * x + b * y;
+      if (d.ma === '\\le') return v <= c;
+      if (d.ma === '\\lt') return v <  c;
+      if (d.ma === '\\ge') return v >= c;
+      return v > c;
+    }
+    function laGoc(p) { return p[0] === 0 && p[1] === 0; }
+
+    /* Cặp số cho trước có là nghiệm hay không */
+    function yNghiem(p) {
+      var ok = thoa(p[0], p[1]), toa = '$(' + p[0] + ';\\,' + p[1] + ')$';
+      if (tung())
+        return { nhom: 'thu',
+                 t: 'Cặp số ' + toa + ' là một nghiệm của bất phương trình đã cho', d: ok };
+      return { nhom: 'thu', t: 'Cặp số ' + toa +
+                  ' <strong>không</strong> là nghiệm của bất phương trình đã cho', d: !ok };
+    }
+
+    var tui = [
+      function () { return yNghiem(bien); },
+      function () { return yNghiem(thap); },
+      function () { return yNghiem(cao); },
+
+      /* Gốc toạ độ thuộc miền nghiệm hay không */
+      function () {
+        if (laGoc(bien) || laGoc(thap) || laGoc(cao)) return null;
+        return { nhom: 'thu',
+                 t: 'Gốc toạ độ $O(0;\\,0)$ thuộc miền nghiệm của bất phương trình đã cho',
+                 d: thoa(0, 0) };
+      },
+
+      /* Đường bờ của miền nghiệm là đường thẳng nào */
+      function () {
+        var cc = tung() ? c : c + chon([1, -1, 2]);
+        return { t: 'Miền nghiệm của bất phương trình đã cho có bờ là đường thẳng $' +
+                    vt + ' = ' + cc + '$', d: cc === c };
+      },
+
+      /* Đường bờ có thuộc miền nghiệm hay không, tuỳ dấu có kèm dấu bằng */
+      function () {
+        return { t: 'Mọi điểm nằm trên đường thẳng $' + vt + ' = ' + c +
+                    '$ đều là nghiệm của bất phương trình đã cho', d: d.lay };
+      },
+
+      /* Miền nghiệm là một nửa mặt phẳng */
+      function () {
+        if (tung())
+          return { nhom: 'ly',
+                   t: 'Miền nghiệm của bất phương trình đã cho là một nửa mặt phẳng', d: true };
+        return { nhom: 'ly',
+                 t: 'Miền nghiệm của bất phương trình đã cho là toàn bộ mặt phẳng toạ độ',
+                 d: false };
+      },
+
+      /* Số nghiệm của bất phương trình */
+      function () {
+        if (tung())
+          return { nhom: 'ly', t: 'Bất phương trình đã cho có vô số nghiệm', d: true };
+        return { nhom: 'ly', t: 'Bất phương trình đã cho chỉ có đúng một nghiệm', d: false };
+      },
+
+      /* Nhận dạng bất phương trình bậc nhất hai ẩn */
+      function () {
+        return { nhom: 'ly',
+                 t: 'Bất phương trình đã cho là bất phương trình bậc nhất hai ẩn', d: true };
+      },
+
+      /* Nhân hai vế với -1 thì phải đổi chiều dấu */
+      function () {
+        var sai = tung();
+        return { t: 'Bất phương trình đã cho tương đương với bất phương trình $' +
+                    veTrai(-a, -b) + ' ' + (sai ? d.ma : d.doi) + ' ' + (-c) + '$', d: !sai };
+      }
+    ];
+
+    var y = bonY(tui);
+    return raCau('bpt-dungsai',
+      'Cho bất phương trình $' + vt + ' ' + d.ma + ' ' + c + '$.',
+      y,
+      'Thay toạ độ từng điểm vào vế trái $' + vt + '$ rồi so với $' + c +
+      '$. Đường bờ là $' + vt + ' = ' + c + '$, bờ chỉ thuộc miền nghiệm khi dấu ' +
+      'của bất phương trình có kèm dấu bằng.');
+  }
+
+  /* Hai câu đúng sai của đề ôn tập, đúng thứ tự ghi trong deCoDinh ở data.js */
+  var OT1_DS = [dsTapHop, dsBpt];
+
+  /* ============================================================
      Bảng mẫu theo chương và theo dạng
      ============================================================ */
   var MAU = {
-    101: { tracnghiem: OT1_TN },
+    101: { tracnghiem: OT1_TN, dungsai: OT1_DS },
     1: { tracnghiem: C1_TN, dungsai: C1_DS, traloingan: C1_TLN },
     2: { tracnghiem: C2_TN, dungsai: C2_DS, traloingan: C2_TLN },
     3: { tracnghiem: C3_TN, dungsai: C3_DS, traloingan: C3_TLN }

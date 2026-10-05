@@ -27,7 +27,18 @@
 
    dang là nhãn dạng câu hỏi, không bắt buộc. Trong một dạng bài của
    một chương, nếu MỌI câu đều có gắn dang thì đề rút đều các dạng,
-   mỗi dạng một phần bằng nhau. Chương I trắc nghiệm đang dùng sáu nhãn:
+   mỗi dạng một phần bằng nhau.
+
+   deCoDinh dùng cho đề ôn tập: ghi sẵn nhãn dang của từng câu theo
+   đúng thứ tự muốn chúng xuất hiện, lần nào làm cũng đủ các dạng và
+   đúng vị trí, chỉ số liệu là đổi. Viết riêng cho từng dạng bài:
+     deCoDinh: { tracnghiem: ['...', '...'], dungsai: ['...', '...'] }
+   Đề đúng sai của Ôn tập giữa kì I đang dùng hai nhãn:
+     'ts-taphop'    các phép toán trên tập hợp, tập con của tập số thực
+     'bpt-dungsai'  bất phương trình bậc nhất hai ẩn
+   Hai mẫu sinh ra hai câu này nằm ở cuối js/sinh.js.
+
+   Chương I trắc nghiệm đang dùng sáu nhãn:
      'nhandang'  câu nào là mệnh đề, câu nào không phải mệnh đề
      'chuabien'  mệnh đề chứa biến
      'dung'      mệnh đề nào đúng
@@ -46,9 +57,10 @@ const L = String.raw;   // cho phép viết \frac thay vì \\frac
 const CHUONG_TRINH = [
 
   /* ---------------- ÔN TẬP GIỮA KÌ I ----------------
-     Đề trắc nghiệm có cấu trúc cố định 10 câu, mỗi câu một dạng,
-     liệt kê trong deCoDinh dưới đây theo đúng thứ tự xuất hiện.
-     Câu hỏi do bộ sinh trong js/sinh.js tạo ra, số liệu mỗi lần một khác.
+     Đề có cấu trúc cố định: mỗi câu một dạng, liệt kê trong deCoDinh
+     dưới đây theo đúng thứ tự xuất hiện. Trắc nghiệm 10 câu, đúng sai
+     2 câu. Câu hỏi do bộ sinh trong js/sinh.js tạo ra, số liệu mỗi
+     lần một khác.
 
      khoa: dạng nào ghi ở đây thì hiện khoá, bấm vào chỉ báo một câu,
      chưa cho làm. Muốn mở thì xoá dòng tương ứng đi. */
@@ -62,21 +74,26 @@ const CHUONG_TRINH = [
       'Chương III. Hệ thức lượng trong tam giác'
     ],
     khoa: {
-      dungsai:    'Phần này thầy cô chưa mở, em làm trắc nghiệm trước nhé.',
       traloingan: 'Phần này thầy cô chưa mở, em làm trắc nghiệm trước nhé.'
     },
-    deCoDinh: [
-      'md-nhandang',   /* 1. câu nào là mệnh đề / không phải mệnh đề   */
-      'md-dungsai',    /* 2. mệnh đề nào đúng / mệnh đề nào sai        */
-      'bpt-nhandang',  /* 3. nhận dạng bất phương trình bậc nhất hai ẩn*/
-      'bpt-nghiem',    /* 4. nghiệm của bất phương trình               */
-      'he-nhandang',   /* 5. nhận dạng hệ bất phương trình             */
-      'he-nghiem',     /* 6. nghiệm của hệ bất phương trình            */
-      'lg-bang',       /* 7. tra bảng giá trị lượng giác               */
-      'lg-goc',        /* 8. góc bù, góc phụ                           */
-      'lg-dinhly',     /* 9. định lí sin, côsin, công thức diện tích   */
-      'dt-theso'       /*10. thay số vào công thức tính diện tích      */
-    ],
+    deCoDinh: {
+      tracnghiem: [
+        'md-nhandang',   /* 1. câu nào là mệnh đề / không phải mệnh đề   */
+        'md-dungsai',    /* 2. mệnh đề nào đúng / mệnh đề nào sai        */
+        'bpt-nhandang',  /* 3. nhận dạng bất phương trình bậc nhất hai ẩn*/
+        'bpt-nghiem',    /* 4. nghiệm của bất phương trình               */
+        'he-nhandang',   /* 5. nhận dạng hệ bất phương trình             */
+        'he-nghiem',     /* 6. nghiệm của hệ bất phương trình            */
+        'lg-bang',       /* 7. tra bảng giá trị lượng giác               */
+        'lg-goc',        /* 8. góc bù, góc phụ                           */
+        'lg-dinhly',     /* 9. định lí sin, côsin, công thức diện tích   */
+        'dt-theso'       /*10. thay số vào công thức tính diện tích      */
+      ],
+      dungsai: [
+        'ts-taphop',     /* 1. tập hợp: liệt kê, số phần tử, hợp, giao, hiệu */
+        'bpt-dungsai'    /* 2. bất phương trình bậc nhất hai ẩn              */
+      ]
+    },
     cauhoi: { tracnghiem: [], dungsai: [], traloingan: [] }
   }
 

@@ -40,20 +40,36 @@ Bấm vào một dạng là trang bốc ngẫu nhiên câu từ ngân hàng củ
 chia theo ba mức độ rồi xếp dễ trước khó sau. Mở `js/main.js`, hai dòng đầu:
 
 ```js
-var SO_CAU = { tracnghiem: 20, dungsai: 3, traloingan: 5 };
-var TI_LE  = { 1: 0.40, 2: 0.35, 3: 0.25 };   // nhận biết, thông hiểu, vận dụng
+var SO_CAU = { tracnghiem: 10, dungsai: 2, traloingan: 3 };
+var TI_LE  = { 1: 0.55, 2: 0.35, 3: 0.10 };   // nhận biết, thông hiểu, vận dụng
 ```
 
 Viết một số thì lần nào cũng bấy nhiêu câu. Viết một khoảng thì mỗi lần một số
 khác nhau, ví dụ `tracnghiem: [18, 25]` sẽ ra từ 18 đến 25 câu tuỳ lượt.
 
+## Đề có cấu trúc cố định
+
+Riêng đề ôn tập thì không rút tự do như trên. Chương nào có `deCoDinh` trong
+`js/data.js` thì dạng bài ghi trong đó ra đúng từng câu, theo đúng thứ tự,
+mỗi câu một dạng, lần nào làm cũng đủ các dạng, chỉ số liệu là đổi:
+
+```js
+deCoDinh: {
+  tracnghiem: ['md-nhandang', 'md-dungsai', ...],   // 10 câu
+  dungsai:    ['ts-taphop', 'bpt-dungsai']          //  2 câu
+}
+```
+
+Mỗi nhãn là một `dang` của mẫu sinh trong `js/sinh.js`. Số câu khi ấy do số
+nhãn quyết định, `SO_CAU` không còn tác dụng với dạng bài đó.
+
 ## Ngân hàng câu hỏi nên có bao nhiêu
 
 | Dạng | Rút mỗi lần | Kho mỗi chương nên có |
 |---|---|---|
-| Trắc nghiệm | 20 | **300** |
-| Đúng sai | 3 | **50** |
-| Trả lời ngắn | 5 | **50** |
+| Trắc nghiệm | 10 | **300** |
+| Đúng sai | 2 | **50** |
+| Trả lời ngắn | 3 | **50** |
 
 Kho càng lớn thì đề càng ít lặp. Khi kho ít hơn số cần rút, trang lấy hết
 những gì có, nên đề sẽ ngắn và giống nhau mỗi lần.
