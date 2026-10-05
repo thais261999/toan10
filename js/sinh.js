@@ -1214,11 +1214,6 @@
     for (var x = lo; x <= hi; x++) if (kt(x)) r.push(x);
     return r;
   }
-  function laNguyenTo(x) {
-    if (x < 2) return false;
-    for (var i = 2; i * i <= x; i++) if (x % i === 0) return false;
-    return true;
-  }
   /* Vế trái của phương trình bậc hai có hai nghiệm p, q:
      $x^2 - (p+q)x + pq = 0$, viết gọn lại cho đúng dấu và bỏ hệ số 1. */
   function vietBac2(p, q) {
@@ -1228,17 +1223,19 @@
     if (P !== 0) t += (P > 0 ? ' + ' + P : ' - ' + (-P));
     return t + ' = 0';
   }
-  /* Cũng phương trình ấy nhưng để dạng tích $(x - p)(x - q) = 0$ */
-  function vietTich(p, q) {
-    function nt(v) { return v === 0 ? 'x' : (v > 0 ? '(x - ' + v + ')' : '(x + ' + (-v) + ')'); }
-    return nt(p) + nt(q) + ' = 0';
+  /* Cũng phương trình ấy nhưng để dạng tích $(x - p)(x - q) = 0$,
+     nhận bao nhiêu nghiệm cũng được. */
+  function vietTich(ds) {
+    return ds.map(function (v) {
+      return v === 0 ? 'x' : (v > 0 ? '(x - ' + v + ')' : '(x + ' + (-v) + ')');
+    }).join('') + ' = 0';
   }
-  /* Hai nghiệm nguyên khác nhau, dùng cho các dạng cho bằng phương trình.
-     Nghiệm phải là số nguyên, vì các ý sau còn liệt kê và đếm phần tử. */
-  function haiNghiem(nho) {
-    var p, q;
-    do { p = ri(nho ? 0 : -4, 6); q = ri(nho ? 0 : -4, 6); } while (p === q);
-    return p < q ? [p, q] : [q, p];
+  /* Lấy n nghiệm nguyên khác nhau, xếp tăng dần. Nghiệm phải nguyên,
+     vì các ý sau còn liệt kê và đếm phần tử. */
+  function mayNghiem(n) {
+    var r = [], v;
+    while (r.length < n) { v = ri(-4, 6); if (r.indexOf(v) === -1) r.push(v); }
+    return r.sort(function (a, b) { return a - b; });
   }
 
   /* Bốc một tập và lời mô tả của nó. ten là chữ A hoặc B.
@@ -1272,22 +1269,22 @@
                mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid |x| \\le ' + p + '\\}$',
                ds: quetSo(-20, 20, function (x) { return Math.abs(x) <= p; }) };
     }
-    if (k === 5) {                                  /* phương trình dạng tích */
-      ng = haiNghiem(false);
+    if (k === 5) {                                  /* phương trình dạng tích, hai nghiệm */
+      ng = mayNghiem(2);
       return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid ' + vietTich(ng[0], ng[1]) + '\\}$',
+               mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid ' + vietTich(ng) + '\\}$',
                ds: quetSo(-60, 60, function (x) {
                      return (x - ng[0]) * (x - ng[1]) === 0; }) };
     }
     if (k === 6) {                                  /* phương trình bậc hai, lấy nghiệm nguyên */
-      ng = haiNghiem(false);
+      ng = mayNghiem(2);
       return { bang: true,
                mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid ' + vietBac2(ng[0], ng[1]) + '\\}$',
                ds: quetSo(-60, 60, function (x) {
                      return x * x - (ng[0] + ng[1]) * x + ng[0] * ng[1] === 0; }) };
     }
     if (k === 7) {                                  /* bậc hai nhưng chỉ lấy nghiệm tự nhiên */
-      ng = haiNghiem(false);
+      ng = mayNghiem(2);
       if (ng[1] < 0) ng = [ng[0], ri(1, 6)];        /* chắc chắn còn ít nhất một nghiệm tự nhiên */
       return { bang: true,
                mo: '$' + ten + ' = \\{x \\in \\mathbb{N} \\mid ' + vietBac2(ng[0], ng[1]) + '\\}$',
@@ -1313,10 +1310,11 @@
                    '$ và không vượt quá $' + n + '$',
                ds: quetSo(0, n, function (x) { return x % p === 0; }) };
     }
-    n = chon([10, 12, 15, 20]);                     /* số nguyên tố */
-    return { bang: false,
-             mo: '$' + ten + '$ là tập hợp các số nguyên tố nhỏ hơn $' + n + '$',
-             ds: quetSo(0, n, function (x) { return laNguyenTo(x) && x < n; }) };
+    ng = mayNghiem(3);                              /* phương trình tích, ba nghiệm */
+    return { bang: true,
+             mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid ' + vietTich(ng) + '\\}$',
+             ds: quetSo(-60, 60, function (x) {
+                   return (x - ng[0]) * (x - ng[1]) * (x - ng[2]) === 0; }) };
   }
   function giaoTap(a, b) { return a.filter(function (x) { return b.indexOf(x) !== -1; }); }
   function hieuTap(a, b) { return a.filter(function (x) { return b.indexOf(x) === -1; }); }
@@ -1646,10 +1644,462 @@
   var OT1_DS = [dsTapHop, dsBpt];
 
   /* ============================================================
+     ÔN TẬP GIỮA KÌ I — ĐỀ TRẢ LỜI NGẮN BỐN CÂU, CẤU TRÚC CỐ ĐỊNH
+     Câu 1 tập hợp (nhận biết), câu 2 giá trị lượng giác của một góc
+     từ 0 đến 180 độ (nhận biết), câu 3 diện tích tam giác (thông
+     hiểu), câu 4 bài toán thực tế về bất phương trình bậc nhất hai
+     ẩn (vận dụng). Đúng mỗi câu được 5 xu.
+
+     LUẬT CHUNG CỦA CẢ BỐN CÂU: đáp án phải là một SỐ NGUYÊN từ 10
+     đến 9999. Mẫu nào bốc ra số lẻ hoặc số ngoài khoảng ấy thì bỏ,
+     bốc lại. Việc kiểm do hàm raTLN dưới đây lo một lần cho tất cả,
+     không mẫu nào phải tự lo lấy.
+     ============================================================ */
+
+  function dapHopLe(v) {
+    return typeof v === 'number' && isFinite(v) &&
+           v === Math.floor(v) && v >= 10 && v <= 9999;
+  }
+  /* Gọi mẫu cho tới khi ra một đáp án hợp lệ. mau() trả về
+     { muc, de, dap, giai } với dap là một số, hoặc null khi bốc hụt. */
+  function raTLN(dang, mau) {
+    for (var i = 0; i < 500; i++) {
+      var q = mau();
+      if (q && dapHopLe(q.dap))
+        return { muc: q.muc, dang: dang, de: q.de, dapan: String(q.dap), giai: q.giai };
+    }
+    return null;
+  }
+
+  /* ============================================================
+     CÂU 1 — TẬP HỢP, ĐẾM SỐ PHẦN TỬ
+     Ba dạng thay nhau: hai tập con của Z cho bằng tính chất, hai
+     khoảng trên R, và một tập liệt kê ghép với một tập tính chất.
+     Kết quả phép toán luôn do vòng lặp quét ra rồi mới đếm.
+     ============================================================ */
+
+  var PHEP_TAP = [
+    { ma: 'giao',  ten: 'A \\cap B' },
+    { ma: 'hop',   ten: 'A \\cup B' },
+    { ma: 'hieuA', ten: 'A \\setminus B' },
+    { ma: 'hieuB', ten: 'B \\setminus A' }
+  ];
+  function ghepTap(ma, a, b) {
+    if (ma === 'giao')  return giaoTap(a, b);
+    if (ma === 'hop')   return hopTap(a, b);
+    if (ma === 'hieuA') return hieuTap(a, b);
+    return hieuTap(b, a);
+  }
+  function ghepThuoc(ma, ta, tb) {
+    if (ma === 'giao')  return ta && tb;
+    if (ma === 'hop')   return ta || tb;
+    if (ma === 'hieuA') return ta && !tb;
+    return tb && !ta;
+  }
+
+  /* Một tập con của Z cho bằng tính chất, bề rộng đủ lớn để kết quả
+     đếm ra ít nhất hai chữ số. */
+  function tapZRong(ten) {
+    var lo = ri(-30, 6), hi = lo + ri(16, 42), lLo = tung(), lHi = tung();
+    var ds = [], x;
+    for (x = lo; x <= hi; x++)
+      if ((lLo ? x >= lo : x > lo) && (lHi ? x <= hi : x < hi)) ds.push(x);
+    return { mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid ' + lo +
+                 (lLo ? ' \\le ' : ' \\lt ') + 'x' + (lHi ? ' \\le ' : ' \\lt ') + hi + '\\}$',
+             ds: ds };
+  }
+
+  /* Dạng 1: hai tập số nguyên cho bằng tính chất */
+  function tlnTapZ() {
+    var A = tapZRong('A'), B = tapZRong('B'), p = chon(PHEP_TAP);
+    var ds = ghepTap(p.ma, A.ds, B.ds);
+    return { muc: 1,
+      de: 'Cho hai tập hợp ' + A.mo + ' và ' + B.mo +
+          '. Tập hợp $' + p.ten + '$ có bao nhiêu phần tử?',
+      dap: ds.length,
+      giai: 'Tập $A$ có ' + A.ds.length + ' phần tử, tập $B$ có ' + B.ds.length +
+            ' phần tử, $' + p.ten + '$ có ' + ds.length + ' phần tử.' };
+  }
+
+  /* Dạng 2: hai khoảng trên trục số, đếm số nguyên nằm trong kết quả */
+  function tlnTapR() {
+    var a1 = ri(-30, 0), a2 = a1 + ri(14, 32);
+    var b1 = ri(a1 + 2, a2 - 2), b2 = b1 + ri(14, 34);
+    var A = khoang(a1, a2, tung(), tung()), B = khoang(b1, b2, tung(), tung());
+    var p = chon(PHEP_TAP), n = 0, x;
+    for (x = -300; x <= 300; x++)
+      if (ghepThuoc(p.ma, thuocKhoang(A, x), thuocKhoang(B, x))) n++;
+    return { muc: 1,
+      de: 'Cho hai tập hợp $A = ' + vietKhoang(A) + '$ và $B = ' + vietKhoang(B) +
+          '$. Có bao nhiêu số nguyên thuộc tập hợp $' + p.ten + '$?',
+      dap: n,
+      giai: 'Vẽ hai tập lên cùng một trục số, xác định $' + p.ten +
+            '$ rồi đếm các số nguyên nằm trong đó, được ' + n + ' số.' };
+  }
+
+  /* Dạng 3: một tập cho bằng liệt kê, một tập cho bằng tính chất */
+  function tlnTapLietKe() {
+    var A = [], x;
+    while (A.length < ri(5, 8)) { x = ri(-12, 30); if (A.indexOf(x) === -1) A.push(x); }
+    A.sort(function (u, v) { return u - v; });
+    var lo = ri(-10, 5), hi = lo + ri(14, 30), B = [];
+    for (x = lo; x <= hi; x++) B.push(x);
+    var p = chon(PHEP_TAP), ds = ghepTap(p.ma, A, B);
+    return { muc: 1,
+      de: 'Cho hai tập hợp $A = ' + tap(A) + '$ và $B = \\{x \\in \\mathbb{Z} \\mid ' +
+          lo + ' \\le x \\le ' + hi + '\\}$. Tập hợp $' + p.ten + '$ có bao nhiêu phần tử?',
+      dap: ds.length,
+      giai: 'Tập $B$ gồm ' + B.length + ' số nguyên liên tiếp từ $' + lo + '$ đến $' + hi +
+            '$, đối chiếu với $A$ thì $' + p.ten + '$ có ' + ds.length + ' phần tử.' };
+  }
+
+  function tlnCau1() { return raTLN('tln-taphop', chon([tlnTapZ, tlnTapR, tlnTapLietKe])); }
+
+  /* ============================================================
+     CÂU 2 — GIÁ TRỊ LƯỢNG GIÁC CỦA MỘT GÓC TỪ 0 ĐẾN 180 ĐỘ
+     Mỗi mẫu trả về vế phải của biểu thức và giá trị của nó. Mọi giá
+     trị lượng giác dùng ở đây hoặc là số hữu tỉ, hoặc là căn thức
+     triệt tiêu nhau, nên kết quả luôn tính được đúng bằng số nguyên.
+     ============================================================ */
+
+  /* Góc không nằm trong bảng đặc biệt, chỉ dùng để nêu quan hệ
+     (bù nhau, phụ nhau, sin bình cộng côsin bình), không phải tra bảng. */
+  var GOC_LE = [20, 25, 35, 40, 50, 55, 65, 70, 75, 80];
+
+  var LG_TLN = [
+    /* sin 30 = cos 60 = 1/2 */
+    function () {
+      var a = 2 * ri(4, 45), b = 2 * ri(4, 45);
+      return { bt: a + '\\sin 30^\\circ + ' + b + '\\cos 60^\\circ', dap: (a + b) / 2,
+               giai: '$\\sin 30^\\circ = \\cos 60^\\circ = \\dfrac{1}{2}$ nên $P = \\dfrac{' +
+                     a + ' + ' + b + '}{2} = ' + ((a + b) / 2) + '$.' };
+    },
+    /* Ba góc đầu và cuối của bảng */
+    function () {
+      var a = ri(5, 45), b = ri(5, 45), c = ri(5, 45);
+      return { bt: a + '\\cos 0^\\circ + ' + b + '\\sin 90^\\circ - ' + c + '\\cos 180^\\circ',
+               dap: a + b + c,
+               giai: '$\\cos 0^\\circ = \\sin 90^\\circ = 1$ và $\\cos 180^\\circ = -1$ nên $P = ' +
+                     a + ' + ' + b + ' + ' + c + ' = ' + (a + b + c) + '$.' };
+    },
+    /* sin bình cộng côsin bình bằng 1 */
+    function () {
+      var a = ri(12, 99), g = chon(GOC_LE);
+      return { bt: a + '(\\sin^2 ' + g + '^\\circ + \\cos^2 ' + g + '^\\circ)', dap: a,
+               giai: '$\\sin^2 \\alpha + \\cos^2 \\alpha = 1$ nên $P = ' + a + '$.' };
+    },
+    /* sin 150 = 1/2, cos 120 = -1/2 */
+    function () {
+      var a = 2 * ri(4, 45), b = 2 * ri(4, 45);
+      return { bt: a + '\\sin 150^\\circ - ' + b + '\\cos 120^\\circ', dap: (a + b) / 2,
+               giai: '$\\sin 150^\\circ = \\dfrac{1}{2}$, $\\cos 120^\\circ = -\\dfrac{1}{2}$ nên $P = \\dfrac{' +
+                     a + ' + ' + b + '}{2} = ' + ((a + b) / 2) + '$.' };
+    },
+    /* Hai góc bù nhau có sin bằng nhau */
+    function () {
+      var a = ri(2, 12), b = ri(12, 99), g = chon(GOC_LE);
+      return { bt: a + '(\\sin ' + g + '^\\circ - \\sin ' + (180 - g) + '^\\circ) + ' + b, dap: b,
+               giai: 'Hai góc $' + g + '^\\circ$ và $' + (180 - g) +
+                     '^\\circ$ bù nhau nên có sin bằng nhau, hiệu trong ngoặc bằng $0$, còn $P = ' +
+                     b + '$.' };
+    },
+    /* Hai góc bù nhau có côsin đối nhau */
+    function () {
+      var a = ri(2, 12), b = ri(12, 99), g = chon(GOC_LE);
+      return { bt: a + '(\\cos ' + g + '^\\circ + \\cos ' + (180 - g) + '^\\circ) + ' + b, dap: b,
+               giai: 'Hai góc $' + g + '^\\circ$ và $' + (180 - g) +
+                     '^\\circ$ bù nhau nên có côsin đối nhau, tổng trong ngoặc bằng $0$, còn $P = ' +
+                     b + '$.' };
+    },
+    /* Hai góc phụ nhau: sin góc này bằng côsin góc kia */
+    function () {
+      var a = ri(2, 12), b = ri(12, 99), g = chon(GOC_LE);
+      return { bt: a + '(\\sin ' + g + '^\\circ - \\cos ' + (90 - g) + '^\\circ) + ' + b, dap: b,
+               giai: 'Hai góc $' + g + '^\\circ$ và $' + (90 - g) +
+                     '^\\circ$ phụ nhau nên $\\sin ' + g + '^\\circ = \\cos ' + (90 - g) +
+                     '^\\circ$, hiệu trong ngoặc bằng $0$, còn $P = ' + b + '$.' };
+    },
+    /* tang và côtang của góc 45 độ */
+    function () {
+      var a = ri(6, 60), b = ri(6, 60);
+      return { bt: a + '\\tan 45^\\circ + ' + b + '\\cot 45^\\circ', dap: a + b,
+               giai: '$\\tan 45^\\circ = \\cot 45^\\circ = 1$ nên $P = ' + a + ' + ' + b +
+                     ' = ' + (a + b) + '$.' };
+    },
+    /* Chia cho sin 30 độ */
+    function () {
+      var a = ri(6, 60), b = ri(5, 60);
+      return { bt: '\\dfrac{' + a + '}{\\sin 30^\\circ} + ' + b, dap: 2 * a + b,
+               giai: '$\\sin 30^\\circ = \\dfrac{1}{2}$ nên $\\dfrac{' + a + '}{\\sin 30^\\circ} = ' +
+                     (2 * a) + '$, suy ra $P = ' + (2 * a + b) + '$.' };
+    },
+    /* sin 60 nhân côsin 30, hai căn ba triệt tiêu nhau */
+    function () {
+      var a = 4 * ri(3, 24), b = ri(5, 60);
+      return { bt: a + '\\sin 60^\\circ \\cos 30^\\circ + ' + b, dap: 3 * a / 4 + b,
+               giai: '$\\sin 60^\\circ = \\cos 30^\\circ = \\dfrac{\\sqrt{3}}{2}$ nên tích bằng $\\dfrac{3}{4}$, ' +
+                     'suy ra $P = ' + (3 * a / 4) + ' + ' + b + ' = ' + (3 * a / 4 + b) + '$.' };
+    },
+    /* sin 45 nhân côsin 45 */
+    function () {
+      var a = 2 * ri(4, 45), b = ri(5, 60);
+      return { bt: a + '\\sin 45^\\circ \\cos 45^\\circ + ' + b, dap: a / 2 + b,
+               giai: '$\\sin 45^\\circ = \\cos 45^\\circ = \\dfrac{\\sqrt{2}}{2}$ nên tích bằng $\\dfrac{1}{2}$, ' +
+                     'suy ra $P = ' + (a / 2) + ' + ' + b + ' = ' + (a / 2 + b) + '$.' };
+    },
+    /* Bình phương của côsin 30 và sin 30 */
+    function () {
+      var a = 4 * ri(3, 24), b = 4 * ri(3, 24);
+      return { bt: a + '\\cos^2 30^\\circ + ' + b + '\\sin^2 30^\\circ', dap: (3 * a + b) / 4,
+               giai: '$\\cos^2 30^\\circ = \\dfrac{3}{4}$, $\\sin^2 30^\\circ = \\dfrac{1}{4}$ nên $P = ' +
+                     (3 * a / 4) + ' + ' + (b / 4) + ' = ' + ((3 * a + b) / 4) + '$.' };
+    },
+    /* Bình phương của sin 120 độ */
+    function () {
+      var a = 4 * ri(3, 24), b = ri(5, 60);
+      return { bt: a + '\\sin^2 120^\\circ + ' + b, dap: 3 * a / 4 + b,
+               giai: '$\\sin 120^\\circ = \\dfrac{\\sqrt{3}}{2}$ nên $\\sin^2 120^\\circ = \\dfrac{3}{4}$, ' +
+                     'suy ra $P = ' + (3 * a / 4) + ' + ' + b + ' = ' + (3 * a / 4 + b) + '$.' };
+    },
+    /* tang và côtang của góc 135 độ, cả hai bằng -1 */
+    function () {
+      var a = ri(5, 45), b = ri(5, 45), c = ri(70, 240);
+      return { bt: a + '\\tan 135^\\circ + ' + b + '\\cot 135^\\circ + ' + c, dap: c - a - b,
+               giai: '$\\tan 135^\\circ = \\cot 135^\\circ = -1$ nên $P = ' + c + ' - ' + a +
+                     ' - ' + b + ' = ' + (c - a - b) + '$.' };
+    },
+    /* Góc 180 độ */
+    function () {
+      var a = ri(5, 60), b = ri(5, 60), c = ri(80, 260);
+      return { bt: a + '\\cos 180^\\circ + ' + b + '\\sin 180^\\circ + ' + c, dap: c - a,
+               giai: '$\\cos 180^\\circ = -1$, $\\sin 180^\\circ = 0$ nên $P = ' + c + ' - ' + a +
+                     ' = ' + (c - a) + '$.' };
+    },
+    /* Chia cho côsin 60 độ */
+    function () {
+      var a = ri(10, 90), b = ri(5, 60);
+      return { bt: '\\dfrac{' + a + '}{\\cos 60^\\circ} - ' + b, dap: 2 * a - b,
+               giai: '$\\cos 60^\\circ = \\dfrac{1}{2}$ nên $\\dfrac{' + a + '}{\\cos 60^\\circ} = ' +
+                     (2 * a) + '$, suy ra $P = ' + (2 * a - b) + '$.' };
+    }
+  ];
+
+  function tlnCau2() {
+    return raTLN('tln-luonggiac', function () {
+      var q = chon(LG_TLN)();
+      return { muc: 1, de: 'Tính giá trị của biểu thức $P = ' + q.bt + '$.',
+               dap: q.dap, giai: q.giai };
+    });
+  }
+
+  /* ============================================================
+     CÂU 3 — DIỆN TÍCH TAM GIÁC
+     Năm công thức diện tích đã học, mỗi lần dùng một công thức.
+     Diện tích không ghi sẵn ở đâu cả, cứ tính lại bằng Heron rồi
+     kiểm, nên không sợ chép nhầm bảng.
+     ============================================================ */
+
+  /* Diện tích theo Heron, trả về null nếu ba số không dựng được tam
+     giác hoặc diện tích không phải số nguyên. */
+  function heron(a, b, c) {
+    if (a + b <= c || a + c <= b || b + c <= a) return null;
+    var t = (a + b + c) * (b + c - a) * (a + c - b) * (a + b - c) / 16;
+    var S = Math.round(Math.sqrt(t));
+    return (S * S === t) ? S : null;
+  }
+
+  /* Bộ ba cạnh nguyên dựng được tam giác có diện tích nguyên */
+  var CANH_NGUYEN = [
+    [3, 4, 5], [5, 12, 13], [6, 8, 10], [9, 12, 15], [8, 15, 17], [7, 24, 25],
+    [20, 21, 29], [13, 14, 15], [10, 13, 13], [5, 5, 6], [5, 5, 8], [9, 10, 17],
+    [4, 13, 15], [11, 13, 20], [7, 15, 20], [6, 25, 29], [13, 20, 21],
+    [12, 16, 20], [10, 17, 21], [16, 25, 39]
+  ];
+
+  /* Một tam giác cạnh nguyên, diện tích nguyên, kèm nửa chu vi p và
+     hai bán kính r, R khi chúng cũng nguyên (không nguyên thì để null). */
+  function tamGiacDep() {
+    var t = chon(CANH_NGUYEN), k = chon([1, 1, 2, 2, 3]);
+    var a = t[0] * k, b = t[1] * k, c = t[2] * k, S = heron(a, b, c);
+    if (S === null) return null;
+    var tong = a + b + c, chan = (tong % 2 === 0), p = tong / 2;
+    return { a: a, b: b, c: c, S: S,
+             p: chan ? p : null,
+             r: (chan && S % p === 0) ? S / p : null,
+             R: ((a * b * c) % (4 * S) === 0) ? (a * b * c) / (4 * S) : null };
+  }
+
+  var DT_TLN = [
+    /* S = một phần hai cạnh đáy nhân đường cao */
+    function () {
+      var a = ri(6, 48), h = ri(5, 44);
+      if ((a * h) % 2 !== 0) return null;
+      return { de: 'Tam giác $ABC$ có $BC = ' + a + '$ và đường cao $AH$ ứng với cạnh $BC$ ' +
+                   'bằng $' + h + '$. Tính diện tích tam giác $ABC$.',
+               dap: a * h / 2,
+               giai: '$S = \\dfrac{1}{2} \\cdot BC \\cdot AH = \\dfrac{1}{2} \\cdot ' + a +
+                     ' \\cdot ' + h + ' = ' + (a * h / 2) + '$.' };
+    },
+    /* S = một phần hai tích hai cạnh nhân sin góc xen giữa */
+    function () {
+      var g = chon([30, 90, 150]), b = ri(4, 30), c = ri(4, 30);
+      var S = (g === 90) ? b * c / 2 : b * c / 4;
+      if (S !== Math.floor(S)) return null;
+      var sin = (g === 90) ? '1' : '\\dfrac{1}{2}';
+      return { de: 'Tam giác $ABC$ có $AB = ' + b + '$, $AC = ' + c + '$ và $\\widehat{A} = ' +
+                   g + '^\\circ$. Tính diện tích tam giác $ABC$.',
+               dap: S,
+               giai: '$S = \\dfrac{1}{2} \\cdot AB \\cdot AC \\cdot \\sin A = \\dfrac{1}{2} \\cdot ' +
+                     b + ' \\cdot ' + c + ' \\cdot ' + sin + ' = ' + S + '$.' };
+    },
+    /* Công thức Heron, đề cho đủ ba cạnh */
+    function () {
+      var t = tamGiacDep();
+      if (!t || t.p === null) return null;
+      return { de: 'Tam giác $ABC$ có $AB = ' + t.a + '$, $BC = ' + t.b + '$, $CA = ' + t.c +
+                   '$. Tính diện tích tam giác $ABC$.',
+               dap: t.S,
+               giai: 'Nửa chu vi $p = ' + t.p + '$, theo công thức Heron $S = \\sqrt{p(p-a)(p-b)(p-c)} = ' +
+                     t.S + '$.' };
+    },
+    /* S = nửa chu vi nhân bán kính đường tròn nội tiếp */
+    function () {
+      var t = tamGiacDep();
+      if (!t || t.r === null) return null;
+      return { de: 'Tam giác $ABC$ có nửa chu vi $p = ' + t.p +
+                   '$ và bán kính đường tròn nội tiếp $r = ' + t.r +
+                   '$. Tính diện tích tam giác $ABC$.',
+               dap: t.S,
+               giai: '$S = p \\cdot r = ' + t.p + ' \\cdot ' + t.r + ' = ' + t.S + '$.' };
+    },
+    /* S = tích ba cạnh chia cho bốn lần bán kính đường tròn ngoại tiếp */
+    function () {
+      var t = tamGiacDep();
+      if (!t || t.R === null) return null;
+      return { de: 'Tam giác $ABC$ có $AB = ' + t.a + '$, $BC = ' + t.b + '$, $CA = ' + t.c +
+                   '$ và bán kính đường tròn ngoại tiếp $R = ' + t.R +
+                   '$. Tính diện tích tam giác $ABC$.',
+               dap: t.S,
+               giai: '$S = \\dfrac{abc}{4R} = \\dfrac{' + t.a + ' \\cdot ' + t.b + ' \\cdot ' +
+                     t.c + '}{4 \\cdot ' + t.R + '} = ' + t.S + '$.' };
+    }
+  ];
+
+  function tlnCau3() {
+    return raTLN('tln-dientich', function () {
+      var q = chon(DT_TLN)();
+      if (!q) return null;
+      return { muc: 2, de: q.de, dap: q.dap, giai: q.giai };
+    });
+  }
+
+  /* ============================================================
+     CÂU 4 — BÀI TOÁN THỰC TẾ, BẤT PHƯƠNG TRÌNH BẬC NHẤT HAI ẨN
+     Dựng bài từ chỗ tối ưu đi ngược ra: chọn trước điểm M(m; n) rồi
+     mới viết hai ràng buộc đi qua đó. Hệ số chọn sao cho mọi đỉnh
+     của miền nghiệm đều có toạ độ nguyên:
+         ràng buộc 1:   x  + b1 y   với b1 là một ước của m,
+         ràng buộc 2:  a2 x +   y   với a2 là một ước của n,
+     khi ấy hai giao điểm với trục toạ độ đều nguyên, còn M là giao
+     của hai đường.
+
+     Hàm mục tiêu là $F = px + qy$. Trên một đa giác, giá trị lớn
+     nhất và nhỏ nhất của $F$ đều rơi vào đỉnh, nên chỉ cần so $F$ ở
+     các đỉnh. Bốc p, q cho tới khi M hơn hẳn mọi đỉnh còn lại, nhờ
+     thế đáp án là duy nhất, không có chỗ nào mập mờ.
+     ============================================================ */
+
+  function dungQHTT(timMax) {
+    var m = ri(3, 10), n = ri(3, 10);
+    var b1 = chon(uoc(m)), a2 = chon(uoc(n));
+    if (b1 * a2 === 1) return null;                  /* hai đường song song */
+    var c1 = m + b1 * n, c2 = a2 * m + n;
+    var p = ri(2, 12), q = ri(2, 12);
+    var F = function (d) { return p * d[0] + q * d[1]; };
+    var tot = F([m, n]), dinh, i;
+
+    if (timMax) {
+      /* Miền nghiệm là tứ giác, hai đỉnh nằm trên hai trục toạ độ */
+      dinh = [[0, 0], [Math.min(c1, c2 / a2), 0], [0, Math.min(c1 / b1, c2)]];
+    } else {
+      /* Miền nghiệm không bị chặn, nhưng chi phí tăng theo cả hai ẩn
+         nên giá trị nhỏ nhất vẫn rơi vào một trong các đỉnh */
+      dinh = [[Math.max(c1, c2 / a2), 0], [0, Math.max(c1 / b1, c2)]];
+    }
+    for (i = 0; i < dinh.length; i++) {
+      if (dinh[i][0] !== Math.floor(dinh[i][0]) || dinh[i][1] !== Math.floor(dinh[i][1]))
+        return null;
+      if (timMax ? F(dinh[i]) >= tot : F(dinh[i]) <= tot) return null;
+    }
+    return { m: m, n: n, b1: b1, a2: a2, c1: c1, c2: c2, p: p, q: q, F: tot };
+  }
+
+  /* Lời giải chung cho cả ba câu chuyện, chỉ khác tên hai ẩn */
+  function giaiQHTT(o, tenX, tenY, timMax) {
+    return 'Gọi $x$ là ' + tenX + ', $y$ là ' + tenY + '. Miền nghiệm của hệ bất phương trình ' +
+           'có đỉnh $(' + o.m + ';\\,' + o.n + ')$, tại đó đạt giá trị ' +
+           (timMax ? 'lớn' : 'nhỏ') + ' nhất $' + o.p + ' \\cdot ' + o.m + ' + ' +
+           o.q + ' \\cdot ' + o.n + ' = ' + o.F + '$.';
+  }
+
+  var QHTT_TLN = [
+    /* Xưởng sản xuất, tìm tiền lãi lớn nhất */
+    function () {
+      var o = dungQHTT(true);
+      if (!o) return null;
+      return { de: 'Một xưởng sản xuất hai loại sản phẩm. Làm một sản phẩm loại I cần $1$ kg ' +
+                   'nguyên liệu và $' + o.a2 + '$ giờ máy, làm một sản phẩm loại II cần $' + o.b1 +
+                   '$ kg nguyên liệu và $1$ giờ máy. Xưởng có $' + o.c1 + '$ kg nguyên liệu và $' +
+                   o.c2 + '$ giờ máy. Tiền lãi của một sản phẩm loại I là $' + o.p +
+                   '$ triệu đồng, của một sản phẩm loại II là $' + o.q +
+                   '$ triệu đồng. Hỏi tiền lãi lớn nhất xưởng thu được là bao nhiêu triệu đồng?',
+               dap: o.F,
+               giai: giaiQHTT(o, 'số sản phẩm loại I', 'số sản phẩm loại II', true) };
+    },
+    /* Trồng trọt, tìm tiền lãi lớn nhất */
+    function () {
+      var o = dungQHTT(true);
+      if (!o) return null;
+      return { de: 'Một bác nông dân trồng hai loại cây. Trồng một sào cây loại I cần $1$ ngày ' +
+                   'công và $' + o.a2 + '$ kg phân bón, trồng một sào cây loại II cần $' + o.b1 +
+                   '$ ngày công và $1$ kg phân bón. Bác có $' + o.c1 + '$ ngày công và $' + o.c2 +
+                   '$ kg phân bón. Mỗi sào cây loại I cho lãi $' + o.p +
+                   '$ triệu đồng, mỗi sào cây loại II cho lãi $' + o.q +
+                   '$ triệu đồng. Hỏi bác thu được tiền lãi lớn nhất là bao nhiêu triệu đồng?',
+               dap: o.F,
+               giai: giaiQHTT(o, 'số sào cây loại I', 'số sào cây loại II', true) };
+    },
+    /* Khẩu phần thức ăn, tìm chi phí nhỏ nhất */
+    function () {
+      var o = dungQHTT(false);
+      if (!o) return null;
+      return { de: 'Mỗi ngày một trại chăn nuôi cần ít nhất $' + o.c1 + '$ đơn vị chất đạm và ' +
+                   'ít nhất $' + o.c2 + '$ đơn vị chất béo. Mỗi ki-lô-gam thức ăn loại I chứa $1$ ' +
+                   'đơn vị chất đạm và $' + o.a2 + '$ đơn vị chất béo, mỗi ki-lô-gam thức ăn loại II ' +
+                   'chứa $' + o.b1 + '$ đơn vị chất đạm và $1$ đơn vị chất béo. Giá một ki-lô-gam ' +
+                   'thức ăn loại I là $' + o.p + '$ nghìn đồng, loại II là $' + o.q +
+                   '$ nghìn đồng. Hỏi chi phí thức ăn ít nhất mỗi ngày là bao nhiêu nghìn đồng?',
+               dap: o.F,
+               giai: giaiQHTT(o, 'số ki-lô-gam thức ăn loại I', 'số ki-lô-gam thức ăn loại II', false) };
+    }
+  ];
+
+  function tlnCau4() {
+    return raTLN('tln-thucte', function () {
+      var q = chon(QHTT_TLN)();
+      if (!q) return null;
+      return { muc: 3, de: q.de, dap: q.dap, giai: q.giai };
+    });
+  }
+
+  /* Bốn câu trả lời ngắn, đúng thứ tự ghi trong deCoDinh ở data.js */
+  var OT1_TLN = [tlnCau1, tlnCau2, tlnCau3, tlnCau4];
+
+  /* ============================================================
      Bảng mẫu theo chương và theo dạng
      ============================================================ */
   var MAU = {
-    101: { tracnghiem: OT1_TN, dungsai: OT1_DS },
+    101: { tracnghiem: OT1_TN, dungsai: OT1_DS, traloingan: OT1_TLN },
     1: { tracnghiem: C1_TN, dungsai: C1_DS, traloingan: C1_TLN },
     2: { tracnghiem: C2_TN, dungsai: C2_DS, traloingan: C2_TLN },
     3: { tracnghiem: C3_TN, dungsai: C3_DS, traloingan: C3_TLN }

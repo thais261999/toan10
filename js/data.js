@@ -36,7 +36,13 @@
    Đề đúng sai của Ôn tập giữa kì I đang dùng hai nhãn:
      'ts-taphop'    các phép toán trên tập hợp, tập con của tập số thực
      'bpt-dungsai'  bất phương trình bậc nhất hai ẩn
-   Hai mẫu sinh ra hai câu này nằm ở cuối js/sinh.js.
+   Đề trả lời ngắn dùng bốn nhãn:
+     'tln-taphop'    đếm số phần tử sau một phép toán tập hợp
+     'tln-luonggiac' giá trị lượng giác của một góc từ 0 đến 180 độ
+     'tln-dientich'  diện tích tam giác
+     'tln-thucte'    bài toán thực tế về bất phương trình bậc nhất hai ẩn
+   Mọi đáp án trả lời ngắn đều là số nguyên từ 10 đến 9999.
+   Các mẫu sinh ra những câu này nằm ở cuối js/sinh.js.
 
    Chương I trắc nghiệm đang dùng sáu nhãn:
      'nhandang'  câu nào là mệnh đề, câu nào không phải mệnh đề
@@ -59,11 +65,12 @@ const CHUONG_TRINH = [
   /* ---------------- ÔN TẬP GIỮA KÌ I ----------------
      Đề có cấu trúc cố định: mỗi câu một dạng, liệt kê trong deCoDinh
      dưới đây theo đúng thứ tự xuất hiện. Trắc nghiệm 10 câu, đúng sai
-     2 câu. Câu hỏi do bộ sinh trong js/sinh.js tạo ra, số liệu mỗi
-     lần một khác.
+     2 câu, trả lời ngắn 4 câu. Câu hỏi do bộ sinh trong js/sinh.js
+     tạo ra, số liệu mỗi lần một khác.
 
-     khoa: dạng nào ghi ở đây thì hiện khoá, bấm vào chỉ báo một câu,
-     chưa cho làm. Muốn mở thì xoá dòng tương ứng đi. */
+     Muốn khoá tạm một dạng bài thì thêm lại khối khoa, ví dụ
+       khoa: { traloingan: 'Phần này thầy cô chưa mở.' }
+     dạng nào ghi trong đó thì hiện khoá, bấm vào chỉ báo một câu. */
   {
     id: 101, tap: 1, mach: 'dai-so',
     ten: 'Ôn tập giữa kì I',
@@ -73,9 +80,6 @@ const CHUONG_TRINH = [
       'Chương II. Bất phương trình và hệ bất phương trình bậc nhất hai ẩn',
       'Chương III. Hệ thức lượng trong tam giác'
     ],
-    khoa: {
-      traloingan: 'Phần này thầy cô chưa mở, em làm trắc nghiệm trước nhé.'
-    },
     deCoDinh: {
       tracnghiem: [
         'md-nhandang',   /* 1. câu nào là mệnh đề / không phải mệnh đề   */
@@ -92,6 +96,12 @@ const CHUONG_TRINH = [
       dungsai: [
         'ts-taphop',     /* 1. tập hợp: liệt kê, số phần tử, hợp, giao, hiệu */
         'bpt-dungsai'    /* 2. bất phương trình bậc nhất hai ẩn              */
+      ],
+      traloingan: [
+        'tln-taphop',    /* 1. đếm số phần tử sau một phép toán tập hợp */
+        'tln-luonggiac', /* 2. giá trị lượng giác của góc từ 0 đến 180  */
+        'tln-dientich',  /* 3. diện tích tam giác                        */
+        'tln-thucte'     /* 4. bài toán thực tế, quy hoạch tuyến tính     */
       ]
     },
     cauhoi: { tracnghiem: [], dungsai: [], traloingan: [] }

@@ -40,7 +40,7 @@ Bấm vào một dạng là trang bốc ngẫu nhiên câu từ ngân hàng củ
 chia theo ba mức độ rồi xếp dễ trước khó sau. Mở `js/main.js`, hai dòng đầu:
 
 ```js
-var SO_CAU = { tracnghiem: 10, dungsai: 2, traloingan: 3 };
+var SO_CAU = { tracnghiem: 10, dungsai: 2, traloingan: 4 };
 var TI_LE  = { 1: 0.55, 2: 0.35, 3: 0.10 };   // nhận biết, thông hiểu, vận dụng
 ```
 
@@ -56,12 +56,17 @@ mỗi câu một dạng, lần nào làm cũng đủ các dạng, chỉ số li�
 ```js
 deCoDinh: {
   tracnghiem: ['md-nhandang', 'md-dungsai', ...],   // 10 câu
-  dungsai:    ['ts-taphop', 'bpt-dungsai']          //  2 câu
+  dungsai:    ['ts-taphop', 'bpt-dungsai'],         //  2 câu
+  traloingan: ['tln-taphop', 'tln-luonggiac',
+               'tln-dientich', 'tln-thucte']        //  4 câu
 }
 ```
 
 Mỗi nhãn là một `dang` của mẫu sinh trong `js/sinh.js`. Số câu khi ấy do số
 nhãn quyết định, `SO_CAU` không còn tác dụng với dạng bài đó.
+
+Mọi đáp án trả lời ngắn đều là số nguyên từ 10 đến 9999. Em gõ dấu chấm hay
+dấu phẩy ngăn hàng nghìn đều được tính đúng.
 
 ## Ngân hàng câu hỏi nên có bao nhiêu
 
@@ -69,7 +74,7 @@ nhãn quyết định, `SO_CAU` không còn tác dụng với dạng bài đó.
 |---|---|---|
 | Trắc nghiệm | 10 | **300** |
 | Đúng sai | 2 | **50** |
-| Trả lời ngắn | 3 | **50** |
+| Trả lời ngắn | 4 | **50** |
 
 Kho càng lớn thì đề càng ít lặp. Khi kho ít hơn số cần rút, trang lấy hết
 những gì có, nên đề sẽ ngắn và giống nhau mỗi lần.

@@ -20,7 +20,7 @@
      Viết một số thì lần nào cũng bấy nhiêu câu.
      Viết một khoảng [ít nhất, nhiều nhất] thì mỗi lần một số khác nhau,
      ví dụ tracnghiem: [18, 25] sẽ ra từ 18 đến 25 câu tuỳ lượt. */
-  var SO_CAU = { tracnghiem: 10, dungsai: 2, traloingan: 3 };
+  var SO_CAU = { tracnghiem: 10, dungsai: 2, traloingan: 4 };
 
   /* Khi ngân hàng chưa đủ câu, đề ngắn lại thì ngưỡng cũng co theo cho công bằng. */
   function canDat(ma, soCau) {
@@ -659,6 +659,16 @@
     return String(s).trim().toLowerCase().replace(/\s+/g, '').replace(/,/g, '.');
   }
 
+  /* So câu em nhập với đáp án. Đáp án là số nguyên thì bỏ qua dấu chấm,
+     dấu phẩy ngăn hàng nghìn, để em gõ 1250 hay 1.250 hay 1,250 đều được
+     tính đúng. Đáp án không phải số nguyên thì so như cũ. */
+  function khopDapAn(nhap, dap) {
+    if (chuanHoa(nhap) === chuanHoa(dap)) return true;
+    if (!/^-?\d+$/.test(String(dap).trim())) return false;
+    var n = String(nhap).replace(/[\s.,]/g, '');
+    return /^-?\d+$/.test(n) && Number(n) === Number(dap);
+  }
+
   el.hocNut.addEventListener('click', function () {
     var p = phien, c = p.ds[p.i];
 
@@ -692,7 +702,7 @@
       } else {
         var o2 = document.getElementById('oNhap');
         o2.disabled = true;
-        dung = chuanHoa(p.chon) === chuanHoa(c.dapan);
+        dung = khopDapAn(p.chon, c.dapan);
         o2.classList.add(dung ? 'is-right' : 'is-wrong');
         if (dung) { p.diem++; p.xu += xuCau('traloingan', c); }
       }
