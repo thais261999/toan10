@@ -1092,14 +1092,6 @@
   function bangKhoang(p, q) {
     return p.d === q.d && p.c === q.c && p.lD === q.lD && p.lC === q.lC;
   }
-  /* Tên gọi theo sách: lấy cả hai đầu là đoạn, không lấy đầu nào là
-     khoảng, lấy đúng một đầu là nửa khoảng. Đầu vô cực không lấy được
-     nên tính như đầu mở. */
-  function tenKhoang(k) {
-    if (k.lD && k.lC) return 'đoạn';
-    if (!k.lD && !k.lC) return 'khoảng';
-    return 'nửa khoảng';
-  }
   /* Các số nguyên nằm trong tập, trả về null khi tập trải ra vô cực
      vì khi ấy đếm không được. Cũng dùng để đếm số phần tử nguyên. */
   function nguyenTrong(k) {
@@ -1141,14 +1133,6 @@
   function yKhoang(ten, k) {
     var s = tung() ? lechKhoang(k) : null;
     return { nhom: 'phep', t: '$' + ten + ' = ' + vietKhoang(s || k) + '$', d: !s };
-  }
-  /* Gọi tên đoạn, khoảng hay nửa khoảng */
-  function yTenKhoang(ten, k) {
-    if (k.d === -Infinity && k.c === Infinity) return null;
-    var that = tenKhoang(k), noi = that;
-    if (tung()) noi = chon(['đoạn', 'khoảng', 'nửa khoảng'].filter(
-      function (s) { return s !== that; }));
-    return { t: 'Tập hợp $' + ten + '$ là một ' + noi, d: noi === that };
   }
   /* Trong tập có bao nhiêu số nguyên */
   function yDemNguyen(ten, k) {
@@ -1441,8 +1425,7 @@
       function () { return yKhoang('A \\cup B', hop); },
       function () { return yKhoang('A \\setminus B', hieu); },
       function () { return yKhoang('B \\setminus A', hieu2); },
-      function () { return yTenKhoang('A \\cap B', giao); },
-      function () { return yTenKhoang('A \\cup B', hop); },
+      function () { return yThuocKhoang('A \\cap B', giao, chon([b1, a2, b1 + 1, a2 - 1])); },
       function () { return yDemNguyen('A \\cap B', giao); },
       function () { return yDemNguyen('A \\setminus B', hieu); },
       function () { return yDemTuNhien('A \\cap B', giao); },
