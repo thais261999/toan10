@@ -1223,82 +1223,63 @@
   }
 
   /* Bốc một tập và lời mô tả của nó. ten là chữ A hoặc B.
-     bang: true là mô tả viết được thành $A = \{...\}$, false là tả bằng lời.
-     ds luôn do vòng lặp quét ra từ đúng điều kiện của lời đề. */
+     Tập nào cũng viết thẳng thành $A = \{x \in ... \mid <điều kiện>\}$,
+     không tả bằng lời, để đề không có chỗ nào phải đoán ý.
+     ds luôn do vòng lặp quét ra từ đúng điều kiện ghi trong lời đề. */
   function moTaTap(ten) {
-    var k = ri(1, 11), n, p, q, ng;
+    var k = ri(1, 10), n, p, q, d1, d2, ng;
+    function bao(tapSo, dk, lo, hi, kt) {
+      return { mo: '$' + ten + ' = \\{x \\in \\mathbb{' + tapSo + '} \\mid ' + dk + '\\}$',
+               ds: quetSo(lo, hi, kt) };
+    }
 
-    if (k === 1) {                                  /* số tự nhiên nhỏ hơn n */
-      n = ri(5, 9);
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{N} \\mid x \\lt ' + n + '\\}$',
-               ds: quetSo(0, 50, function (x) { return x < n; }) };
+    if (k === 1) {                         /* số tự nhiên bị chặn trên */
+      n = ri(4, 9); d1 = tung();
+      return bao('N', 'x ' + (d1 ? '\\le' : '\\lt') + ' ' + n, 0, 60,
+                 function (x) { return d1 ? x <= n : x < n; });
     }
-    if (k === 2) {                                  /* số tự nhiên không quá n */
-      n = ri(4, 8);
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{N} \\mid x \\le ' + n + '\\}$',
-               ds: quetSo(0, 50, function (x) { return x <= n; }) };
+    if (k === 2) {                         /* số nguyên trong một khoảng */
+      p = ri(1, 4); q = ri(2, 5); d1 = tung(); d2 = tung();
+      return bao('Z', '-' + p + ' ' + (d1 ? '\\le' : '\\lt') + ' x ' +
+                      (d2 ? '\\le' : '\\lt') + ' ' + q, -20, 20,
+                 function (x) { return (d1 ? x >= -p : x > -p) && (d2 ? x <= q : x < q); });
     }
-    if (k === 3) {                                  /* số nguyên trong một khoảng */
-      p = ri(1, 4); q = ri(2, 5);
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid -' + p +
-                   ' \\le x \\lt ' + q + '\\}$',
-               ds: quetSo(-20, 20, function (x) { return x >= -p && x < q; }) };
+    if (k === 3) {                         /* trị tuyệt đối */
+      p = ri(2, 4); d1 = tung();
+      return bao('Z', '|x| ' + (d1 ? '\\le' : '\\lt') + ' ' + p, -20, 20,
+                 function (x) { return d1 ? Math.abs(x) <= p : Math.abs(x) < p; });
     }
-    if (k === 4) {                                  /* trị tuyệt đối */
-      p = ri(2, 4);
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid |x| \\le ' + p + '\\}$',
-               ds: quetSo(-20, 20, function (x) { return Math.abs(x) <= p; }) };
+    if (k === 4) {                         /* x bình phương bị chặn trên, lấy nghiệm nguyên */
+      n = chon([4, 5, 9, 10, 16, 17]);
+      return bao('Z', 'x^2 \\le ' + n, -20, 20, function (x) { return x * x <= n; });
     }
-    if (k === 5) {                                  /* phương trình dạng tích, hai nghiệm */
+    if (k === 5) {                         /* cũng thế nhưng chỉ lấy số tự nhiên */
+      n = chon([9, 10, 16, 17, 25, 26]);
+      return bao('N', 'x^2 \\le ' + n, 0, 20, function (x) { return x * x <= n; });
+    }
+    if (k === 6) {                         /* phương trình dạng tích, hai nghiệm */
       ng = mayNghiem(2);
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid ' + vietTich(ng) + '\\}$',
-               ds: quetSo(-60, 60, function (x) {
-                     return (x - ng[0]) * (x - ng[1]) === 0; }) };
+      return bao('R', vietTich(ng), -60, 60,
+                 function (x) { return (x - ng[0]) * (x - ng[1]) === 0; });
     }
-    if (k === 6) {                                  /* phương trình bậc hai, lấy nghiệm nguyên */
+    if (k === 7) {                         /* phương trình bậc hai, lấy nghiệm nguyên */
       ng = mayNghiem(2);
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{Z} \\mid ' + vietBac2(ng[0], ng[1]) + '\\}$',
-               ds: quetSo(-60, 60, function (x) {
-                     return x * x - (ng[0] + ng[1]) * x + ng[0] * ng[1] === 0; }) };
+      return bao('Z', vietBac2(ng[0], ng[1]), -60, 60,
+                 function (x) { return x * x - (ng[0] + ng[1]) * x + ng[0] * ng[1] === 0; });
     }
-    if (k === 7) {                                  /* bậc hai nhưng chỉ lấy nghiệm tự nhiên */
+    if (k === 8) {                         /* bậc hai nhưng chỉ lấy nghiệm tự nhiên */
       ng = mayNghiem(2);
-      if (ng[1] < 0) ng = [ng[0], ri(1, 6)];        /* chắc chắn còn ít nhất một nghiệm tự nhiên */
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{N} \\mid ' + vietBac2(ng[0], ng[1]) + '\\}$',
-               ds: quetSo(0, 60, function (x) {
-                     return x * x - (ng[0] + ng[1]) * x + ng[0] * ng[1] === 0; }) };
+      if (ng[1] < 0) ng = [ng[0], ri(1, 6)];   /* chắc chắn còn ít nhất một nghiệm tự nhiên */
+      return bao('N', vietBac2(ng[0], ng[1]), 0, 60,
+                 function (x) { return x * x - (ng[0] + ng[1]) * x + ng[0] * ng[1] === 0; });
     }
-    if (k === 8) {                                  /* x bình phương bằng một số chính phương */
+    if (k === 9) {                         /* x bình phương bằng một số chính phương */
       n = chon([1, 4, 9, 16, 25]);
-      return { bang: true,
-               mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid x^2 = ' + n + '\\}$',
-               ds: quetSo(-60, 60, function (x) { return x * x === n; }) };
+      return bao('R', 'x^2 = ' + n, -60, 60, function (x) { return x * x === n; });
     }
-    if (k === 9) {                                  /* ước số */
-      n = chon([12, 18, 20, 24, 28, 30]);
-      return { bang: false,
-               mo: '$' + ten + '$ là tập hợp các ước số tự nhiên của $' + n + '$',
-               ds: quetSo(1, n, function (x) { return n % x === 0; }) };
-    }
-    if (k === 10) {                                 /* bội số */
-      p = chon([2, 3, 4, 5]); n = p * ri(3, 5);
-      return { bang: false,
-               mo: '$' + ten + '$ là tập hợp các số tự nhiên là bội của $' + p +
-                   '$ và không vượt quá $' + n + '$',
-               ds: quetSo(0, n, function (x) { return x % p === 0; }) };
-    }
-    ng = mayNghiem(3);                              /* phương trình tích, ba nghiệm */
-    return { bang: true,
-             mo: '$' + ten + ' = \\{x \\in \\mathbb{R} \\mid ' + vietTich(ng) + '\\}$',
-             ds: quetSo(-60, 60, function (x) {
-                   return (x - ng[0]) * (x - ng[1]) * (x - ng[2]) === 0; }) };
+    ng = mayNghiem(3);                     /* phương trình tích, ba nghiệm */
+    return bao('R', vietTich(ng), -60, 60,
+               function (x) { return (x - ng[0]) * (x - ng[1]) * (x - ng[2]) === 0; });
   }
   function giaoTap(a, b) { return a.filter(function (x) { return b.indexOf(x) !== -1; }); }
   function hieuTap(a, b) { return a.filter(function (x) { return b.indexOf(x) === -1; }); }
@@ -1486,14 +1467,8 @@
 
       var y = bonY(tui);
       if (!y) continue;
-      /* Hai tập đều viết được dạng $A = \{...\}$ thì mở đầu “Cho hai tập hợp”,
-         có tập tả bằng lời thì mở đầu gọn là “Cho”. Nối hai mô tả bằng chữ
-         “và”, trừ khi trong một mô tả đã sẵn chữ “và” thì nối bằng dấu phẩy
-         cho câu khỏi hai chữ “và” chồng nhau. */
-      var deu = (A.bang && B.bang);
-      var noi = ((A.mo + B.mo).indexOf(' và ') === -1) ? ' và ' : ', ';
       return raCau('ts-taphop',
-        (deu ? 'Cho hai tập hợp ' : 'Cho ') + A.mo + noi + B.mo + '.',
+        'Cho hai tập hợp ' + A.mo + ' và ' + B.mo + '.',
         y,
         'Liệt kê ra rồi so sánh: $A = ' + vietTap(A.ds) + '$, $B = ' + vietTap(B.ds) +
         '$, $A \\cap B = ' + vietTap(giao) + '$, $A \\cup B = ' + vietTap(hop) + '$.');
