@@ -1,0 +1,61 @@
+BẢN GỬI ĐI THI — ĐỌC TRƯỚC KHI DÙNG
+====================================
+
+Thư mục thi/ này là bản web Toán 10 dựng riêng để gửi đi thi.
+Cách làm giống hệt thư mục nhap/: nằm chung repo với bản chính,
+bấm CAP-NHAT.command ở thư mục ngoài một phát là lên mạng.
+
+BA ĐỊA CHỈ
+  Bản chính thức (học sinh đang dùng)
+      https://thais261999.github.io/toan10/
+  Bản nháp (chỉ thầy cô xem)
+      https://thais261999.github.io/toan10/nhap/
+  Bản gửi đi thi (thư mục này)
+      https://thais261999.github.io/toan10/thi/
+
+CÁCH ĐƯA LÊN
+  Bấm đúp CAP-NHAT.command ở thư mục ngoài, đúng cái nút vẫn dùng.
+  Nó đẩy cả ba bản cùng lúc, nhưng bản nào không sửa thì không đổi.
+  Bản thi sẽ đứng yên một chỗ chừng nào thầy cô không sửa gì
+  trong thư mục thi/ này. Bản chính sửa tiếp bao nhiêu lần cũng
+  không làm đổi cái ban giám khảo đang xem.
+
+HAI NÚT KIA KHÔNG ĐỤNG TỚI THƯ MỤC NÀY
+  DUA-NHAP-LEN-CHINH.command  chỉ chép từ nhap/ ra ngoài.
+  LAY-BAN-CHINH-VE-NHAP.command  chỉ xoá và dựng lại nhap/.
+  Cả hai đều không biết tới thi/, nên bấm nhầm cũng không sao.
+
+NĂM TỆP KHÁC VỚI BẢN CHÍNH — KHÔNG BAO GIỜ CHÉP QUA LẠI
+  js/fb.js       Bản độc lập, không nối Firebase. Mở link là vào thẳng
+                 trang học, không đăng nhập Google, không chờ duyệt.
+                 Và KHÔNG ghi một chữ nào vào dữ liệu học sinh thật.
+  js/main.js     Chỉ khác hai dòng: khoá lưu trong máy đổi từ
+                 'toan10-...' sang 'toan10thi-...'. Ba bản nằm chung
+                 tên miền github.io nên không đổi là tiến độ của người
+                 xem bản thi sẽ ghi đè lên tiến độ bản chính.
+  sw.js          Tên bộ đệm đổi sang 'toan10-thi', và khi dọn bộ đệm cũ
+                 chỉ dọn tên bắt đầu bằng 'toan10-thi'. Không đổi là
+                 bản thi xoá mất bộ đệm ngoại tuyến của bản chính.
+  index.html     Bỏ ba thẻ nạp thư viện Firebase, vì không còn dùng.
+  quanly.html    Bỏ ba thẻ nạp thư viện Firebase, vì không còn dùng.
+
+  Các tệp nội dung js/data.js, js/sinh.js, css/style.css và các icon
+  thì giống hệt bản chính.
+
+MUỐN LẤY NỘI DUNG MỚI TỪ BẢN CHÍNH VÀO ĐÂY
+  Chỉ chép ba tệp nội dung, tuyệt đối không chép năm tệp kể trên:
+      cd ~/web-toan-10
+      cp js/data.js js/sinh.js thi/js/
+      cp css/style.css thi/css/
+  Rồi bấm đúp CAP-NHAT.command như mọi khi.
+
+MỘT ĐIỀU CẦN BIẾT
+  sw.js của bản chính vẫn xoá mọi bộ đệm không mang tên 'toan10'.
+  Nếu thầy cô mở cả bản chính lẫn bản thi trên cùng một máy thì bản
+  chính sẽ xoá bộ đệm chạy-khi-mất-mạng của bản thi. Có mạng là nó
+  tự nạp lại, ban giám khảo chỉ mở bản thi nên không gặp cảnh này.
+
+TRANG QUẢN LÝ
+  thi/quanly.html mở được nhưng danh sách học sinh để trống, vì bản thi
+  cố tình không nối máy chủ. Muốn duyệt học sinh thật thì vào trang
+  quản lý của bản chính thức.

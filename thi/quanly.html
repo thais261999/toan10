@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý lớp · Toán 10</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/quanly.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top__inner">
+    <a href="index.html" class="brand">
+      <span class="brand__mark">10</span>
+      <span class="brand__text">
+        <strong>Quản lý lớp</strong>
+        <small>Toán 10 · dành cho giáo viên</small>
+      </span>
+    </a>
+    <div class="top__nut">
+      <button class="ghost" id="nutXuat" hidden>Xuất Excel</button>
+      <button class="tron" id="nutRa" title="Đăng xuất" hidden>⎋</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap ql">
+  <div class="ql__giua" id="manVao">
+    <h2>Trang dành cho giáo viên</h2>
+    <p>Bản giới thiệu này không nối máy chủ, nên danh sách học sinh để trống.</p>
+    <button class="ggl" id="nutGoogle"><span class="ggl__g">G</span> Đăng nhập bằng Google</button>
+    <p class="ql__bao" id="bao"></p>
+  </div>
+
+  <div id="manBang" hidden>
+    <section class="ql__muc">
+      <h2>Chờ duyệt <span class="ql__dem" id="demCho">0</span></h2>
+      <div id="dsCho"></div>
+    </section>
+
+    <section class="ql__muc">
+      <h2>Đã duyệt <span class="ql__dem" id="demOk">0</span></h2>
+      <div class="ql__loc">
+        <input type="search" id="timKiem" placeholder="Tìm theo tên hoặc lớp">
+        <select id="sapXep">
+          <option value="xu">Nhiều xu nhất</option>
+          <option value="phieu">Nhiều điểm cộng nhất</option>
+          <option value="ten">Theo tên</option>
+          <option value="lop">Theo lớp</option>
+        </select>
+      </div>
+      <div id="dsOk"></div>
+    </section>
+  </div>
+</main>
+
+<!-- Bản thi không nối máy chủ nên không nạp thư viện Firebase. -->
+<script src="js/fb.js"></script>
+<script src="js/quanly.js"></script>
+</body>
+</html>

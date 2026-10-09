@@ -1,0 +1,42 @@
+/* Giao diện riêng cho trang quản lý lớp */
+.ql{padding:34px 0 80px;max-width:860px}
+.ql__giua{max-width:420px;margin:60px auto;text-align:center}
+.ql__giua h2{font-size:24px;font-weight:700}
+.ql__giua p{margin-top:10px;font-size:14.5px;color:var(--muted)}
+.ql__giua code{font-family:ui-monospace,Menlo,monospace;font-size:13px;
+               background:var(--line);padding:2px 6px;border-radius:5px}
+.ql__bao{margin-top:16px;font-size:14px;color:var(--do);min-height:20px}
+
+.ql__muc{margin-bottom:44px}
+.ql__muc h2{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:700;margin-bottom:16px}
+.ql__dem{font-family:Lexend,sans-serif;font-size:13px;font-weight:700;
+         background:var(--tim-nhat);color:var(--tim);padding:3px 10px;border-radius:999px}
+
+.ql__loc{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.ql__loc input,.ql__loc select{padding:10px 14px;border:1.5px solid var(--line);
+     border-radius:10px;background:var(--card);color:var(--ink);font-size:14.5px}
+.ql__loc input{flex:1;min-width:180px}
+.ql__loc input:focus,.ql__loc select:focus{outline:none;border-color:var(--tim)}
+
+.em{display:flex;align-items:center;gap:14px;padding:13px 16px;margin-bottom:9px;
+    background:var(--card);border:1.5px solid var(--line);border-radius:13px}
+.em__chu{flex:1;min-width:0}
+.em__chu b{display:block;font-size:15.5px;font-weight:600}
+.em__chu small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;
+               overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.em__so{display:flex;gap:16px;flex:none;text-align:center}
+.em__so div{min-width:52px}
+.em__so b{display:block;font-family:Lexend,sans-serif;font-size:17px;font-weight:700}
+.em__so small{font-size:11px;color:var(--muted)}
+.em__nut{display:flex;gap:7px;flex:none}
+.em__nut button{padding:8px 14px;border-radius:9px;font-size:13.5px;font-weight:600;transition:.16s}
+.nut--duyet{background:var(--luc);color:#fff}
+.nut--tu{background:transparent;border:1.5px solid var(--line);color:var(--muted)}
+.nut--tu:hover{border-color:var(--do);color:var(--do)}
+.ql__trong{padding:20px 0;color:var(--muted);font-size:14.5px}
+
+@media (max-width:680px){
+  .em{flex-wrap:wrap}
+  .em__so{order:3;width:100%;justify-content:flex-start;padding-top:8px;
+          border-top:1px solid var(--line)}
+}
