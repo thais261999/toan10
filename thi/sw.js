@@ -14,11 +14,11 @@
    - Phông chữ và thư viện MathJax: lấy từ bộ nhớ đệm trước cho nhanh,
      vì những thứ đó không bao giờ đổi.
 */
-const KHO = 'toan10-thi';
+const KHO = 'toan10-thi-v2';   /* đổi số mỗi lần cập nhật nội dung, để máy người xem nạp bản mới */
 
 const KHUNG = [
   './', './index.html', './manifest.json',
-  './css/style.css', './js/data.js', './js/sinh.js', './js/main.js', './js/fb.js',
+  './css/style.css', './js/data.js', './js/sinh.js', './js/main.js', './js/tro-ly.js', './js/fb.js',
   './icon-180.png', './icon-192.png', './icon-512.png'
 ];
 

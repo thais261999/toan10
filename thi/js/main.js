@@ -225,6 +225,24 @@
    'brandHome'
   ].forEach(function (id) { el[id] = document.getElementById(id); });
 
+  /* Bản này đã bỏ nhà cú và cửa hàng. Những thẻ đó không còn trong trang
+     nữa, nên thay bằng một thẻ giả im lặng để các đoạn mã cũ gọi vào
+     không báo lỗi. */
+  var THE_GIA = {
+    hidden: true, textContent: '', innerHTML: '', value: '', title: '',
+    style: {}, dataset: {},
+    classList: { add: function(){}, remove: function(){}, toggle: function(){}, contains: function(){ return false; } },
+    addEventListener: function(){}, removeEventListener: function(){},
+    appendChild: function(){}, removeChild: function(){}, remove: function(){},
+    insertAdjacentHTML: function(){}, setAttribute: function(){}, removeAttribute: function(){},
+    focus: function(){}, blur: function(){}, scrollIntoView: function(){},
+    getBoundingClientRect: function(){ return { top:0, left:0, width:0, height:0, right:0, bottom:0 }; },
+    querySelector: function(){ return THE_GIA; },
+    querySelectorAll: function(){ return []; },
+    animate: function(){ return { cancel: function(){}, finished: Promise.resolve() }; }
+  };
+  Object.keys(el).forEach(function (k) { if (!el[k]) el[k] = THE_GIA; });
+
   function toan(root) {
     if (!window.MathJax || !MathJax.startup) return;
     MathJax.startup.promise = MathJax.startup.promise
@@ -483,6 +501,7 @@
   }
 
   function veCu(hop) {
+    if (!hop || hop === THE_GIA) return;
     if (!hop) return;
     hop.innerHTML = svgCu();
     var svg = hop.querySelector('.cu');
@@ -499,6 +518,7 @@
   }
 
   function cuPhanUng(hop, vui) {
+    if (!hop || hop === THE_GIA) return;
     var svg = veCu(hop);
     if (!svg) return;
     svg.classList.add(vui ? 'vui' : 'buon');
@@ -708,8 +728,11 @@
       }
 
       var tieu = dung ? 'Chính xác!' : 'Chưa đúng.';
+      /* Lời giải viết sẵn trong js/data.js luôn hiện ra, kể cả khi làm đúng,
+         để học sinh đối chiếu lại cách làm của mình. */
       var giai = '';
       if (p.ma === 'traloingan' && !dung) giai = 'Đáp án: <strong>' + c.dapan + '</strong>';
+      if (c.giai) giai += (giai ? '<br>' : '') + c.giai;
 
       el.phanhoi.className = 'phanhoi is-' + (dung ? 'dung' : 'sai');
       el.phanhoiTieu.textContent = tieu;
@@ -778,6 +801,7 @@
 
   /* ---------- Cửa hàng ---------- */
   function veCho() {
+    if (el.cho === THE_GIA) return;
     veSoXu();
     veCu(el.cuCho);
 
@@ -826,7 +850,7 @@
     sach: '📗', sao: '⭐', ao: '🦸', vuong: '👑'
   };
 
-  function moCho() { veCho(); el.cho.hidden = false; }
+  function moCho() { if (el.cho === THE_GIA) return; veCho(); el.cho.hidden = false; }
   el.btnXu.addEventListener('click', moCho);
   el.choDong.addEventListener('click', function () { el.cho.hidden = true; });
   el.cho.addEventListener('click', function (ev) { if (ev.target === el.cho) el.cho.hidden = true; });
@@ -878,6 +902,7 @@
   /* Chiều cao thanh đầu đổi theo khổ màn hình, đo rồi báo cho CSS biết
      để căn phòng chiếm đúng phần còn lại, không thừa không thiếu. */
   function doThanhDau() {
+    if (el.nhaNho === THE_GIA) return;
     var t = document.querySelector('.top');
     if (t) document.documentElement.style.setProperty('--cao-top', t.offsetHeight + 'px');
   }
@@ -902,6 +927,7 @@
   var cuX = 50, henDi = null, henDung = null;
 
   function cuDiDao() {
+    if (el.cuKhu === THE_GIA) return;
     if (!el.cuKhu || manHinh !== 'nha' || document.hidden) return henCuDi();
 
     /* chọn chỗ mới, bắt phải cách chỗ cũ ít nhất 16% cho ra dáng một chuyến đi */
@@ -927,6 +953,7 @@
   }
 
   function henCuDi() {
+    if (el.cuKhu === THE_GIA) return;
     clearTimeout(henDi);
     henDi = setTimeout(cuDiDao, ri(9, 18) * 1000);   /* nghỉ 9-18 giây rồi mới đi tiếp */
   }
@@ -963,6 +990,7 @@
 
   var henBong = null;
   function cuNoi(chu, giay) {
+    if (el.bongNoi === THE_GIA) return;
     if (!el.bongNoi) return;
     el.bongNoiChu.textContent = chu;
     el.bongNoi.hidden = false;
@@ -991,6 +1019,7 @@
 
   /* ---------- Vẽ lại cả căn phòng ---------- */
   function veNha() {
+    if (el.phong === THE_GIA) return;
     if (!el.phong) return;
     el.phong.querySelectorAll('.do-nha').forEach(function (e) { e.remove(); });
 
@@ -1026,29 +1055,16 @@
      'hoc'  lộ trình chín chương
      Nút góc phải đổi chữ theo màn hình đang xem, nên chỉ cần một nút
      là đi được cả hai chiều. */
-  var manHinh = 'nha';
+  var manHinh = 'hoc';
 
-  function hienMan(ten) {
-    manHinh = ten;
-    var laNha = (ten === 'nha');
-    el.viewNha.hidden  = !laNha;
-    el.viewList.hidden = laNha;
-    el.btnHocChu.textContent = laNha ? 'Học tập' : 'Nhà cú';
-    el.btnHoc.querySelector('.hoctap__hinh').textContent = laNha ? '📚' : '🏠';
-    el.btnHoc.title = laNha ? 'Vào phần học tập' : 'Về nhà của cú';
-    if (laNha) { veNha(); cuNoi(loiNgauNhien(), 6); henCuDi(); }
-    else cuNghiDi();
-    /* Màn nhà vừa khít màn hình, khoá cuộn lại cho khỏi nảy lên nảy xuống */
-    document.body.classList.toggle('o-nha', laNha);
+  function hienMan() {
+    manHinh = 'hoc';
+    el.viewList.hidden = false;
+    document.body.classList.remove('o-nha');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  el.btnHoc.addEventListener('click', function () {
-    hienMan(manHinh === 'nha' ? 'hoc' : 'nha');
-  });
-  el.nhaHoc.addEventListener('click', function () { hienMan('hoc'); });
-  el.cuTop.addEventListener('click', function () { hienMan('nha'); });
-  el.nhaMua.addEventListener('click', function () { moCho(); });
+  el.btnHoc.addEventListener('click', function () { hienMan(); });
 
   /* ============================================================
      ĐĂNG NHẬP VÀ ĐỒNG BỘ VỚI MÁY CHỦ
@@ -1139,14 +1155,13 @@
      CÁC NÚT CHUNG
      ============================================================ */
   el.brandHome.addEventListener('click', function (ev) {
-    ev.preventDefault(); hienMan('nha');
+    ev.preventDefault(); hienMan();
   });
 
   /* ---------- Khởi động ---------- */
   veSoXu();
-  veCu(el.cuTop);
   veDuong();
-  hienMan('nha');
+  hienMan();
 
   if (window.FB) theoDoi();
   else { el.loiChu.textContent = 'Không nạp được thư viện Firebase. Em kiểm tra mạng nhé.'; hienBuoc('buocLoi'); }

@@ -1,6 +1,6 @@
 # Tự học Toán 10 — Chương trình GDPT 2018
 
-Trang web tự học và tự luyện đề Toán lớp 10, chạy hoàn toàn trong trình duyệt,
+Trang web tự học và tự luyện Toán lớp 10, chạy hoàn toàn trong trình duyệt,
 không cần máy chủ, không cần đăng nhập. Mở link là học được ngay.
 
 > Đây là bản giới thiệu độc lập, dựng riêng để gửi dự thi. Bản này không nối
@@ -13,41 +13,54 @@ Bấm đúp `index.html`, hoặc mở địa chỉ web của bản này. Lần �
 
 ## Nội dung hiện có
 
-**Đề ôn tập giữa kì I**, gồm 16 câu theo đúng định dạng đề thi mới:
+Mở trang ra là thấy ngay toàn bộ chương trình Toán 10, không qua màn hình trung
+gian nào. Chín chương theo đúng sách Kết nối tri thức với cuộc sống, cộng thêm
+một đề ôn tập giữa kì I:
 
-| Dạng | Số câu | Nội dung |
+| Tập | Chương | Các bài |
 |---|---|---|
-| Trắc nghiệm bốn phương án | 10 | mệnh đề, bất phương trình bậc nhất hai ẩn, hệ thức lượng trong tam giác |
-| Đúng sai bốn ý | 2 | các phép toán trên tập hợp, bất phương trình bậc nhất hai ẩn |
-| Trả lời ngắn | 4 | đếm phần tử tập hợp, giá trị lượng giác, diện tích tam giác, bài toán thực tế |
+| Một | I. Mệnh đề và tập hợp | Bài 1 – 2 |
+| Một | II. Bất phương trình bậc nhất hai ẩn | Bài 3 – 4 |
+| Một | III. Hệ thức lượng trong tam giác | Bài 5 – 6 |
+| Một | Ôn tập giữa kì I | đề 16 câu, số liệu sinh mới mỗi lượt |
+| Một | IV. Vectơ | Bài 7 – 11 |
+| Một | V. Các số đặc trưng của mẫu số liệu | Bài 12 – 14 |
+| Hai | VI. Hàm số, đồ thị và ứng dụng | Bài 15 – 18 |
+| Hai | VII. Phương pháp toạ độ trong mặt phẳng | Bài 19 – 22 |
+| Hai | VIII. Đại số tổ hợp | Bài 23 – 25 |
+| Hai | IX. Tính xác suất theo định nghĩa cổ điển | Bài 26 – 27 |
 
-Đề bao trùm ba chương đầu của chương trình lớp 10:
-
-- Chương I. Mệnh đề và tập hợp
-- Chương II. Bất phương trình và hệ bất phương trình bậc nhất hai ẩn
-- Chương III. Hệ thức lượng trong tam giác
+Tổng cộng **27 bài** và **114 câu hỏi viết sẵn**: 60 câu trắc nghiệm, 18 câu
+đúng sai bốn ý, 36 câu trả lời ngắn — đúng ba dạng của định dạng đề thi mới.
+Mỗi câu gắn sẵn mã bài, nên một lượt làm bài luôn rút đều các bài trong chương
+chứ không dồn vào một bài.
 
 ## Mỗi lần làm là một đề khác
 
-Câu hỏi không lấy từ một kho cố định mà do bộ sinh trong `js/sinh.js` dựng ra
-tại chỗ. Cấu trúc đề giữ nguyên, mỗi câu một dạng theo đúng thứ tự, nhưng số
-liệu thì sinh mới mỗi lượt. Bốn phương án trắc nghiệm cũng được xáo trộn lại,
-nên học sinh không đoán được đáp án theo vị trí.
-
-Nhờ vậy một học sinh làm đi làm lại mười lần vẫn gặp mười đề khác nhau, mà vẫn
-luyện đúng từng dạng cần luyện.
+Riêng ba chương đầu và đề ôn tập giữa kì còn có thêm bộ sinh câu hỏi trong
+`js/sinh.js`: cấu trúc đề giữ nguyên nhưng số liệu dựng mới tại chỗ, bốn phương
+án cũng được xáo lại. Học sinh làm đi làm lại mười lần vẫn gặp mười đề khác nhau.
 
 ## Chấm ngay và giải thích ngay
 
-Làm xong một câu là biết đúng sai liền, kèm lời giải viết sẵn cho chính con số
-vừa gặp. Câu trả lời ngắn nhận đáp án là số nguyên, gõ dấu chấm hay dấu phẩy
-ngăn hàng nghìn đều được tính đúng.
+Làm xong một câu là biết đúng sai liền. **Lời giải hiện ra ở mọi câu**, kể cả
+câu làm đúng, để học sinh đối chiếu lại cách làm của mình. Câu trả lời ngắn nhận
+đáp án là số nguyên, gõ dấu chấm hay dấu phẩy ngăn hàng nghìn đều được tính đúng.
 
-## Thưởng xu và cửa hàng
+## Trợ lý học tập
 
-Mỗi câu đúng được xu, trắc nghiệm 1 xu, đúng sai và trả lời ngắn 5 xu. Xu dùng
-để mua áo mũ cho con cú mèo, mua đồ trang trí nhà cú, hoặc đổi lấy điểm cộng
-trên lớp. Đây là phần giữ học sinh quay lại làm bài thêm một lượt nữa.
+Nút tròn góc dưới bên phải mở một trợ lý hỏi đáp nhỏ. Học sinh gõ tên một kiến
+thức — *định lí sin*, *phương sai*, *phương trình đường tròn*, *hoán vị chỉnh hợp
+tổ hợp* — trợ lý nhắc lại định nghĩa và công thức cần nhớ, có sẵn sáu gợi ý bấm
+nhanh. Kho kiến thức gồm 27 mục, mỗi mục ứng với một bài trong chương trình.
+
+Trợ lý chạy ngay trong trình duyệt, **không gọi ra ngoài và không cần mạng**, nên
+dùng được cả khi máy không nối Internet và không gửi đi bất cứ dữ liệu nào.
+
+## Điểm thưởng
+
+Mỗi câu đúng được điểm: trắc nghiệm 1, đúng sai và trả lời ngắn 5. Số điểm hiện
+ở góc trên, dùng để học sinh tự theo dõi mình đã luyện được bao nhiêu.
 
 ## Cài vào điện thoại như một ứng dụng
 
@@ -68,9 +81,10 @@ cài đặt của máy.
 ```
 ├── index.html      khung trang và cấu hình MathJax
 ├── css/style.css   giao diện, sáng và tối
-├── js/data.js      khai báo chương và cấu trúc đề
+├── js/data.js      chín chương, 27 bài, 114 câu hỏi viết sẵn
 ├── js/sinh.js      bộ sinh câu hỏi, mỗi lượt một số liệu khác
-├── js/main.js      logic hiển thị, chấm bài, xu và cửa hàng
+├── js/main.js      logic hiển thị, chấm bài và điểm thưởng
+├── js/tro-ly.js    trợ lý học tập, kho kiến thức 27 mục
 ├── js/fb.js        bản độc lập, không nối máy chủ
 ├── manifest.json   khai báo để cài được vào màn hình chính
 └── sw.js           cho phép chạy khi mất mạng
@@ -78,6 +92,6 @@ cài đặt của máy.
 
 ## Dữ liệu của người học
 
-Tiến độ, xu và đồ đã mua lưu bằng `localStorage`, nằm trên máy người học và
-không gửi đi đâu. Bản này không thu thập, không gửi và không lưu trữ bất kì
-thông tin cá nhân nào.
+Tiến độ và điểm lưu bằng `localStorage`, nằm trên máy người học và không gửi đi
+đâu. Bản này không thu thập, không gửi và không lưu trữ bất kì thông tin cá nhân
+nào.
